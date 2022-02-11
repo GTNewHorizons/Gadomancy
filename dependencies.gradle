@@ -1,20 +1,12 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:Baubles:master-SNAPSHOT:dev")
+    compile('com.github.GTNewHorizons:Baubles:1.0.1.14:dev')
 
-    compile("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
+    compile('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 
-    compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:ThaumicHorizons:master-SNAPSHOT:dev") {
-        transitive = false
-    }
-    compileOnly("curse.maven:automagy-222153:2285272") {
-        transitive = false
-    }
-    compileOnly("curse.maven:mystcraft-224599:2417044") {
-        transitive = false
-    }
+    compileOnly('com.github.GTNewHorizons:waila:1.5.19:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:ThaumicHorizons:1.2.1.2:dev') {transitive=false}
+    compileOnly('curse.maven:automagy-222153:2285272')
+    compileOnly('curse.maven:mystcraft-224599:2417044')
 }

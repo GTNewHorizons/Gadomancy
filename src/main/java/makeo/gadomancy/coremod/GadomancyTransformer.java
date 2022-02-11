@@ -139,50 +139,6 @@ public class GadomancyTransformer extends AccessTransformer {
             }
         }
 
-
-
-        /* else if(transformedName.equalsIgnoreCase(NAME_ENTITY_LIVING_BASE)) {
-            FieldNode fn = new FieldNode(Opcodes.ACC_PUBLIC, "ignoreCollisions", Type.BOOLEAN_TYPE.getDescriptor(), null, true);
-            node.fields.add(fn);
-
-            for(MethodNode mn : node.methods) {
-                if(mn.name.equals("func_70636_d") || mn.name.equals("onLivingUpdate")) {
-                    AbstractInsnNode indexNode = null; //To insert after
-                    Label foundJumpLabel = null; //The jump in case we don't do collisions
-
-                    for (int i = 0; i < mn.instructions.size() - 3; i++) {
-                        AbstractInsnNode inNode = mn.instructions.get(i);
-                        if(!(inNode instanceof FieldInsnNode)) continue;
-                        if(!((FieldInsnNode) inNode).name.equals("field_70170_p") &&
-                                !((FieldInsnNode) inNode).name.equals("worldObj")) continue;
-
-                        inNode = mn.instructions.get(i + 1);
-                        if(!(inNode instanceof FieldInsnNode)) continue;
-                        if(!((FieldInsnNode) inNode).name.equals("field_72995_K") &&
-                                !((FieldInsnNode) inNode).name.equals("isRemote")) continue;
-
-                        inNode = mn.instructions.get(i + 2);
-                        if(!(inNode instanceof JumpInsnNode)) continue;
-                        if(inNode.getOpcode() != Opcodes.IFNE) continue;
-                        foundJumpLabel = ((JumpInsnNode) inNode).label.getLabel();
-
-                        //Index where we have to place our handling after.
-                        indexNode = inNode;
-                    }
-
-                    if(indexNode == null || foundJumpLabel == null) {
-                        FMLLog.bigWarning("Could not add doCollisions to EntityLivingBase!");
-                    } else {
-                        InsnList addingList = new InsnList();
-                        addingList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                        addingList.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/entity/EntityLivingBase", "ignoreCollisions", Type.BOOLEAN_TYPE.getDescriptor()));
-                        addingList.add(new JumpInsnNode(Opcodes.IFNE, new LabelNode(foundJumpLabel)));
-                        mn.instructions.insert(indexNode, addingList);
-                    }
-                }
-            }
-        }*/
-
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);
         bytes = writer.toByteArray();
