@@ -32,7 +32,7 @@ public class BlockKnowledgeBook extends BlockContainer implements IBlockTranspar
 
     public BlockKnowledgeBook() {
         super(Material.circuits);
-        setHardness(0.4F);
+        setHardness(0.6F);
         this.setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 0.5F, 0.9375F);
         this.setCreativeTab(RegisteredItems.creativeTab);
     }
