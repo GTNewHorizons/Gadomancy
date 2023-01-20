@@ -1,11 +1,13 @@
 package makeo.gadomancy.common.utils;
 
+import com.google.common.base.Throwables;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import sun.misc.Unsafe;
 
 /**
  * This class is part of the Gadomancy Mod
@@ -16,10 +18,22 @@ import java.util.Arrays;
  * Created by makeo @ 02.12.13 18:45
  */
 public class Injector {
-    Class clazz;
+    static final Unsafe UNSAFE;
+
+    static {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            UNSAFE = (Unsafe) theUnsafe.get(null);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    Class<?> clazz;
     Object object;
 
-    public Injector(Object object, Class clazz) {
+    public Injector(Object object, Class<?> clazz) {
         this.object = object;
         this.clazz = clazz;
     }
@@ -32,7 +46,7 @@ public class Injector {
         this(object, object.getClass());
     }
 
-    public Injector(Class clazz) {
+    public Injector(Class<?> clazz) {
         this.object = null;
         this.clazz = clazz;
     }
@@ -46,11 +60,11 @@ public class Injector {
         }
     }
 
-    public void setObjectClass(Class clazz) {
+    public void setObjectClass(Class<?> clazz) {
         this.clazz = clazz;
     }
 
-    public Class getObjectClass() {
+    public Class<?> getObjectClass() {
         return this.clazz;
     }
 
@@ -66,13 +80,13 @@ public class Injector {
         return this.invokeConstructor(this.extractClasses(params), params);
     }
 
-    public <T> T invokeConstructor(Class clazz, Object param) {
+    public <T> T invokeConstructor(Class<?> clazz, Object param) {
         return this.invokeConstructor(new Class[] {clazz}, param);
     }
 
-    public <T> T invokeConstructor(Class[] classes, Object... params) {
+    public <T> T invokeConstructor(Class<?>[] classes, Object... params) {
         try {
-            Constructor constructor = this.clazz.getDeclaredConstructor(classes);
+            Constructor<?> constructor = this.clazz.getDeclaredConstructor(classes);
             this.object = constructor.newInstance(params);
             return (T) this.object;
         } catch (Exception e) { // NoSuchMethodException | InvocationTargetException | InstantiationException |
@@ -80,6 +94,27 @@ public class Injector {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public <T> T invokeUnsafeConstructor(Class<?>[] paramTypes, Object... params) {
+        try {
+            final Constructor<?> constructor = this.clazz.getDeclaredConstructor(paramTypes);
+            constructor.setAccessible(true);
+            final Method acqConstructorAccessor =
+                    constructor.getClass().getDeclaredMethod("acquireConstructorAccessor");
+            acqConstructorAccessor.setAccessible(true);
+            acqConstructorAccessor.invoke(constructor);
+            Field constructorAccessorField = constructor.getClass().getDeclaredField("constructorAccessor");
+            constructorAccessorField.setAccessible(true);
+            Object constructorAccessor = constructorAccessorField.get(constructor);
+            Method newInstance = constructorAccessor.getClass().getMethod("newInstance", Object[].class);
+            newInstance.setAccessible(true);
+            Object created = newInstance.invoke(constructorAccessor, new Object[] {params});
+            return (T) created;
+        } catch (Throwable e) {
+            Throwables.propagate(e);
+        }
+        throw new IllegalStateException();
     }
 
     public <T> T invokeMethod(String name, Object... params) {
@@ -129,13 +164,48 @@ public class Injector {
     public boolean setField(Field field, Object value) {
         try {
             if (Modifier.isFinal(field.getModifiers())) {
-                Field modifiers = Field.class.getDeclaredField("modifiers");
-                modifiers.setAccessible(true);
-                modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+                if (value != null && !field.getType().isAssignableFrom(value.getClass())) {
+                    throw new ClassCastException("Can't assign " + value.getClass() + " to " + field.getType());
+                }
+                Object base = object;
+                if (object == null) {
+                    base = UNSAFE.staticFieldBase(field);
+                }
+                final long offset = Modifier.isStatic(field.getModifiers())
+                        ? UNSAFE.staticFieldOffset(field)
+                        : UNSAFE.objectFieldOffset(field);
+                UNSAFE.putObject(base, offset, value);
+                return true;
             }
 
             field.setAccessible(true);
             field.set(this.object, value);
+            return true;
+        } catch (Exception e) { // IllegalAccessException | NoSuchFieldException
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean setFieldInt(Field field, int value) {
+        try {
+            if (Modifier.isFinal(field.getModifiers())) {
+                if (!field.getType().equals(int.class)) {
+                    throw new ClassCastException("Can't assign int to " + field.getType());
+                }
+                Object base = object;
+                if (object == null) {
+                    base = UNSAFE.staticFieldBase(field);
+                }
+                final long offset = Modifier.isStatic(field.getModifiers())
+                        ? UNSAFE.staticFieldOffset(field)
+                        : UNSAFE.objectFieldOffset(field);
+                UNSAFE.putInt(base, offset, value);
+                return true;
+            }
+
+            field.setAccessible(true);
+            field.setInt(this.object, value);
             return true;
         } catch (Exception e) { // IllegalAccessException | NoSuchFieldException
             e.printStackTrace();
