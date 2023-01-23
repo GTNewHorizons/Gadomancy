@@ -98,18 +98,8 @@ public class Injector {
 
     public <T> T invokeUnsafeConstructor(Class<?>[] paramTypes, Object... params) {
         try {
-            final Constructor<?> constructor = this.clazz.getDeclaredConstructor(paramTypes);
-            constructor.setAccessible(true);
-            final Method acqConstructorAccessor =
-                    constructor.getClass().getDeclaredMethod("acquireConstructorAccessor");
-            acqConstructorAccessor.setAccessible(true);
-            acqConstructorAccessor.invoke(constructor);
-            Field constructorAccessorField = constructor.getClass().getDeclaredField("constructorAccessor");
-            constructorAccessorField.setAccessible(true);
-            Object constructorAccessor = constructorAccessorField.get(constructor);
-            Method newInstance = constructorAccessor.getClass().getMethod("newInstance", Object[].class);
-            newInstance.setAccessible(true);
-            Object created = newInstance.invoke(constructorAccessor, new Object[] {params});
+            final Method constructor = this.clazz.getMethod("gadomancyRawCreate", paramTypes);
+            Object created = constructor.invoke(null, params);
             return (T) created;
         } catch (Throwable e) {
             Throwables.propagate(e);
