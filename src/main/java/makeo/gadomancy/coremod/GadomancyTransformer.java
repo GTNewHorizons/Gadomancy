@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -24,6 +25,7 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
     public static final String NAME_NEI_ITEMPANEL = "codechicken.nei.ItemPanel";
     public static final String NAME_ENTITY_LIVING_BASE = "net.minecraft.entity.EntityLivingBase";
+    public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     public GadomancyTransformer() throws IOException {}
 
@@ -34,7 +36,8 @@ public class GadomancyTransformer extends AccessTransformer {
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER)
                 || transformedName.equals(GadomancyTransformer.NAME_NEI_ITEMPANEL)
-                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENTITY_LIVING_BASE);
+                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENTITY_LIVING_BASE)
+                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
@@ -178,6 +181,36 @@ public class GadomancyTransformer extends AccessTransformer {
                     mn.instructions = newInstructions;
                 }
             }
+        } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
+            // Create constructor accessor
+            final MethodVisitor methodVisitor = node.visitMethod(
+                    Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
+                    "gadomancyRawCreate",
+                    "(Ljava/lang/String;IIIFZIIII)Lthaumcraft/common/entities/golems/EnumGolemType;",
+                    null,
+                    null);
+            methodVisitor.visitCode();
+            methodVisitor.visitTypeInsn(Opcodes.NEW, "thaumcraft/common/entities/golems/EnumGolemType");
+            methodVisitor.visitInsn(Opcodes.DUP);
+            methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 1);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
+            methodVisitor.visitVarInsn(Opcodes.FLOAD, 4);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 5);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 6);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 7);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 8);
+            methodVisitor.visitVarInsn(Opcodes.ILOAD, 9);
+            methodVisitor.visitMethodInsn(
+                    Opcodes.INVOKESPECIAL,
+                    "thaumcraft/common/entities/golems/EnumGolemType",
+                    "<init>",
+                    "(Ljava/lang/String;IIIFZIIII)V",
+                    false);
+            methodVisitor.visitInsn(Opcodes.ARETURN);
+            methodVisitor.visitMaxs(12, 10);
+            methodVisitor.visitEnd();
         }
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
