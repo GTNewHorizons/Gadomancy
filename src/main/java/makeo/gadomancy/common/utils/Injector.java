@@ -1,23 +1,24 @@
 package makeo.gadomancy.common.utils;
 
-import com.google.common.base.Throwables;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+
 import sun.misc.Unsafe;
 
+import com.google.common.base.Throwables;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
 /**
- * This class is part of the Gadomancy Mod
- * Gadomancy is Open Source and distributed under the
- * GNU LESSER GENERAL PUBLIC LICENSE
- * for more read the LICENSE file
+ * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
+ * LICENSE for more read the LICENSE file
  *
  * Created by makeo @ 02.12.13 18:45
  */
 public class Injector {
+
     static final Unsafe UNSAFE;
 
     static {
@@ -81,7 +82,7 @@ public class Injector {
     }
 
     public <T> T invokeConstructor(Class<?> clazz, Object param) {
-        return this.invokeConstructor(new Class[] {clazz}, param);
+        return this.invokeConstructor(new Class[] { clazz }, param);
     }
 
     public <T> T invokeConstructor(Class<?>[] classes, Object... params) {
@@ -112,7 +113,7 @@ public class Injector {
     }
 
     public <T> T invokeMethod(String name, Class clazz, Object param) {
-        return this.invokeMethod(name, new Class[] {clazz}, param);
+        return this.invokeMethod(name, new Class[] { clazz }, param);
     }
 
     public <T> T invokeMethod(String name, Class[] classes, Object... params) {
@@ -161,8 +162,7 @@ public class Injector {
                 if (object == null) {
                     base = UNSAFE.staticFieldBase(field);
                 }
-                final long offset = Modifier.isStatic(field.getModifiers())
-                        ? UNSAFE.staticFieldOffset(field)
+                final long offset = Modifier.isStatic(field.getModifiers()) ? UNSAFE.staticFieldOffset(field)
                         : UNSAFE.objectFieldOffset(field);
                 UNSAFE.putObject(base, offset, value);
                 return true;
@@ -187,8 +187,7 @@ public class Injector {
                 if (object == null) {
                     base = UNSAFE.staticFieldBase(field);
                 }
-                final long offset = Modifier.isStatic(field.getModifiers())
-                        ? UNSAFE.staticFieldOffset(field)
+                final long offset = Modifier.isStatic(field.getModifiers()) ? UNSAFE.staticFieldOffset(field)
                         : UNSAFE.objectFieldOffset(field);
                 UNSAFE.putInt(base, offset, value);
                 return true;
@@ -233,8 +232,7 @@ public class Injector {
 
     public static Method findMethod(Class clazz, Class returnType, Class[] paramTypes) {
         for (Method m : clazz.getDeclaredMethods()) {
-            if (Arrays.equals(m.getParameterTypes(), paramTypes)
-                    && m.getReturnType().equals(returnType)) {
+            if (Arrays.equals(m.getParameterTypes(), paramTypes) && m.getReturnType().equals(returnType)) {
                 return m;
             }
         }
