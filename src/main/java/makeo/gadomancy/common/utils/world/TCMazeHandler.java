@@ -3,11 +3,6 @@ package makeo.gadomancy.common.utils.world;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,6 +12,10 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.GenCommon;

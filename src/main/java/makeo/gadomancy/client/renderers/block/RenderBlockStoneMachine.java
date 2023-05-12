@@ -1,15 +1,14 @@
 package makeo.gadomancy.client.renderers.block;
 
-import makeo.gadomancy.common.blocks.BlockStoneMachine;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import makeo.gadomancy.common.blocks.BlockStoneMachine;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.client.renderers.block.BlockStoneDeviceRenderer;
 import thaumcraft.common.blocks.BlockStoneDevice;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -2,11 +2,6 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.ArrayList;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,6 +14,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 

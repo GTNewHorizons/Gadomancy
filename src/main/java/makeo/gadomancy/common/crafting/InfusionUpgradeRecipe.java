@@ -2,16 +2,15 @@ package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.common.entities.golems.upgrades.GolemUpgrade;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.common.config.ConfigItems;

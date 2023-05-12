@@ -1,14 +1,13 @@
 package makeo.gadomancy.common.entities.golems.cores;
 
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-import makeo.gadomancy.common.entities.ai.AIBreakBlock;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
+import makeo.gadomancy.common.entities.ai.AIBreakBlock;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.common.entities.ai.misc.AIOpenDoor;
 import thaumcraft.common.entities.ai.misc.AIReturnHome;
 import thaumcraft.common.entities.golems.EntityGolemBase;

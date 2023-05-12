@@ -3,9 +3,6 @@ package makeo.gadomancy.common.utils.world;
 import java.util.Iterator;
 import java.util.List;
 
-import makeo.gadomancy.common.blocks.tiles.TileOverrideEldritchLock;
-import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +19,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
+import makeo.gadomancy.common.blocks.tiles.TileOverrideEldritchLock;
+import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;

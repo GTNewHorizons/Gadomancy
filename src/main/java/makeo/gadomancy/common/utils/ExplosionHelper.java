@@ -3,13 +3,6 @@ package makeo.gadomancy.common.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +12,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;
@@ -26,7 +26,6 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

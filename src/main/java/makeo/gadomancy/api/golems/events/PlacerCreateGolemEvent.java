@@ -3,8 +3,8 @@ package makeo.gadomancy.api.golems.events;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import thaumcraft.common.entities.golems.EntityGolemBase;
 import cpw.mods.fml.common.eventhandler.Event;
+import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

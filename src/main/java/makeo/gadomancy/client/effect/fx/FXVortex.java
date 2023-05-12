@@ -2,12 +2,6 @@ package makeo.gadomancy.client.effect.fx;
 
 import java.util.Random;
 
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.events.ClientHandler;
-import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,6 +10,11 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.events.ClientHandler;
+import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.client.lib.QuadHelper;
 import thaumcraft.client.lib.UtilsFX;
 

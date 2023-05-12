@@ -3,13 +3,6 @@ package makeo.gadomancy.common.registration;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.items.*;
-import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
-import makeo.gadomancy.common.research.SimpleResearchItem;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -18,6 +11,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.items.*;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
+import makeo.gadomancy.common.research.SimpleResearchItem;
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -26,9 +28,6 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.research.ResearchManager;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -2,6 +2,17 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.*;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+
+import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
@@ -13,17 +24,6 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredMultiblocks;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.utils.MultiblockHelper;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -33,7 +33,6 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.TilePedestal;
 import thaumcraft.common.tiles.TileWandPedestal;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

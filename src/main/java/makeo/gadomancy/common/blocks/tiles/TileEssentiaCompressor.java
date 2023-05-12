@@ -4,14 +4,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import makeo.gadomancy.client.events.ClientHandler;
-import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.ExplosionHelper;
-import makeo.gadomancy.common.utils.Injector;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -25,6 +17,17 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.events.ClientHandler;
+import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.ExplosionHelper;
+import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
@@ -42,10 +45,6 @@ import thaumcraft.common.lib.network.fx.PacketFXEssentiaSource;
 import thaumcraft.common.tiles.TilePedestal;
 import tuhljin.automagy.api.essentia.IAspectContainerWithMax;
 import tuhljin.automagy.api.essentia.IEssentiaLocusReadable;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -3,11 +3,10 @@ package makeo.gadomancy.common.crafting;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;

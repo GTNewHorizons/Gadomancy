@@ -1,12 +1,5 @@
 package makeo.gadomancy.common.integration;
 
-import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,6 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;

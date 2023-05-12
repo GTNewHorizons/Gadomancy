@@ -1,7 +1,5 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.common.events.EventHandlerRedirect;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +12,7 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.common.events.EventHandlerRedirect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;

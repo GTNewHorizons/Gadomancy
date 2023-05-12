@@ -2,11 +2,10 @@ package makeo.gadomancy.common.potions;
 
 import java.awt.*;
 
-import makeo.gadomancy.common.utils.ColorHelper;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 
+import makeo.gadomancy.common.utils.ColorHelper;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**

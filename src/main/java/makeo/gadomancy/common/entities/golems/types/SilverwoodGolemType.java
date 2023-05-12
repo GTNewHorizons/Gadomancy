@@ -1,13 +1,13 @@
 package makeo.gadomancy.common.entities.golems.types;
 
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

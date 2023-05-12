@@ -2,18 +2,17 @@ package makeo.gadomancy.common.network.packets;
 
 import java.awt.*;
 
-import makeo.gadomancy.common.utils.StringHelper;
-
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.client.lib.PlayerNotifications;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.common.utils.StringHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.client.lib.PlayerNotifications;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

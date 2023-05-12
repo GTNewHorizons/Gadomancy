@@ -3,15 +3,6 @@ package makeo.gadomancy.common.events;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.aura.AuraEffects;
-import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
-import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.entities.EntityPermNoClipItem;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.Vector3;
-import makeo.gadomancy.common.utils.world.TCMazeHandler;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
@@ -27,9 +18,17 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
-import thaumcraft.common.items.armor.Hover;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.aura.AuraEffects;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.Vector3;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import thaumcraft.common.items.armor.Hover;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

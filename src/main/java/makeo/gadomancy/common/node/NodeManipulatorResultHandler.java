@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.registration.RegisteredManipulations;
-
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.registration.RegisteredManipulations;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;

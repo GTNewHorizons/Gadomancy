@@ -2,19 +2,18 @@ package makeo.gadomancy.common.crafting;
 
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

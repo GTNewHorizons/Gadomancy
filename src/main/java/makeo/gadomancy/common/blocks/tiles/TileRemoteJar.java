@@ -2,11 +2,10 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.*;
 
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**

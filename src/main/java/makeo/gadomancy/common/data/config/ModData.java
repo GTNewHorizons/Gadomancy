@@ -4,14 +4,14 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.server.MinecraftServer;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+
 import cpw.mods.fml.common.FMLLog;
+import makeo.gadomancy.common.Gadomancy;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

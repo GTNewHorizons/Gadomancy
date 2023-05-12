@@ -1,9 +1,9 @@
 package makeo.gadomancy.common.integration.mystcraft;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.common.data.config.ModConfig;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

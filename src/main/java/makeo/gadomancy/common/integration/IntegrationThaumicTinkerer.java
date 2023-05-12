@@ -1,9 +1,9 @@
 package makeo.gadomancy.common.integration;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+
+import makeo.gadomancy.common.Gadomancy;
 
 /**
  * HellFirePvP@Admin Date: 20.04.2016 / 00:43 on Gadomancy IntegrationThaumicTinkerer

@@ -4,14 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.DataFamiliar;
-import makeo.gadomancy.common.data.SyncDataHolder;
-import makeo.gadomancy.common.familiar.FamiliarAugment;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +16,17 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.lib.research.ResearchManager;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.DataFamiliar;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.familiar.FamiliarAugment;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.NBTHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.lib.research.ResearchManager;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

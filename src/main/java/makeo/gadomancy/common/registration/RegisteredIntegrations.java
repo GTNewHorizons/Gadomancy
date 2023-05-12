@@ -1,10 +1,10 @@
 package makeo.gadomancy.common.registration;
 
+import cpw.mods.fml.common.Loader;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.*;
 import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
 import makeo.gadomancy.common.utils.Injector;
-import cpw.mods.fml.common.Loader;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

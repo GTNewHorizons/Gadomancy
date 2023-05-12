@@ -3,13 +3,12 @@ package makeo.gadomancy.client.util;
 import java.awt.*;
 import java.util.Random;
 
-import makeo.gadomancy.common.utils.MiscUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.utils.MiscUtils;
 import thaumcraft.common.Thaumcraft;
 
 /**

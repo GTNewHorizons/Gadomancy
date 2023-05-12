@@ -2,16 +2,15 @@ package makeo.gadomancy.common.research;
 
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.config.ConfigBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.config.ConfigBlocks;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

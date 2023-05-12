@@ -1,14 +1,14 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.client.models.ModelFocusPortalPart;
-import makeo.gadomancy.client.models.ModelManipulatorPart;
-import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
+
+import makeo.gadomancy.client.models.ModelFocusPortalPart;
+import makeo.gadomancy.client.models.ModelManipulatorPart;
+import makeo.gadomancy.common.blocks.tiles.TileManipulationFocus;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

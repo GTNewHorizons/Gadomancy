@@ -5,13 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import makeo.gadomancy.client.events.ResourceReloadListener;
-import makeo.gadomancy.common.blocks.BlockRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.NBTHelper;
-import makeo.gadomancy.common.utils.StringHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -22,11 +15,17 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.events.ResourceReloadListener;
+import makeo.gadomancy.common.blocks.BlockRemoteJar;
+import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.StringHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

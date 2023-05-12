@@ -8,9 +8,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
@@ -20,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
 import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**

@@ -2,16 +2,15 @@ package makeo.gadomancy.common.potions;
 
 import java.util.List;
 
-import makeo.gadomancy.common.data.DataAchromatic;
-import makeo.gadomancy.common.data.SyncDataHolder;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.util.AxisAlignedBB;
 
+import makeo.gadomancy.common.data.DataAchromatic;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.api.aspects.Aspect;
 
 /**

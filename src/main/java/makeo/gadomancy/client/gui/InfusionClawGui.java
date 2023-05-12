@@ -2,11 +2,6 @@ package makeo.gadomancy.client.gui;
 
 import java.awt.*;
 
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.containers.ContainerInfusionClaw;
-import makeo.gadomancy.common.utils.ColorHelper;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,6 +14,10 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.containers.ContainerInfusionClaw;
+import makeo.gadomancy.common.utils.ColorHelper;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

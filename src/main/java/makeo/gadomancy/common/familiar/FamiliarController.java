@@ -5,12 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,12 +15,17 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 
+import baubles.api.BaublesApi;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import baubles.api.BaublesApi;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

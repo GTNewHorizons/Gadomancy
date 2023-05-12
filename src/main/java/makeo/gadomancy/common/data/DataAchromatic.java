@@ -3,13 +3,13 @@ package makeo.gadomancy.common.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredPotions;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
+
+import makeo.gadomancy.common.registration.RegisteredPotions;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

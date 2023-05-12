@@ -2,14 +2,6 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
-import makeo.gadomancy.common.node.ExtendedNodeType;
-import makeo.gadomancy.common.node.GrowingNodeBehavior;
-import makeo.gadomancy.common.utils.ExplosionHelper;
-import makeo.gadomancy.common.utils.ResearchHelper;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -20,6 +12,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.node.ExtendedNodeType;
+import makeo.gadomancy.common.node.GrowingNodeBehavior;
+import makeo.gadomancy.common.utils.ExplosionHelper;
+import makeo.gadomancy.common.utils.ResearchHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.entities.EntityAspectOrb;
@@ -28,7 +28,6 @@ import thaumcraft.common.items.ItemCrystalEssence;
 import thaumcraft.common.items.ItemManaBean;
 import thaumcraft.common.items.ItemWispEssence;
 import thaumcraft.common.tiles.TileNode;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

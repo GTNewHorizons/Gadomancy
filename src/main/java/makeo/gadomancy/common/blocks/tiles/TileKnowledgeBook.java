@@ -2,12 +2,6 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.*;
 
-import makeo.gadomancy.client.util.UtilsFX;
-import makeo.gadomancy.common.entities.EntityPermNoClipItem;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.IEntitySelector;
@@ -22,6 +16,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.util.UtilsFX;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -33,9 +35,6 @@ import thaumcraft.common.items.ItemResearchNotes;
 import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * HellFirePvP@Admin Date: 19.04.2016 / 14:53 on Gadomancy TileKnowledgeBook

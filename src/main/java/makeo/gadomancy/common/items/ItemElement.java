@@ -2,10 +2,6 @@ package makeo.gadomancy.common.items;
 
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.entities.EntityItemElement;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.entities.EntityItemElement;
+import makeo.gadomancy.common.registration.RegisteredItems;
 
 /**
  * HellFirePvP@Admin Date: 23.04.2016 / 01:52 on Gadomancy ItemElementVoid

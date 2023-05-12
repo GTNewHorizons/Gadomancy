@@ -1,11 +1,11 @@
 package makeo.gadomancy.client.renderers.block;
 
-import makeo.gadomancy.common.blocks.IBlockTransparent;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
+
+import makeo.gadomancy.common.blocks.IBlockTransparent;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

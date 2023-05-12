@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
@@ -19,16 +26,8 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

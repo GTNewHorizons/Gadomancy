@@ -2,10 +2,6 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.blocks.BlockStoneDevice;
 import thaumcraft.common.items.wands.ItemWandCasting;

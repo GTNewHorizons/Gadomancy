@@ -1,7 +1,5 @@
 package makeo.gadomancy.client.renderers.block;
 
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -13,9 +11,10 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * This class is NOT part of the Gadomancy Mod This file is copied from Azanors

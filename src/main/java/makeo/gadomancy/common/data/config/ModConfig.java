@@ -4,12 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredEnchantments;
-import makeo.gadomancy.common.registration.RegisteredPotions;
-
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+import makeo.gadomancy.common.registration.RegisteredEnchantments;
+import makeo.gadomancy.common.registration.RegisteredPotions;
 import thaumcraft.api.aspects.Aspect;
 
 /**

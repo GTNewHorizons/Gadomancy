@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.utils.world.TCMazeHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +11,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileEldritchPortal;
 

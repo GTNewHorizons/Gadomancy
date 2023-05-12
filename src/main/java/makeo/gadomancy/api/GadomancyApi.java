@@ -2,12 +2,11 @@ package makeo.gadomancy.api;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import makeo.gadomancy.api.internal.IApiHandler;
-
-import net.minecraft.item.ItemStack;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;

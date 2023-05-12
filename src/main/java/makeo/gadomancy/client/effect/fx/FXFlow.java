@@ -5,12 +5,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Random;
 
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,6 +12,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import makeo.gadomancy.common.utils.Vector3;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -2,17 +2,16 @@ package makeo.gadomancy.client.events;
 
 import java.util.Queue;
 
-import makeo.gadomancy.client.ClientProxy;
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.renderers.tile.RenderTileEssentiaCompressor;
-import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.client.Minecraft;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
+import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.renderers.tile.RenderTileEssentiaCompressor;
+import makeo.gadomancy.client.util.FamiliarHandlerClient;
+import makeo.gadomancy.common.Gadomancy;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

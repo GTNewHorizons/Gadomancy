@@ -1,9 +1,8 @@
 package makeo.gadomancy.common.entities.ai;
 
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.entity.EntityLivingBase;
 
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.common.entities.ai.combat.AIDartAttack;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 

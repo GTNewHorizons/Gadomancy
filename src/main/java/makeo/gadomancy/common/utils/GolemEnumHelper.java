@@ -5,16 +5,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraftforge.common.util.EnumHelper;
+
+import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.client.events.ResourceReloadListener;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.golems.types.RemovedGolemType;
-
-import net.minecraftforge.common.util.EnumHelper;
-
 import thaumcraft.common.entities.golems.EnumGolemType;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

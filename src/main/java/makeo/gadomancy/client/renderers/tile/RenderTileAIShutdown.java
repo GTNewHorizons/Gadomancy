@@ -2,15 +2,14 @@ package makeo.gadomancy.client.renderers.tile;
 
 import java.util.Random;
 
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXWisp;
 

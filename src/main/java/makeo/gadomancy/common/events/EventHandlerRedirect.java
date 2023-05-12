@@ -2,10 +2,6 @@ package makeo.gadomancy.common.events;
 
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredEnchantments;
-import makeo.gadomancy.common.registration.RegisteredPotions;
-import makeo.gadomancy.common.utils.MiscUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,10 +14,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.config.ConfigItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.registration.RegisteredEnchantments;
+import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.config.ConfigItems;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

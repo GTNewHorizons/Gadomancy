@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
-import makeo.gadomancy.common.entities.fake.GolemFakePlayer;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
@@ -20,6 +17,8 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
+import makeo.gadomancy.common.entities.fake.GolemFakePlayer;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.Marker;

@@ -1,9 +1,5 @@
 package makeo.gadomancy.client.renderers.item;
 
-import makeo.gadomancy.common.items.ItemExtendedNodeJar;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -14,6 +10,9 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.common.items.ItemExtendedNodeJar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileJar;

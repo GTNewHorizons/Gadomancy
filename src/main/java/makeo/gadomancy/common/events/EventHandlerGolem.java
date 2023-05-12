@@ -3,21 +3,6 @@ package makeo.gadomancy.common.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
-import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.DataAchromatic;
-import makeo.gadomancy.common.data.SyncDataHolder;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
-import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
-import makeo.gadomancy.common.registration.RegisteredGolemStuff;
-import makeo.gadomancy.common.registration.RegisteredPotions;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -35,13 +20,27 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
+import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
+import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.DataAchromatic;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
+import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
+import makeo.gadomancy.common.registration.RegisteredGolemStuff;
+import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 import thaumcraft.common.entities.golems.ItemGolemPlacer;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

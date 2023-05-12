@@ -3,10 +3,10 @@ package makeo.gadomancy.client.effect.fx;
 import java.awt.*;
 import java.util.Random;
 
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+
+import makeo.gadomancy.common.utils.Vector3;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

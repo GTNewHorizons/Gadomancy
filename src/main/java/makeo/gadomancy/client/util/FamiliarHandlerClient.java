@@ -5,11 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
-import makeo.gadomancy.common.data.DataFamiliar;
-import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
-import makeo.gadomancy.common.utils.world.fake.FakeWorld;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -20,12 +15,16 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
+import makeo.gadomancy.common.data.DataFamiliar;
+import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
+import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.entities.monster.EntityWisp;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

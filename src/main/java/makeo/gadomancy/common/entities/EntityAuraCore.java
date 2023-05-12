@@ -6,19 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.effect.fx.EntityFXFlowPolicy;
-import makeo.gadomancy.client.effect.fx.FXFlow;
-import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.items.ItemAuraCore;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.PrimalAspectList;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -33,13 +20,25 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.effect.fx.EntityFXFlowPolicy;
+import makeo.gadomancy.client.effect.fx.FXFlow;
+import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.PrimalAspectList;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ScanResult;
 import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.utils.BlockUtils;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import io.netty.buffer.ByteBuf;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -1,12 +1,12 @@
 package makeo.gadomancy.common.blocks;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

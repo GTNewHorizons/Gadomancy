@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.items;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -10,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.common.config.ConfigBlocks;
 
 /**

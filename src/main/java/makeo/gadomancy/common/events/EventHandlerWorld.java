@@ -4,20 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
-import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-import makeo.gadomancy.common.data.SyncDataHolder;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.entities.EntityItemElement;
-import makeo.gadomancy.common.items.ItemElement;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.*;
-import makeo.gadomancy.common.utils.world.TCMazeHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,12 +26,25 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.items.wands.ItemWandCasting;
-import thaumcraft.common.tiles.TileJarFillable;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.entities.EntityItemElement;
+import makeo.gadomancy.common.items.ItemElement;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.*;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.items.wands.ItemWandCasting;
+import thaumcraft.common.tiles.TileJarFillable;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

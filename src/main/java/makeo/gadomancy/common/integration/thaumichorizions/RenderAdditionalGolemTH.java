@@ -1,22 +1,20 @@
 package makeo.gadomancy.common.integration.thaumichorizions;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-import makeo.gadomancy.client.renderers.entity.RenderGolemHelper;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import thaumcraft.common.entities.golems.EntityGolemBase;
-
 import com.kentington.thaumichorizons.client.renderer.entity.RenderGolemTH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
+import makeo.gadomancy.client.renderers.entity.RenderGolemHelper;
+import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -5,13 +5,6 @@ import static makeo.gadomancy.common.utils.MiscUtils.ticksForSeconds;
 
 import java.util.Random;
 
-import makeo.gadomancy.api.AuraEffect;
-import makeo.gadomancy.common.events.EventHandlerEntity;
-import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
-import makeo.gadomancy.common.registration.RegisteredPotions;
-import makeo.gadomancy.common.utils.MiscUtils;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -35,6 +28,12 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.api.AuraEffect;
+import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
+import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import makeo.gadomancy.common.registration.RegisteredPotions;
+import makeo.gadomancy.common.utils.MiscUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.Thaumcraft;

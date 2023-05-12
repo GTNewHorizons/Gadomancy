@@ -1,10 +1,9 @@
 package makeo.gadomancy.common.entities.ai;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
-
 import net.minecraft.entity.ai.EntityAIBase;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**

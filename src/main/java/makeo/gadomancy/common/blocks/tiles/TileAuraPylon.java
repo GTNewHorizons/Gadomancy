@@ -3,10 +3,6 @@ package makeo.gadomancy.common.blocks.tiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.aura.AuraEffectHandler;
-import makeo.gadomancy.common.entities.EntityPermNoClipItem;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -18,6 +14,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.aura.AuraEffectHandler;
+import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -28,8 +29,6 @@ import thaumcraft.client.fx.particles.FXEssentiaTrail;
 import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemCrystalEssence;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

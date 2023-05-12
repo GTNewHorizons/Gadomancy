@@ -1,11 +1,10 @@
 package makeo.gadomancy.common.utils.world;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import makeo.gadomancy.common.data.config.ModConfig;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

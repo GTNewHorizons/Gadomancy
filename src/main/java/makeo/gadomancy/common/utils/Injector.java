@@ -6,10 +6,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import sun.misc.Unsafe;
-
 import com.google.common.base.Throwables;
+
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import sun.misc.Unsafe;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

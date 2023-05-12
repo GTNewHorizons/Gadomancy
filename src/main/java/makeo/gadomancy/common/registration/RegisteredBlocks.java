@@ -3,22 +3,21 @@ package makeo.gadomancy.common.registration;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.common.blocks.*;
-import makeo.gadomancy.common.blocks.tiles.*;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.items.*;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.common.blocks.*;
+import makeo.gadomancy.common.blocks.tiles.*;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.items.*;
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

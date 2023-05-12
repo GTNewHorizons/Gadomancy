@@ -2,14 +2,13 @@ package makeo.gadomancy.common.registration;
 
 import java.lang.reflect.Field;
 
+import net.minecraft.potion.Potion;
+
+import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.potions.*;
 import makeo.gadomancy.common.utils.Injector;
-
-import net.minecraft.potion.Potion;
-
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

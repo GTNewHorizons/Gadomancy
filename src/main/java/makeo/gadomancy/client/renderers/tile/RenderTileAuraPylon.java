@@ -3,6 +3,14 @@ package makeo.gadomancy.client.renderers.tile;
 import java.awt.*;
 import java.util.Random;
 
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.Orbital;
 import makeo.gadomancy.client.models.ModelAuraPylon;
@@ -12,15 +20,6 @@ import makeo.gadomancy.common.blocks.tiles.TileAuraPylon;
 import makeo.gadomancy.common.blocks.tiles.TileAuraPylonTop;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.Vector3;
-
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-
-import org.lwjgl.opengl.GL11;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXWisp;

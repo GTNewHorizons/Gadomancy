@@ -3,13 +3,12 @@ package makeo.gadomancy.common.entities.golems.cores;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
-
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**

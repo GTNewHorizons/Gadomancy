@@ -3,15 +3,14 @@ package makeo.gadomancy.common.aura;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.StatCollector;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.common.Thaumcraft;

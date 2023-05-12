@@ -2,13 +2,12 @@ package makeo.gadomancy.common.familiar;
 
 import java.util.*;
 
-import makeo.gadomancy.common.registration.RegisteredFamiliarAI_Old;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import baubles.api.BaublesApi;
+import makeo.gadomancy.common.registration.RegisteredFamiliarAI_Old;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

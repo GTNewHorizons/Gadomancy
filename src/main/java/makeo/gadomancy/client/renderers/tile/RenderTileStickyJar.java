@@ -1,7 +1,5 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**

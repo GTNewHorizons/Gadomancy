@@ -2,12 +2,6 @@ package makeo.gadomancy.client.renderers.tile;
 
 import java.util.Random;
 
-import makeo.gadomancy.client.models.ModelInfusionClawPart;
-import makeo.gadomancy.client.models.ModelWandPart;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.utils.Injector;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -21,6 +15,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.models.ModelInfusionClawPart;
+import makeo.gadomancy.client.models.ModelWandPart;
+import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.client.renderers.entity.RenderPrimalOrb;
 import thaumcraft.client.renderers.item.ItemWandRenderer;
 import thaumcraft.common.Thaumcraft;

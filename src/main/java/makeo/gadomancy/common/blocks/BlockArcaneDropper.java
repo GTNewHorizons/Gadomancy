@@ -2,9 +2,6 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.List;
 
-import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +13,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import makeo.gadomancy.common.blocks.tiles.TileArcaneDropper;
+import makeo.gadomancy.common.registration.RegisteredItems;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

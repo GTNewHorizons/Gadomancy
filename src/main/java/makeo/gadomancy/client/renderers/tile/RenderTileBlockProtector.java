@@ -1,14 +1,13 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.client.models.ModelBlockProtector;
-import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.models.ModelBlockProtector;
+import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.client.renderers.models.ModelJar;
 import thaumcraft.client.renderers.tile.TileJarRenderer;
 

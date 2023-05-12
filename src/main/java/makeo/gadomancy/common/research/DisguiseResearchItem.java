@@ -1,10 +1,9 @@
 package makeo.gadomancy.common.research;
 
-import makeo.gadomancy.common.crafting.InfusionVisualDisguiseArmor;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.common.crafting.InfusionVisualDisguiseArmor;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;

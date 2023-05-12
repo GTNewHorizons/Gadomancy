@@ -1,15 +1,14 @@
 package makeo.gadomancy.common.crafting;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.research.SimpleResearchItem;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.research.SimpleResearchItem;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;

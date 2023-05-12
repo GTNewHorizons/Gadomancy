@@ -1,5 +1,9 @@
 package makeo.gadomancy.common.registration;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.crafting.InfusionVisualDisguiseArmor;
@@ -9,11 +13,6 @@ import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.research.*;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;

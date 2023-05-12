@@ -2,8 +2,6 @@ package makeo.gadomancy.common.utils.world;
 
 import java.util.Map;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -16,6 +14,7 @@ import net.minecraft.world.chunk.Chunk;
 
 import org.apache.logging.log4j.LogManager;
 
+import makeo.gadomancy.common.data.config.ModConfig;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.world.dim.Cell;
 import thaumcraft.common.lib.world.dim.CellLoc;

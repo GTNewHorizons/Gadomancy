@@ -1,8 +1,5 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.client.models.ModelArcaneDropper;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +8,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.models.ModelArcaneDropper;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.client.renderers.tile.TileBellowsRenderer;
 import thaumcraft.common.tiles.TileBellows;
 

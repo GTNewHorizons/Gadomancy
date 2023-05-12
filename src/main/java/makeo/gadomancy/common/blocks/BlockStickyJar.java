@@ -3,13 +3,6 @@ package makeo.gadomancy.common.blocks;
 import java.util.ArrayList;
 import java.util.Map;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.registration.StickyJarInfo;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -24,6 +17,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.registration.StickyJarInfo;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;

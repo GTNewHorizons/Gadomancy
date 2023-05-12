@@ -2,11 +2,6 @@ package makeo.gadomancy.client.gui;
 
 import java.awt.*;
 
-import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
-import makeo.gadomancy.common.containers.ContainerArcanePackager;
-import makeo.gadomancy.common.utils.ColorHelper;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,6 +10,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
+
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
+import makeo.gadomancy.common.containers.ContainerArcanePackager;
+import makeo.gadomancy.common.utils.ColorHelper;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

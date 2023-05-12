@@ -3,19 +3,6 @@ package makeo.gadomancy.common.utils;
 import java.util.Iterator;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.entities.EntityAuraCore;
-import makeo.gadomancy.common.items.ItemAuraCore;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.node.ExtendedNodeType;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
-import makeo.gadomancy.common.registration.RegisteredRecipes;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +15,19 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.data.config.ModConfig;
+import makeo.gadomancy.common.entities.EntityAuraCore;
+import makeo.gadomancy.common.items.ItemAuraCore;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.node.ExtendedNodeType;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -40,7 +40,6 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileOwned;
 import thaumcraft.common.tiles.TileWarded;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

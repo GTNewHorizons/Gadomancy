@@ -2,14 +2,14 @@ package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
 
-import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
+import makeo.gadomancy.common.registration.RegisteredItems;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

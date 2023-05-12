@@ -1,15 +1,5 @@
 package makeo.gadomancy.common.blocks;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.registration.RegisteredRecipes;
-import makeo.gadomancy.common.research.SimpleResearchItem;
-import makeo.gadomancy.common.utils.ExplosionHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,11 +12,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.registration.RegisteredRecipes;
+import makeo.gadomancy.common.research.SimpleResearchItem;
+import makeo.gadomancy.common.utils.ExplosionHelper;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ResearchManager;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * HellFirePvP@Admin Date: 22.04.2016 / 21:42 on Gadomancy BlockEssentiaCompressor

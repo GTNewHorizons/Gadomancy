@@ -4,19 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import makeo.gadomancy.client.renderers.entity.PlayerCameraRenderer;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketAbortTransform;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
-import thaumcraft.common.entities.golems.EntityGolemBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.client.renderers.entity.PlayerCameraRenderer;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketAbortTransform;
+import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

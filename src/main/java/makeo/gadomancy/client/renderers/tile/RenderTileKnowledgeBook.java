@@ -1,7 +1,5 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
-
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -9,6 +7,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
 
 /**
  * HellFirePvP@Admin Date: 19.04.2016 / 14:57 on Gadomancy RenderTileKnowledgeBook

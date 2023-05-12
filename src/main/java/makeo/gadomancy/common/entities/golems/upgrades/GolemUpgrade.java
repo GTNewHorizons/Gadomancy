@@ -1,13 +1,12 @@
 package makeo.gadomancy.common.entities.golems.upgrades;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**

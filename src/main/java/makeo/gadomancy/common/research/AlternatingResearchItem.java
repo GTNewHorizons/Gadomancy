@@ -4,10 +4,9 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 

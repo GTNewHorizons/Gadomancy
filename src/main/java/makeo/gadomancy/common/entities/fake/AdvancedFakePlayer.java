@@ -2,8 +2,6 @@ package makeo.gadomancy.common.entities.fake;
 
 import java.util.UUID;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -12,6 +10,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.mojang.authlib.GameProfile;
+
+import makeo.gadomancy.common.Gadomancy;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

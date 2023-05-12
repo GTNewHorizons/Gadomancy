@@ -1,9 +1,8 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.tileentity.TileEntity;
 
+import makeo.gadomancy.common.data.config.ModConfig;
 import thaumcraft.client.renderers.tile.TileEldritchObeliskRenderer;
 import thaumcraft.common.config.Config;
 

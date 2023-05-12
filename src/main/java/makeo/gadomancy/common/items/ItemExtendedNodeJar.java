@@ -2,10 +2,6 @@ package makeo.gadomancy.common.items;
 
 import java.util.List;
 
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.node.ExtendedNodeType;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +16,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.node.ExtendedNodeType;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;

@@ -3,12 +3,6 @@ package makeo.gadomancy.common.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
+import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.common.blocks.BlockJar;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.tiles.TileJarFillable;

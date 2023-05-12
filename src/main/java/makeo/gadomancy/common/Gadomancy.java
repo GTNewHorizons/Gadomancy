@@ -1,17 +1,16 @@
 package makeo.gadomancy.common;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.*;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.data.config.ModData;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import thaumcraft.common.Thaumcraft;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.Vector3;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

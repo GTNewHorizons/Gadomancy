@@ -3,6 +3,12 @@ package makeo.gadomancy.common.node;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+
+import cpw.mods.fml.common.network.NetworkRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -10,17 +16,10 @@ import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.ResearchHelper;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.tiles.TileNode;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

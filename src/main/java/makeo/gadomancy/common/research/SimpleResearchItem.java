@@ -1,10 +1,9 @@
 package makeo.gadomancy.common.research;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import makeo.gadomancy.common.Gadomancy;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
 

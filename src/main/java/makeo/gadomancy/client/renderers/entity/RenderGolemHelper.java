@@ -2,8 +2,6 @@ package makeo.gadomancy.client.renderers.entity;
 
 import java.awt.*;
 
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -20,6 +18,7 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import thaumcraft.client.renderers.models.entities.ModelGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 

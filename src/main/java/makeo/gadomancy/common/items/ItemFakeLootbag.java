@@ -2,8 +2,6 @@ package makeo.gadomancy.common.items;
 
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.common.items.ItemLootBag;
 
 /**

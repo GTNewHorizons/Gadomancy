@@ -1,9 +1,8 @@
 package makeo.gadomancy.client.renderers.item;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeType;

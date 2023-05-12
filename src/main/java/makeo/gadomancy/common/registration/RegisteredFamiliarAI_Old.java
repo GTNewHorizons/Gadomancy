@@ -5,12 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
-import makeo.gadomancy.common.familiar.FamiliarAIProcess_Old;
-import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +13,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.familiar.FamiliarAIController_Old;
+import makeo.gadomancy.common.familiar.FamiliarAIProcess_Old;
+import makeo.gadomancy.common.items.baubles.ItemFamiliar_Old;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

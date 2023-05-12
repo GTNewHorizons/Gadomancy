@@ -1,19 +1,17 @@
 package makeo.gadomancy.common.registration;
 
-import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
-import thaumcraft.common.config.ConfigBlocks;
-
 import com.google.common.collect.BiMap;
 
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
+import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.data.config.ModConfig;
+import thaumcraft.common.config.ConfigBlocks;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

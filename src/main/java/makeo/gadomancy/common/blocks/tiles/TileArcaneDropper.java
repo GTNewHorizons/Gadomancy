@@ -3,8 +3,6 @@ package makeo.gadomancy.common.blocks.tiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**

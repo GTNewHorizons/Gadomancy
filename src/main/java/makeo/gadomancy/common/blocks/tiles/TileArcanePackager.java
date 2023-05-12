@@ -3,9 +3,6 @@ package makeo.gadomancy.common.blocks.tiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.ItemUtils;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.ItemUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TileJarFillable;
 

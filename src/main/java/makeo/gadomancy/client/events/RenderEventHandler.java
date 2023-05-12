@@ -4,24 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
-import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
-import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
-import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
-import makeo.gadomancy.common.data.DataAchromatic;
-import makeo.gadomancy.common.data.SyncDataHolder;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.Injector;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.NBTHelper;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -40,6 +22,25 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
+import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
+import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
+import makeo.gadomancy.client.util.FamiliarHandlerClient;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
+import makeo.gadomancy.common.data.DataAchromatic;
+import makeo.gadomancy.common.data.SyncDataHolder;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.NBTHelper;
+import makeo.gadomancy.common.utils.Vector3;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.research.ResearchItem;
@@ -50,8 +51,6 @@ import thaumcraft.client.lib.REHWandHandler;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.items.wands.ItemWandCasting;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

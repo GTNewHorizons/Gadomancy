@@ -2,13 +2,12 @@ package makeo.gadomancy.common.utils;
 
 import java.util.UUID;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
+import makeo.gadomancy.common.Gadomancy;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 

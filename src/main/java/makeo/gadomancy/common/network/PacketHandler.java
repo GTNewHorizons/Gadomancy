@@ -1,10 +1,10 @@
 package makeo.gadomancy.common.network;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.network.packets.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.network.packets.*;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

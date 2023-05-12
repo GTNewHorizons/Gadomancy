@@ -1,8 +1,5 @@
 package makeo.gadomancy.common.blocks.tiles;
 
-import makeo.gadomancy.common.node.ExtendedNodeType;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +8,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.node.ExtendedNodeType;
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.NodeModifier;

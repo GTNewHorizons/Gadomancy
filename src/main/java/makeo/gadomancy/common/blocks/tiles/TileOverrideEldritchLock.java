@@ -2,11 +2,10 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import makeo.gadomancy.common.utils.world.TCMazeHandler;
-import makeo.gadomancy.common.utils.world.TCMazeSession;
-
 import net.minecraft.entity.Entity;
 
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
+import makeo.gadomancy.common.utils.world.TCMazeSession;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.tiles.TileEldritchLock;

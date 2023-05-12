@@ -2,14 +2,13 @@ package makeo.gadomancy.common.aura;
 
 import java.util.*;
 
-import makeo.gadomancy.api.AuraEffect;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.api.AuraEffect;
 import thaumcraft.api.aspects.Aspect;
 
 /**

@@ -1,9 +1,9 @@
 package makeo.gadomancy.client.renderers.entity;
 
+import net.minecraft.entity.Entity;
+
 import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.utils.MiscUtils;
-
-import net.minecraft.entity.Entity;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -3,11 +3,6 @@ package makeo.gadomancy.client.renderers.item;
 import java.awt.*;
 import java.util.Random;
 
-import makeo.gadomancy.client.util.FamiliarHandlerClient;
-import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
-import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.world.fake.FakeWorld;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,6 +14,10 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.util.FamiliarHandlerClient;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
+import makeo.gadomancy.common.utils.MiscUtils;
+import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;

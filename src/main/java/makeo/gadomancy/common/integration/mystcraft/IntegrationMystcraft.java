@@ -1,10 +1,9 @@
 package makeo.gadomancy.common.integration.mystcraft;
 
-import makeo.gadomancy.common.integration.IntegrationMod;
-
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import makeo.gadomancy.common.integration.IntegrationMod;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

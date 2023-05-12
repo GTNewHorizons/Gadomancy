@@ -1,15 +1,14 @@
 package makeo.gadomancy.client.effect;
 
-import makeo.gadomancy.client.effect.fx.FXFlow;
-import makeo.gadomancy.client.effect.fx.FXVortex;
-import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.utils.Vector3;
-
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import makeo.gadomancy.client.effect.fx.FXFlow;
+import makeo.gadomancy.client.effect.fx.FXVortex;
+import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.utils.Vector3;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

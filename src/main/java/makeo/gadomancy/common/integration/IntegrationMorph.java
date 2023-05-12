@@ -2,13 +2,12 @@ package makeo.gadomancy.common.integration;
 
 import java.lang.reflect.Method;
 
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.utils.Injector;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

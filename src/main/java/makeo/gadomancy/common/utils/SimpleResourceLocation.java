@@ -1,8 +1,8 @@
 package makeo.gadomancy.common.utils;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.util.ResourceLocation;
+
+import makeo.gadomancy.common.Gadomancy;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

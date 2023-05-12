@@ -1,12 +1,11 @@
 package makeo.gadomancy.common.blocks;
 
-import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.blocks.tiles.TileAdditionalEldritchPortal;
+import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.common.blocks.BlockEldritchPortal;
 import thaumcraft.common.config.ConfigBlocks;
 

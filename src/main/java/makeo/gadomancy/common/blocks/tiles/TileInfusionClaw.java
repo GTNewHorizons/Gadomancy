@@ -4,14 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
-import makeo.gadomancy.common.network.PacketHandler;
-import makeo.gadomancy.common.network.packets.PacketStartAnimation;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +18,17 @@ import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.entities.fake.AdvancedFakePlayer;
+import makeo.gadomancy.common.network.PacketHandler;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.visnet.VisNetHandler;
@@ -34,10 +37,6 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.items.wands.foci.ItemFocusPrimal;
 import thaumcraft.common.lib.research.ResearchManager;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -50,7 +49,6 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
     private static final UUID FAKE_UUID = UUID.fromString("b23c8c3f-d7bd-49b3-970a-8e86728bab82");
 
     private final AspectList aspects = new AspectList();
-
 
     private static final ItemWandCasting WAND_ITEM = (ItemWandCasting) ConfigItems.itemWandCasting;
     private static final ItemFocusPrimal WAND_FOCUS = (ItemFocusPrimal) ConfigItems.itemFocusPrimal;
@@ -120,7 +118,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             if (aspects.getAmount(aspect) < 1000) {
                 int drain = VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, aspect, 50);
                 if (drain > 0) {
-                    this.aspects.add(aspect, drain*20);
+                    this.aspects.add(aspect, drain * 20);
                 }
             }
         }

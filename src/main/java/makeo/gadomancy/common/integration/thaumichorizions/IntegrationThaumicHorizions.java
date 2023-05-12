@@ -1,12 +1,5 @@
 package makeo.gadomancy.common.integration.thaumichorizions;
 
-import makeo.gadomancy.api.ClickBehavior;
-import makeo.gadomancy.client.ClientProxy;
-import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.integration.IntegrationMod;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +17,12 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
+import makeo.gadomancy.api.ClickBehavior;
+import makeo.gadomancy.client.ClientProxy;
+import makeo.gadomancy.common.CommonProxy;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.integration.IntegrationMod;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

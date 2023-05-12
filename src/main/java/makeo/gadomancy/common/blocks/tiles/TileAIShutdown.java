@@ -2,10 +2,6 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.*;
 
-import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.registration.AIShutdownWhitelist;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -17,14 +13,17 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.registration.AIShutdownWhitelist;
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

@@ -1,16 +1,15 @@
 package makeo.gadomancy.common.entities.golems.upgrades;
 
-import makeo.gadomancy.common.registration.RegisteredGolemStuff;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+import makeo.gadomancy.common.registration.RegisteredGolemStuff;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EnumGolemType;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXShield;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

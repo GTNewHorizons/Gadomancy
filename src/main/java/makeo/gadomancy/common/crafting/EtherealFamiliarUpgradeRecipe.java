@@ -2,13 +2,12 @@ package makeo.gadomancy.common.crafting;
 
 import java.util.ArrayList;
 
-import makeo.gadomancy.common.familiar.FamiliarAugment;
-import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.familiar.FamiliarAugment;
+import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;

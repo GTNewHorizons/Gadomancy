@@ -3,6 +3,13 @@ package makeo.gadomancy.client.renderers.tile;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+
+import org.lwjgl.opengl.GL11;
+
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.effect.fx.FXVortex;
 import makeo.gadomancy.client.models.ModelEssentiaCompressor;
@@ -10,13 +17,6 @@ import makeo.gadomancy.client.models.ModelPackedCompressorBlock;
 import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import makeo.gadomancy.common.utils.world.fake.FakeWorld;
-
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * HellFirePvP@Admin Date: 22.04.2016 / 21:39 on Gadomancy RenderTileEssentiaCompressor

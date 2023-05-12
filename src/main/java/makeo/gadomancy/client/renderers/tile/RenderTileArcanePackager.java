@@ -1,16 +1,15 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.client.models.ModelArcanePackager;
-import makeo.gadomancy.client.models.ModelPackagerPiston;
-import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.models.ModelArcanePackager;
+import makeo.gadomancy.client.models.ModelPackagerPiston;
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.common.tiles.TileJarFillable;
 
 /**

@@ -2,15 +2,14 @@ package makeo.gadomancy.common.registration;
 
 import java.util.List;
 
+import net.minecraft.world.World;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.node.NodeManipulatorResult;
 import makeo.gadomancy.common.node.NodeManipulatorResultHandler;
 import makeo.gadomancy.common.utils.ResearchHelper;
-
-import net.minecraft.world.World;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;

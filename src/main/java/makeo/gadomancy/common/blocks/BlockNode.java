@@ -1,9 +1,9 @@
 package makeo.gadomancy.common.blocks;
 
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

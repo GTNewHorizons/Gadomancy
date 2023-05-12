@@ -1,14 +1,13 @@
 package makeo.gadomancy.common.registration;
 
+import net.minecraft.entity.Entity;
+
+import cpw.mods.fml.common.registry.EntityRegistry;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.entities.player.FakePlayerEntity;
-
-import net.minecraft.entity.Entity;
-
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

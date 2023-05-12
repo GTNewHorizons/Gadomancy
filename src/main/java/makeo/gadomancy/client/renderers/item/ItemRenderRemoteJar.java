@@ -1,20 +1,19 @@
 package makeo.gadomancy.client.renderers.item;
 
-import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
-import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import makeo.gadomancy.client.renderers.tile.RenderTileRemoteJar;
+import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

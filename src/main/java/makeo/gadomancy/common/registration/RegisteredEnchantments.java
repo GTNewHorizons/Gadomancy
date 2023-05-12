@@ -2,12 +2,12 @@ package makeo.gadomancy.common.registration;
 
 import java.lang.reflect.Field;
 
+import net.minecraft.enchantment.Enchantment;
+
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.enchantments.EnchantmentRevealer;
 import makeo.gadomancy.common.utils.Injector;
-
-import net.minecraft.enchantment.Enchantment;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

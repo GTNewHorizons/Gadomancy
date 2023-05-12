@@ -2,18 +2,18 @@ package makeo.gadomancy.client.events;
 
 import java.util.Map;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.client.textures.GolemGuiTexture;
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
+
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.client.textures.GolemGuiTexture;
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.utils.Injector;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

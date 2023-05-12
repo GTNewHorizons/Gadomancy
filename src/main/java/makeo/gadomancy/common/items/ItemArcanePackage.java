@@ -6,10 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.NBTHelper;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
@@ -21,6 +17,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import makeo.gadomancy.common.utils.NBTHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 /**

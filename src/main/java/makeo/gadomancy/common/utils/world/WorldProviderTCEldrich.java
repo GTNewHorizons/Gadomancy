@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.utils.world;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -10,9 +8,10 @@ import net.minecraft.world.biome.WorldChunkManagerHell;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.data.config.ModConfig;
+import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

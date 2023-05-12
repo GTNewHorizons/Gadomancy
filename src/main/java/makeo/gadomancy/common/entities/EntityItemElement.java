@@ -2,8 +2,6 @@ package makeo.gadomancy.common.entities;
 
 import java.util.List;
 
-import makeo.gadomancy.common.items.ItemElement;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -11,9 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import thaumcraft.client.fx.bolt.FXLightningBolt;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.items.ItemElement;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 /**
  * HellFirePvP@Admin Date: 23.04.2016 / 13:45 on Gadomancy EntityItemElement

@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.entities;
 
-import makeo.gadomancy.common.data.config.ModConfig;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,6 +8,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.common.data.config.ModConfig;
 import thaumcraft.common.entities.EntityPermanentItem;
 
 /**

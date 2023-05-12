@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.containers;
 
-import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -9,6 +7,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import makeo.gadomancy.common.blocks.tiles.TileArcanePackager;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

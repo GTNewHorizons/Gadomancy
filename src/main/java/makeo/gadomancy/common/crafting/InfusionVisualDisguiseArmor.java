@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import makeo.gadomancy.common.Gadomancy;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
@@ -13,13 +11,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.common.Gadomancy;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.internal.DummyInternalMethodHandler;
 import thaumcraft.api.internal.IInternalMethodHandler;
 import thaumcraft.common.lib.research.ResearchManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

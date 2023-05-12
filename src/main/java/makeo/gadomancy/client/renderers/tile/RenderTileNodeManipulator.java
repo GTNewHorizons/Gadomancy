@@ -1,14 +1,13 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import makeo.gadomancy.client.models.ModelSmallCube;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.models.ModelSmallCube;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.client.renderers.tile.TileWandPedestalRenderer;
 
 /**

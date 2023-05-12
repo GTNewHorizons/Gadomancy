@@ -1,21 +1,20 @@
 package makeo.gadomancy.common.network.packets;
 
-import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
-import makeo.gadomancy.client.util.UtilsFX;
-import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
-import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
-import makeo.gadomancy.common.utils.ExplosionHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 
-import thaumcraft.common.Thaumcraft;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
+import makeo.gadomancy.client.util.UtilsFX;
+import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
+import makeo.gadomancy.common.blocks.tiles.TileInfusionClaw;
+import makeo.gadomancy.common.utils.ExplosionHelper;
+import thaumcraft.common.Thaumcraft;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

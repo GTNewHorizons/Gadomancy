@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.aura.AuraResearchManager;
-import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
-import makeo.gadomancy.common.utils.Injector;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
@@ -18,6 +13,10 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.aura.AuraResearchManager;
+import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
+import makeo.gadomancy.common.utils.Injector;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;

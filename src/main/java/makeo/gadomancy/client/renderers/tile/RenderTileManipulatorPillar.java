@@ -2,12 +2,11 @@ package makeo.gadomancy.client.renderers.tile;
 
 import java.util.Map;
 
-import makeo.gadomancy.common.utils.Injector;
-import makeo.gadomancy.common.utils.SimpleResourceLocation;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.SimpleResourceLocation;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileInfusionPillarRenderer;
 

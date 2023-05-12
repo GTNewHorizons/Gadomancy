@@ -2,9 +2,6 @@ package makeo.gadomancy.common.entities.golems;
 
 import java.util.List;
 
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.common.registration.RegisteredItems;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,9 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import thaumcraft.common.entities.golems.ItemGolemPlacer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.common.registration.RegisteredItems;
+import thaumcraft.common.entities.golems.ItemGolemPlacer;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

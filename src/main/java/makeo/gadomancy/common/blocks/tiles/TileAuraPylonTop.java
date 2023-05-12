@@ -2,15 +2,14 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
 
-import makeo.gadomancy.client.effect.EffectHandler;
-import makeo.gadomancy.client.effect.fx.Orbital;
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
+import makeo.gadomancy.client.effect.EffectHandler;
+import makeo.gadomancy.client.effect.fx.Orbital;
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;

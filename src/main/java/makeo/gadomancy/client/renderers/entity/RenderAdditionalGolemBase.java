@@ -1,14 +1,13 @@
 package makeo.gadomancy.client.renderers.entity;
 
-import makeo.gadomancy.api.GadomancyApi;
-import makeo.gadomancy.api.golems.AdditionalGolemType;
-import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import makeo.gadomancy.api.GadomancyApi;
+import makeo.gadomancy.api.golems.AdditionalGolemType;
+import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
 import thaumcraft.client.renderers.entity.RenderGolemBase;
 import thaumcraft.client.renderers.models.entities.ModelGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;

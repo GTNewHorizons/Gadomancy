@@ -1,10 +1,9 @@
 package makeo.gadomancy.client.renderers.item;
 
-import makeo.gadomancy.common.registration.RegisteredBlocks;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import makeo.gadomancy.common.registration.RegisteredBlocks;
 import thaumcraft.client.renderers.tile.ItemNodeRenderer;
 
 /**
