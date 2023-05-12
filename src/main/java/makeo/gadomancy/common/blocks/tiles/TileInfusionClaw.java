@@ -2,7 +2,6 @@ package makeo.gadomancy.common.blocks.tiles;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.UUID;
 
 import makeo.gadomancy.api.ClickBehavior;
@@ -29,6 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.items.wands.ItemWandCasting;
@@ -48,7 +48,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedInventory {
 
     private static final UUID FAKE_UUID = UUID.fromString("b23c8c3f-d7bd-49b3-970a-8e86728bab82");
-    private static final Random RANDOM = new Random();
+
+    private final AspectList aspects = new AspectList();
+
 
     private static final ItemWandCasting WAND_ITEM = (ItemWandCasting) ConfigItems.itemWandCasting;
     private static final ItemFocusPrimal WAND_FOCUS = (ItemFocusPrimal) ConfigItems.itemFocusPrimal;
@@ -106,8 +108,38 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
                     // Comparator...
                     world.notifyBlockChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
                 }
+                this.consumeVisFromNetwork();
+                this.chargeWand();
             }
             this.count++;
+        }
+    }
+
+    private void consumeVisFromNetwork() {
+        for (Aspect aspect : Aspect.getPrimalAspects()) {
+            if (aspects.getAmount(aspect) < 1000) {
+                int drain = VisNetHandler.drainVis(this.worldObj, this.xCoord, this.yCoord, this.zCoord, aspect, 50);
+                if (drain > 0) {
+                    this.aspects.add(aspect, drain*20);
+                }
+            }
+        }
+    }
+
+    private void chargeWand() {
+        if (this.wandStack != null && wandStack.getItem() instanceof ItemWandCasting) {
+            int wandMaxVis = TileInfusionClaw.WAND_ITEM.getMaxVis(wandStack);
+
+            for (Aspect aspect : Aspect.getPrimalAspects()) {
+                int wandAspectAmount = TileInfusionClaw.WAND_ITEM.getVis(wandStack, aspect);
+                int replenishAmount = Math.min(100, wandMaxVis - wandAspectAmount);
+                int clawAspectAmount = aspects.getAmount(aspect);
+
+                if (replenishAmount > 0 && clawAspectAmount >= replenishAmount) {
+                    TileInfusionClaw.WAND_ITEM.storeVis(this.wandStack, aspect, wandAspectAmount + replenishAmount);
+                    aspects.reduce(aspect, replenishAmount);
+                }
+            }
         }
     }
 
@@ -118,6 +150,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
         }
         this.wandStack = NBTHelper.getStack(compound, "wandStack");
         this.isLocked = compound.getBoolean("isLocked");
+        this.aspects.readFromNBT(compound);
     }
 
     @Override
@@ -129,6 +162,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             NBTHelper.setStack(compound, "wandStack", this.wandStack);
         }
         compound.setBoolean("isLocked", this.isLocked);
+        this.aspects.writeToNBT(compound);
     }
 
     private void markForUpdate() {
