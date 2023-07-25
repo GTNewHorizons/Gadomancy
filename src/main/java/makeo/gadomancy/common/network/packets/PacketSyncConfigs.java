@@ -39,7 +39,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
             try {
                 tuple = new Tuple();
                 tuple.field = new DataInputStream(bain).readUTF();
-                tuple.value = new ObjectInputStream(bain).readObject();
+                tuple.value = new ValidatingObjectInputStream(bain).readObject();
             } catch (Exception ignored) {}
 
             if (tuple == null) {

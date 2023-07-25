@@ -2,6 +2,8 @@ package makeo.gadomancy.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -39,7 +41,8 @@ public class Gadomancy {
     @SidedProxy(clientSide = Gadomancy.PROXY_CLIENT, serverSide = Gadomancy.PROXY_SERVER)
     public static CommonProxy proxy;
 
-    public static Logger log = LogManager.getLogger("Gadomancy");
+    public static final Logger log = LogManager.getLogger("Gadomancy");
+    public static final Marker securityMarker = MarkerManager.getMarker("SuspiciousPackets");
     private static ModData modData;
 
     public static ModData getModData() {

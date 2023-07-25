@@ -34,7 +34,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
         ByteArrayInputStream in = new ByteArrayInputStream(data);
 
         try {
-            this.mapping = (Map<String, Integer>) new ObjectInputStream(in).readObject();
+            this.mapping = (Map<String, Integer>) new ValidatingObjectInputStream(in).readObject();
             in.close();
         } catch (Exception ignored) {} // IOException | ClassNotFoundException ignored
     }
