@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -25,6 +26,7 @@ public class PacketSyncConfigs implements IMessage, IMessageHandler<PacketSyncCo
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        if (FMLCommonHandler.instance().getSide().isServer()) return;
         int count = buf.readByte();
         this.fieldData = new Tuple[count];
 

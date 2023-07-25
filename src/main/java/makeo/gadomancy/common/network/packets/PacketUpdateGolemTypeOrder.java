@@ -3,6 +3,7 @@ package makeo.gadomancy.common.network.packets;
 import java.io.*;
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -27,6 +28,7 @@ public class PacketUpdateGolemTypeOrder implements IMessage, IMessageHandler<Pac
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        if (FMLCommonHandler.instance().getSide().isServer()) return;
         byte[] data = new byte[buf.readInt()];
         buf.readBytes(data);
         ByteArrayInputStream in = new ByteArrayInputStream(data);
