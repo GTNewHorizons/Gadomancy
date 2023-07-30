@@ -24,6 +24,7 @@ public class RenderTileBlockProtector extends TileJarRenderer {
 
     private static final ModelBlockProtector MODEL_BP = new ModelBlockProtector();
     private static final ModelJar MODEL_JAR = new ModelJar();
+
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
         this.renderTileEntityAt((TileBlockProtector) tile, x, y, z, partialTicks);
