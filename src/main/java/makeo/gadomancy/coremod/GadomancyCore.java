@@ -1,8 +1,13 @@
 package makeo.gadomancy.coremod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import cpw.mods.fml.relauncher.IFMLCallHook;
+import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
@@ -15,12 +20,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
  */
 @TransformerExclusions("makeo.gadomancy.coremod")
 @MCVersion("1.7.10")
-public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
-
-    @Override
-    public Void call() throws Exception {
-        return null;
-    }
+public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
@@ -43,5 +43,17 @@ public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public String getAccessTransformerClass() {
         return "makeo.gadomancy.coremod.GadomancyTransformer";
+    }
+
+    @Override
+    public String getMixinConfig() {
+        return "mixins.gadomancy.early.json";
+    }
+
+    @Override
+    public List<String> getMixins(Set<String> loadedCoreMods) {
+        final List<String> mixins = new ArrayList<>();
+        if (FMLLaunchHandler.side().isClient()) {}
+        return mixins;
     }
 }
