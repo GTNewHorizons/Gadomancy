@@ -484,7 +484,14 @@ public class RegisteredResearches {
                         .setPages(
                                 new ResearchPage("gadomancy.research_page.ANCIENT_STONES.1"),
                                 new ResearchPage(RegisteredRecipes.recipeAncientStone),
-                                new ResearchPage(RegisteredRecipes.recipeAncientStonePedestal))
+                                new ResearchPage(RegisteredRecipes.recipeAncientStonePedestal),
+                                new ResearchPage("gadomancy.research_page.E_DECO_BLOCKS.1"),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks1),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks2),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks3),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks4),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks5),
+                                new ResearchPage(RegisteredRecipes.eldritchdecoblocks6))
                         .registerResearchItem();
 
         ItemAuraCore.AuraCoreType[] coreTypes = ItemAuraCore.AuraCoreType.values();

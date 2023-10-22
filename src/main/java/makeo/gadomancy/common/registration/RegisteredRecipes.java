@@ -87,6 +87,13 @@ public class RegisteredRecipes {
     public static CrucibleRecipe recipeAncientStonePedestal;
     public static IArcaneRecipe recipeAncientStone;
 
+    public static IArcaneRecipe eldritchdecoblocks1;
+    public static IArcaneRecipe eldritchdecoblocks2;
+    public static IArcaneRecipe eldritchdecoblocks3;
+    public static IArcaneRecipe eldritchdecoblocks4;
+    public static IArcaneRecipe eldritchdecoblocks5;
+    public static InfusionRecipe eldritchdecoblocks6;
+
     public static CrucibleRecipe[] recipesWashAuraCore;
     public static IRecipe[] recipesUndoAuraCore;
     public static InfusionRecipe recipeAuraCore;
@@ -226,6 +233,112 @@ public class RegisteredRecipes {
                         new ItemStack(ConfigItems.itemEldritchObject, 1, 0),
                         new ItemStack(ConfigBlocks.blockCrystal, 1, 5), new ItemStack(ConfigItems.itemResource, 1, 16),
                         new ItemStack(ConfigBlocks.blockCrystal, 1, 5) });
+
+        if (ModConfig.eldritchdecoblocks) {
+
+            // Glowing Crusted Stone
+            RegisteredRecipes.eldritchdecoblocks1 = ThaumcraftApi.addArcaneCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockEldritch, 3, 4),
+                    new AspectList().add(Aspect.AIR, 25).add(Aspect.EARTH, 25).add(Aspect.ENTROPY, 25)
+                            .add(Aspect.FIRE, 25),
+                    "GNG",
+                    "NSN",
+                    "GNG",
+                    'N',
+                    new ItemStack(ConfigItems.itemResource, 1, 1),
+                    'S',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 14),
+                    'G',
+                    new ItemStack(Items.glowstone_dust));
+
+            // Crusted Stone
+            RegisteredRecipes.eldritchdecoblocks2 = ThaumcraftApi.addArcaneCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 4, 14),
+                    new AspectList().add(Aspect.ENTROPY, 50).add(Aspect.EARTH, 50).add(Aspect.FIRE, 50),
+                    "GCG",
+                    "CSC",
+                    "GCG",
+                    'C',
+                    new ItemStack(Blocks.mossy_cobblestone),
+                    'S',
+                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
+                    'G',
+                    new ItemStack(Items.gunpowder));
+
+            // Glyphed Stone
+            RegisteredRecipes.eldritchdecoblocks3 = ThaumcraftApi.addArcaneCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockEldritch, 2, 5),
+                    new AspectList().add(Aspect.ENTROPY, 32).add(Aspect.EARTH, 32).add(Aspect.WATER, 32)
+                            .add(Aspect.AIR, 32).add(Aspect.ORDER, 32),
+                    "KKK",
+                    "KGK",
+                    "KKK",
+                    'K',
+                    new ItemStack(ConfigItems.itemResource, 1, 9),
+                    'G',
+                    new ItemStack(ConfigBlocks.blockEldritch, 1, 4));
+
+            // Ancient Rock
+            RegisteredRecipes.eldritchdecoblocks4 = ThaumcraftApi.addArcaneCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 6, 12),
+                    new AspectList().add(Aspect.ENTROPY, 12).add(Aspect.EARTH, 12).add(Aspect.FIRE, 12),
+                    "ABA",
+                    "CRC",
+                    "ABA",
+                    'A',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6),
+                    'B',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 7),
+                    'C',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 14),
+                    'R',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11));
+            // Strange Crystals
+            RegisteredRecipes.eldritchdecoblocks5 = ThaumcraftApi.addArcaneCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockCrystal, 6, 7),
+                    new AspectList().add(Aspect.ENTROPY, 70).add(Aspect.EARTH, 50).add(Aspect.WATER, 50)
+                            .add(Aspect.FIRE, 50).add(Aspect.AIR, 50).add(Aspect.ORDER, 70),
+                    " C ",
+                    "CGC",
+                    "SPS",
+                    'C',
+                    new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
+                    'G',
+                    new ItemStack(ConfigBlocks.blockEldritch, 1, 4),
+                    'S',
+                    new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 14),
+                    'P',
+                    new ItemStack(ConfigItems.itemResource, 1, 15));
+
+            // Runed Stone
+            RegisteredRecipes.eldritchdecoblocks6 = ThaumcraftApi.addInfusionCraftingRecipe(
+                    Gadomancy.MODID.toUpperCase() + ".ANCIENT_STONES",
+                    new ItemStack(ConfigBlocks.blockEldritch, 1, 10),
+                    7,
+                    new AspectList().add(Aspect.ELDRITCH, 40).add(Aspect.VOID, 38).add(Aspect.MECHANISM, 30)
+                            .add(Aspect.DARKNESS, 50).add(Aspect.EARTH, 20).add(Aspect.DEATH, 26)
+                            .add(Aspect.EXCHANGE, 30),
+                    new ItemStack(RegisteredItems.itemAuraCore, 1, 6),
+                    new ItemStack[] { new ItemStack(ConfigBlocks.blockCrystal, 1, 7),
+                            new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
+                            new ItemStack(ConfigBlocks.blockEldritch, 1, 5),
+                            new ItemStack(ConfigItems.itemCompassStone),
+                            new ItemStack(ConfigBlocks.blockEldritch, 1, 5),
+                            new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
+                            new ItemStack(ConfigBlocks.blockCrystal, 1, 7),
+                            new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11),
+                            new ItemStack(ConfigBlocks.blockEldritch, 1, 5),
+                            new ItemStack(ConfigItems.itemCompassStone),
+                            new ItemStack(ConfigBlocks.blockEldritch, 1, 5),
+                            new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 11)
+
+                    });
+        }
 
         RegisteredRecipes.multiblockNodeManipulator = Arrays.asList(
                 RegisteredRecipes.costsNodeManipulatorMultiblock,

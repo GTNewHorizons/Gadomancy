@@ -124,6 +124,7 @@ gadomancy.research_page.BLOCK_PROTECTOR.4=The size of its area can be controlled
 tc.research_name.GADOMANCY.ANCIENT_STONES=Ancient Stones
 tc.research_text.GADOMANCY.ANCIENT_STONES=Decorations of the Eldritch
 gadomancy.research_page.ANCIENT_STONES.1=There is more to the mazes of the eldritch than meets the eye. The eldritch might not be the best room designers, but the stones they used to build show enormous magic potential.<BR>Exposing your everyday arcane stones to eldritch energies alter the stones magical properties to react more like their eldritch relatives.
+gadomancy.research_page.E_DECO_BLOCKS.1=Some of these stones have unique properties, perhaps we can put them to use, and if not, we can always take advantage of them decoratively...
 
 tc.research_name.GADOMANCY.GROWING=Growing Nodes
 tc.research_text.GADOMANCY.GROWING=Feed me Semour

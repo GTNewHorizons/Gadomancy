@@ -48,6 +48,9 @@ public class ModConfig {
     // Skyblock stuff
     public static boolean ancientStoneRecipes;
 
+    // Decorative eldritch blocks
+    public static boolean eldritchdecoblocks;
+
     private ModConfig() {}
 
     public static void init(File file) {
@@ -115,6 +118,13 @@ public class ModConfig {
                 "skyblock",
                 false,
                 "TRUE = Adds recipes for Ancient Stone and Ancient Stone Pedestal (This may be usefull for severs and skyblock packs to craft the Node Manipulator and get more primodial pearls). You have to change this client- and server-side!");
+
+        // Eldritch decorative blocks
+        ModConfig.eldritchdecoblocks = ModConfig.config.getBoolean(
+                "eldritchdecoblocks",
+                "decorative",
+                true,
+                "false = Removes recipes for this blocks You have to change this client- and server-side!");
 
         // General stuff
         ModConfig.renderParticleDistance = ModConfig.config.getInt(
