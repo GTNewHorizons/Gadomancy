@@ -4,7 +4,16 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.network.packets.*;
+import makeo.gadomancy.common.network.packets.PacketAnimationAbsorb;
+import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
+import makeo.gadomancy.common.network.packets.PacketStartAnimation;
+import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
+import makeo.gadomancy.common.network.packets.PacketSyncData;
+import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
+import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
+import makeo.gadomancy.common.network.packets.PacketTCWispyLine;
+import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
+import makeo.gadomancy.common.network.packets.PacketUpdateOnlineState;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

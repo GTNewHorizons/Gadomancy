@@ -1,6 +1,6 @@
 package makeo.gadomancy.client.renderers.tile;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 
 import net.minecraft.client.model.ModelBase;

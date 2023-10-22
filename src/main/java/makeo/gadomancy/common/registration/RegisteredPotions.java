@@ -7,7 +7,11 @@ import net.minecraft.potion.Potion;
 import cpw.mods.fml.common.FMLLog;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.potions.*;
+import makeo.gadomancy.common.potions.PotionAchromatic;
+import makeo.gadomancy.common.potions.PotionBuffGolem;
+import makeo.gadomancy.common.potions.PotionEldritch;
+import makeo.gadomancy.common.potions.PotionMiningLuck;
+import makeo.gadomancy.common.potions.PotionVisAffinity;
 import makeo.gadomancy.common.utils.Injector;
 
 /**

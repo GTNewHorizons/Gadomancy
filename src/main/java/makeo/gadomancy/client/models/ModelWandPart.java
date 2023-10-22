@@ -1,6 +1,6 @@
 package makeo.gadomancy.client.models;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;

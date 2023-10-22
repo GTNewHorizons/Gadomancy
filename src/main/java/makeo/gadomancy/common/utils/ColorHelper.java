@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.utils;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC

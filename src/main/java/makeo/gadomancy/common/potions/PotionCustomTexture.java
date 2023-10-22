@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.potions;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;

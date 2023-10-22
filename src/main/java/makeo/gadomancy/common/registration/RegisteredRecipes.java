@@ -13,7 +13,11 @@ import net.minecraft.item.crafting.IRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.crafting.*;
+import makeo.gadomancy.common.crafting.EtherealFamiliarUpgradeRecipe;
+import makeo.gadomancy.common.crafting.FamiliarUndoRecipe;
+import makeo.gadomancy.common.crafting.InfusionDisguiseArmor;
+import makeo.gadomancy.common.crafting.InfusionUpgradeRecipe;
+import makeo.gadomancy.common.crafting.RecipeStickyJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.items.ItemAuraCore;
@@ -265,7 +269,7 @@ public class RegisteredRecipes {
                     'S',
                     new ItemStack(ConfigBlocks.blockCrystal, 1, 6),
                     'G',
-                    new ItemStack(Items.gunpowder));
+                    new ItemStack(ConfigItems.itemResource, 1, 14));
 
             // Glyphed Stone
             RegisteredRecipes.eldritchdecoblocks3 = ThaumcraftApi.addArcaneCraftingRecipe(

@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.entities;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

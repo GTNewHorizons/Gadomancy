@@ -2,7 +2,12 @@ package makeo.gadomancy.common.registration;
 
 import cpw.mods.fml.common.Loader;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.integration.*;
+import makeo.gadomancy.common.integration.IntegrationAutomagy;
+import makeo.gadomancy.common.integration.IntegrationMod;
+import makeo.gadomancy.common.integration.IntegrationMorph;
+import makeo.gadomancy.common.integration.IntegrationNEI;
+import makeo.gadomancy.common.integration.IntegrationThaumicExploration;
+import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
 import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
 import makeo.gadomancy.common.utils.Injector;
 

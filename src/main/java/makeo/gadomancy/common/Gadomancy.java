@@ -7,7 +7,11 @@ import org.apache.logging.log4j.MarkerManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.config.ModConfig;

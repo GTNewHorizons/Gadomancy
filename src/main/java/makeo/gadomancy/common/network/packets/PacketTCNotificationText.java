@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.network.packets;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;

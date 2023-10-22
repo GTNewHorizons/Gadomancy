@@ -1,6 +1,6 @@
 package makeo.gadomancy.common.potions;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

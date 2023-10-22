@@ -1,6 +1,6 @@
 package makeo.gadomancy.client.effect.fx;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Random;
