@@ -124,12 +124,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Optional.Method(modid = "Automagy")
     public AspectList getAspectsBase() {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
-            TileEssentiaCompressor master = this.tryFindMasterTile();
-            if (master == null) return null;
-            return master.al;
-        }
-        return this.al;
+        return this.getAspects();
     }
 
     private void consumeElements() {
@@ -343,7 +338,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     private List<WorldCoordinates> searchAndGetSources() {
         WorldCoordinates thisCoordinates = new WorldCoordinates(this);
-        Map<WorldCoordinates, List<WorldCoordinates>> teSources = new HashMap<WorldCoordinates, List<WorldCoordinates>>();
+        Map<WorldCoordinates, List<WorldCoordinates>> teSources = new HashMap<>();
         this.getSourcesField(teSources);
         if (!teSources.containsKey(thisCoordinates)) {
             this.searchSources();
@@ -351,7 +346,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
             if (teSources.containsKey(thisCoordinates)) {
                 return this.searchAndGetSources();
             }
-            return new ArrayList<WorldCoordinates>();
+            return new ArrayList<>();
         }
         List<WorldCoordinates> result = teSources.get(thisCoordinates);
         ((Map<WorldCoordinates, List<WorldCoordinates>>) TileEssentiaCompressor.injEssentiaHandler.getField("sources"))
@@ -365,7 +360,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
                 this.yCoord,
                 this.zCoord,
                 this.worldObj.provider.dimensionId);
-        List<WorldCoordinates> coords = new LinkedList<WorldCoordinates>();
+        List<WorldCoordinates> coords = new LinkedList<>();
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
             this.unsafe_search(thisCoord, direction, coords);
         }
@@ -471,7 +466,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
                         this.yCoord + 0.5,
                         this.zCoord + 0.5).expand(4, 4, 4));
         for (Object o : entities) {
-            if (o == null || !(o instanceof Entity) || ((Entity) o).isDead) continue;
+            if (!(o instanceof Entity) || ((Entity) o).isDead) continue;
             this.applyMovementVectors((Entity) o);
         }
     }
@@ -638,7 +633,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return this.isMultiblockFormed() && this.multiblockYIndex == 1 && this.canAccept(aspect);
+        return this.isMultiblockFormed() && this.isAccessPoint() && this.canAccept(aspect);
     }
 
     @Override
@@ -659,7 +654,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean takeFromContainer(Aspect aspect, int i) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return false;
             boolean couldTake = master.al.reduce(aspect, i);
@@ -679,7 +674,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean doesContainerContainAmount(Aspect aspect, int i) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return false;
             return master.al.getAmount(aspect) >= i;
@@ -695,7 +690,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public int containerContains(Aspect aspect) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return 0;
             return master.al.getAmount(aspect);
@@ -710,7 +705,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean canInputFrom(ForgeDirection direction) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) { // The middle one
+        if (this.isMultiblockFormed() && this.isAccessPoint()) { // The middle one
             return direction == ForgeDirection.SOUTH || direction == ForgeDirection.NORTH
                     || direction == ForgeDirection.EAST
                     || direction == ForgeDirection.WEST;
@@ -720,7 +715,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean canOutputTo(ForgeDirection direction) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) { // The middle one
+        if (this.isMultiblockFormed() && this.isAccessPoint()) { // The middle one
             return direction == ForgeDirection.SOUTH || direction == ForgeDirection.NORTH
                     || direction == ForgeDirection.EAST
                     || direction == ForgeDirection.WEST;
@@ -733,11 +728,6 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public Aspect getSuctionType(ForgeDirection direction) {
-        /*
-         * if(isMultiblockFormed() && multiblockYIndex == 1) { //The middle one List<Aspect> copyList = new
-         * ArrayList<Aspect>(Aspect.aspects.values()); return copyList.get((int) ((System.currentTimeMillis() / 20) %
-         * copyList.size())); }
-         */
         return null;
     }
 
@@ -751,7 +741,7 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public int takeEssentia(Aspect aspect, int i, ForgeDirection direction) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             if (!this.canOutputTo(direction)) return 0;
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return 0;
@@ -766,33 +756,25 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
-        if (this.canInputFrom(direction) && this.canAccept(aspect)) {
-            TileEssentiaCompressor master = this.tryFindMasterTile();
-            if (master == null) return 0;
-            int diff = master.currentStorageSize() - master.al.getAmount(aspect);
-            if (diff <= 0) return 0;
-            i = master.currentStorageSize() >= master.al.getAmount(aspect) + i ? i : diff;
-            master.al.add(aspect, i);
-            this.worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
-            this.markDirty();
-            return i;
+        if (this.canInputFrom(direction)) {
+            return this.addToContainer(aspect, i);
         }
         return 0;
     }
 
     @Override
     public Aspect getEssentiaType(ForgeDirection direction) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return null;
-            return new ArrayList<Aspect>(master.al.aspects.keySet()).get(this.worldObj.rand.nextInt(master.al.size()));
+            return new ArrayList<>(master.al.aspects.keySet()).get(this.worldObj.rand.nextInt(master.al.size()));
         }
         return null;
     }
 
     @Override
     public int getEssentiaAmount(ForgeDirection direction) {
-        if (this.isMultiblockFormed() && this.multiblockYIndex == 1) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return 0;
             return master.al.visSize();
