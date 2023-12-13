@@ -105,7 +105,6 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeAuraPylonPeak;
     public static IArcaneRecipe recipeArcanePackager;
     public static IArcaneRecipe recipeKnowledgeBook;
-    public static IArcaneRecipe recipeEssentiaCompressor;
 
     public static InfusionEnchantmentRecipe recipeRevealer;
 
@@ -808,25 +807,6 @@ public class RegisteredRecipes {
 
         ItemStack waterCore = new ItemStack(RegisteredItems.itemAuraCore);
         RegisteredItems.itemAuraCore.setCoreType(waterCore, ItemAuraCore.AuraCoreType.WATER);
-
-        RegisteredRecipes.recipeEssentiaCompressor = ThaumcraftApi.addArcaneCraftingRecipe(
-                Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR",
-                new ItemStack(RegisteredBlocks.blockEssentiaCompressor, 3),
-                new AspectList().add(Aspect.WATER, 190).add(Aspect.ORDER, 150).add(Aspect.ENTROPY, 120)
-                        .add(Aspect.FIRE, 100).add(Aspect.AIR, 160).add(Aspect.EARTH, 60),
-                "LRL",
-                "TET",
-                "LCL",
-                'L',
-                new ItemStack(ConfigBlocks.blockMagicalLog),
-                'R',
-                new ItemStack(ConfigBlocks.blockCrystal, 1, 4),
-                'T',
-                new ItemStack(ConfigBlocks.blockTube, 1, 6),
-                'E',
-                new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()),
-                'C',
-                waterCore);
 
         RegisteredRecipes.multiblockEssentiaCompressor = Arrays.asList(
                 RegisteredRecipes.costsCompressorMultiblock,

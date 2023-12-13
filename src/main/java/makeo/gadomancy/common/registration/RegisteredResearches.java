@@ -612,7 +612,7 @@ public class RegisteredResearches {
                                         new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.2"),
                                         new ResearchPage(RegisteredRecipes.recipeElementVoid),
                                         new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.4"),
-                                        new ResearchPage(RegisteredRecipes.recipeEssentiaCompressor),
+                                        new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.5"),
                                         new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.6"),
                                         new ResearchPage(RegisteredRecipes.multiblockEssentiaCompressor),
                                         new ResearchPage("gadomancy.research_page.ESSENTIA_COMPRESSOR.8"),
