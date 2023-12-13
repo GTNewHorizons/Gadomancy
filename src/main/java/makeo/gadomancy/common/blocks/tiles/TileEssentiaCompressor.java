@@ -579,6 +579,10 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
         return this.isMasterTile;
     }
 
+    public boolean isAccessPoint() {
+        return this.multiblockYIndex == 1;
+    }
+
     public int getMultiblockYIndex() {
         return this.multiblockYIndex;
     }
@@ -620,17 +624,13 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public AspectList getAspects() {
-        if (!this.isMultiblockFormed()) {
-            return new AspectList();
-        } else {
-            if (this.isMasterTile()) {
-                return this.al;
-            } else {
-                TileEssentiaCompressor master = this.tryFindMasterTile();
-                if (master == null) return new AspectList();
-                return master.getAspects();
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
+            TileEssentiaCompressor master = this.tryFindMasterTile();
+            if (master != null) {
+                return master.al;
             }
         }
+        return new AspectList();
     }
 
     @Override
