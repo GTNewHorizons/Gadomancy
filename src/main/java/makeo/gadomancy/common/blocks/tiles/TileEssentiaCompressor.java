@@ -633,14 +633,20 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return this.isMultiblockFormed() && this.isAccessPoint() && this.canAccept(aspect);
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
+            TileEssentiaCompressor master = tryFindMasterTile();
+            if (master != null) {
+                return master.canAccept(aspect);
+            }
+        }
+        return false;
     }
 
     @Override
     public int addToContainer(Aspect aspect, int amount) {
-        if (this.doesContainerAccept(aspect) && this.canAccept(aspect)) {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
-            if (master == null) return 0;
+            if (master == null || !master.canAccept(aspect)) return amount;
             int available = master.currentStorageSize() - master.al.getAmount(aspect);
             if (available <= 0) return amount;
             int amountToAdd = Math.min(amount, available);
