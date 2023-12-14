@@ -637,19 +637,19 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
     }
 
     @Override
-    public int addToContainer(Aspect aspect, int i) {
+    public int addToContainer(Aspect aspect, int amount) {
         if (this.doesContainerAccept(aspect) && this.canAccept(aspect)) {
             TileEssentiaCompressor master = this.tryFindMasterTile();
             if (master == null) return 0;
-            int diff = master.currentStorageSize() - master.al.getAmount(aspect);
-            if (diff <= 0) return 0;
-            i = master.currentStorageSize() >= master.al.getAmount(aspect) + i ? i : diff;
-            master.al.add(aspect, i);
+            int available = master.currentStorageSize() - master.al.getAmount(aspect);
+            if (available <= 0) return amount;
+            int amountToAdd = Math.min(amount, available);
+            master.al.add(aspect, amountToAdd);
             this.worldObj.markBlockForUpdate(master.xCoord, master.yCoord, master.zCoord);
             this.markDirty();
-            return i;
+            return amount - amountToAdd;
         }
-        return 0;
+        return amount;
     }
 
     @Override
@@ -755,9 +755,9 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
     }
 
     @Override
-    public int addEssentia(Aspect aspect, int i, ForgeDirection direction) {
+    public int addEssentia(Aspect aspect, int amount, ForgeDirection direction) {
         if (this.canInputFrom(direction)) {
-            return this.addToContainer(aspect, i);
+            return amount - this.addToContainer(aspect, amount);
         }
         return 0;
     }
