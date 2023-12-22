@@ -35,6 +35,7 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.WorldCoordinates;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IAspectSource;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import thaumcraft.client.fx.ParticleEngine;
@@ -46,6 +47,7 @@ import thaumcraft.common.lib.events.EssentiaHandler;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSource;
 import thaumcraft.common.tiles.TilePedestal;
+import thaumicenergistics.api.storage.IAspectStorage;
 import tuhljin.automagy.api.essentia.IAspectContainerWithMax;
 import tuhljin.automagy.api.essentia.IEssentiaLocusReadable;
 
@@ -57,9 +59,10 @@ import tuhljin.automagy.api.essentia.IEssentiaLocusReadable;
  */
 @Optional.InterfaceList({
         @Optional.Interface(iface = "tuhljin.automagy.api.essentia.IEssentiaLocusReadable", modid = "Automagy"),
-        @Optional.Interface(iface = "tuhljin.automagy.api.essentia.IAspectContainerWithMax", modid = "Automagy") })
-public class TileEssentiaCompressor extends SynchronizedTileEntity
-        implements IEssentiaTransport, IEssentiaLocusReadable, IAspectContainerWithMax {
+        @Optional.Interface(iface = "tuhljin.automagy.api.essentia.IAspectContainerWithMax", modid = "Automagy"),
+        @Optional.Interface(iface = "thaumicenergistics.api.storage.IAspectStorage", modid = "thaumicenergistics") })
+public class TileEssentiaCompressor extends SynchronizedTileEntity implements IEssentiaTransport,
+        IEssentiaLocusReadable, IAspectContainer, IAspectContainerWithMax, IAspectStorage {
 
     public static final int MAX_SIZE = 8;
     public static final int MAX_ASPECT_STORAGE = 3000, STD_ASPECT_STORAGE = 200;
@@ -122,9 +125,28 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
         }
     }
 
+    @Override
     @Optional.Method(modid = "Automagy")
     public AspectList getAspectsBase() {
         return this.getAspects();
+    }
+
+    @Override
+    @Optional.Method(modid = "thaumicenergistics")
+    public int getContainerCapacity() {
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
+            TileEssentiaCompressor master = this.tryFindMasterTile();
+            if (master != null) {
+                return master.currentStorageSize();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    @Optional.Method(modid = "thaumicenergistics")
+    public boolean doesShareCapacity() {
+        return false;
     }
 
     private void consumeElements() {
@@ -249,12 +271,14 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity
         return false;
     }
 
+    // Only call from master tile.
     private int currentStorageSize() {
         return TileEssentiaCompressor.STD_ASPECT_STORAGE + this.incSize
                 * ((TileEssentiaCompressor.MAX_ASPECT_STORAGE - TileEssentiaCompressor.STD_ASPECT_STORAGE)
                         / TileEssentiaCompressor.MAX_SIZE);
     }
 
+    // Only call from master tile.
     private boolean canAccept(Aspect a) {
         int current = this.al.getAmount(a);
         int max = this.currentStorageSize();
