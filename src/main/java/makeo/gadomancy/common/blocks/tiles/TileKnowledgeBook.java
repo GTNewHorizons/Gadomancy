@@ -48,10 +48,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     private static final Random rand = new Random();
     private static final int LOWEST_AMOUNT = 10;
-    private static final int COGNITIO_TICKS = 150;
-    private static final int MAX_NEEDED_KNOWLEDGE = 200;
+    private static final int COGNITIO_TICKS = 20;
+    private static final int MAX_NEEDED_KNOWLEDGE = 60;
     private static final int SURROUNDINGS_SEARCH_XZ = 4;
-    private static final int SURROUNDINGS_SEARCH_Y = 3;
+    private static final int SURROUNDINGS_SEARCH_Y = 1;
     private static final double MULTIPLIER = 4;
 
     @Deprecated
@@ -125,7 +125,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.checkSurroundings();
 
-        int chance = Math.max(0, TileKnowledgeBook.MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge) + 100;
+        int chance = Math.max(0, TileKnowledgeBook.MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge);
         if (TileKnowledgeBook.rand.nextInt(chance) == 0) {
             this.doResearchProgress();
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -190,6 +190,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 }
             }
         }
+        // Maximum cap for bookshelf boost - 3 layers of bookshelves surrounding the book
+        if (this.surroundingKnowledge > 50) this.surroundingKnowledge = 50;
     }
 
     private void drainCognitio() {
