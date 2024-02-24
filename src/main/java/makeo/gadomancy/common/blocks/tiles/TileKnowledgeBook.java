@@ -28,6 +28,7 @@ import makeo.gadomancy.common.entities.EntityPermNoClipItem;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.utils.NBTHelper;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -47,12 +48,12 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         implements EntityPermNoClipItem.IItemMasterTile, IAspectContainer {
 
     private static final Random rand = new Random();
-    private static final int LOWEST_AMOUNT = 10;
-    private static final int COGNITIO_TICKS = 20;
+    private static final int LOWEST_AMOUNT = 1;
+    private static final int COGNITIO_TICKS = 200;
     private static final int MAX_NEEDED_KNOWLEDGE = 60;
     private static final int SURROUNDINGS_SEARCH_XZ = 4;
     private static final int SURROUNDINGS_SEARCH_Y = 1;
-    private static final double MULTIPLIER = 4;
+    private static final double MULTIPLIER = 1;
 
     @Deprecated
     public static Map<BlockSnapshot, Integer> knowledgeIncreaseMap = new HashMap<BlockSnapshot, Integer>();
@@ -315,6 +316,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 if (nd != null && !nd.isComplete()) {
                     ResearchItem ri = ResearchCategories.getResearch(nd.key);
                     if (ri != null) {
+                        int itemWarp = ThaumcraftApi.getWarp(ri.key);
                         this.beginResearch(ri.tags);
                         return true;
                     }
