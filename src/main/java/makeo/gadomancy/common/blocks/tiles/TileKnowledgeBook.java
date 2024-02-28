@@ -79,6 +79,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private AspectList workResearchAspects;
     private int surroundingKnowledge;
 
+    // Additions for the rework
+    private int researchWarp;
+    private int researchComplexity;
+
     @Override
     public void updateEntity() {
         this.bookAttributes.updateFloatingBook();
@@ -137,19 +141,24 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private void doResearchProgress() {
         List<Aspect> aspects = new ArrayList<Aspect>(this.workResearchAspects.aspects.keySet());
         if (aspects.isEmpty()) {
-            this.finishResearch();
+            this.finishSuccessfulResearch();
             return;
         }
         Aspect a = aspects.get(TileKnowledgeBook.rand.nextInt(aspects.size()));
         int value = this.workResearchAspects.aspects.get(a);
-        value--;
-        if (value <= 0) {
-            this.workResearchAspects.aspects.remove(a);
-        } else {
-            this.workResearchAspects.aspects.put(a, value);
+        if (drainResearchAspect(a)) {
+            value--;
+            if (value <= 0) {
+                this.workResearchAspects.aspects.remove(a);
+            } else {
+                this.workResearchAspects.aspects.put(a, value);
+            }
+            if (this.workResearchAspects.aspects.isEmpty()) {
+                this.finishSuccessfulResearch();
+            }
         }
-        if (this.workResearchAspects.aspects.isEmpty()) {
-            this.finishResearch();
+        else {
+            this.finishFailedResearch();
         }
     }
 
@@ -226,6 +235,27 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
     }
 
+    private boolean drainResearchAspect(Aspect aspect) {
+        if (searchForResearchAspect(aspect)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean searchForResearchAspect(Aspect aspect) {
+        int drainRange = 4;
+        ForgeDirection[] toTry = ForgeDirection.VALID_DIRECTIONS;
+        for (ForgeDirection dir : toTry) {
+            if (dir == null) continue; // LUL should not happen...
+            if (EssentiaHandler.drainEssentia(this, aspect, dir, drainRange)) {
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                this.markDirty();
+                return true;
+            }
+        }
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     private void doResearchEffects() {
         if ((this.ticksExisted & 15) == 0) {
@@ -263,11 +293,24 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
     }
 
-    private void finishResearch() {
+    private void finishSuccessfulResearch() {
         this.stopResearch();
         this.scheduleFinishItemChange();
         PacketStartAnimation packet = new PacketStartAnimation(
                 PacketStartAnimation.ID_SPARKLE_SPREAD,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord);
+        PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
+    }
+
+    private void finishFailedResearch() {
+        this.storedResearchNote.stackSize = 0;
+        this.stopResearch();
+        PacketStartAnimation packet = new PacketStartAnimation(
+                PacketStartAnimation.ID_SMOKE_SPREAD,
                 this.xCoord,
                 this.yCoord,
                 this.zCoord);
@@ -316,7 +359,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 if (nd != null && !nd.isComplete()) {
                     ResearchItem ri = ResearchCategories.getResearch(nd.key);
                     if (ri != null) {
-                        int itemWarp = ThaumcraftApi.getWarp(ri.key);
+                        researchWarp = ThaumcraftApi.getWarp(ri.key);
+                        researchComplexity = ri.getComplexity();
                         this.beginResearch(ri.tags);
                         return true;
                     }
