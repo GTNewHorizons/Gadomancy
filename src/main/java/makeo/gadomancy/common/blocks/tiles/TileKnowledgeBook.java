@@ -310,7 +310,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.storedResearchNote.stackSize = 0;
         this.stopResearch();
         PacketStartAnimation packet = new PacketStartAnimation(
-                PacketStartAnimation.ID_SMOKE_SPREAD,
+                PacketStartAnimation.ID_SPARKLE_SPREAD,
                 this.xCoord,
                 this.yCoord,
                 this.zCoord);
