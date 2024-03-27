@@ -186,9 +186,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     } else if (te != null && te instanceof IKnowledgeProvider) {
                         this.surroundingKnowledge += ((IKnowledgeProvider) te)
                                 .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
-                    } else if (at instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge += ((IKnowledgeProvider) at)
-                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
+                    } else if (at instanceof IKnowledgeProvider && xx != 0) {
+                        this.surroundingKnowledge = 0;
+                        return;
                     } else {
                         for (BlockSnapshot sn : TileKnowledgeBook.knowledgeIncreaseMap.keySet()) {
                             if (sn.block.equals(at) && sn.metadata == meta) {
@@ -374,8 +374,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
             int value = researchTags.aspects.get(a);
-            int newVal = (int) Math
-                    .max(TileKnowledgeBook.LOWEST_AMOUNT, ((double) value) * TileKnowledgeBook.MULTIPLIER);
+            int newVal = (int) (value * TileKnowledgeBook.MULTIPLIER * researchComplexity + (researchWarp ^ 2));
             workResearchList.add(a, newVal);
         }
         this.workResearchAspects = workResearchList;

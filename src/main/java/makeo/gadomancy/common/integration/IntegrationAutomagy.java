@@ -50,9 +50,11 @@ public class IntegrationAutomagy extends IntegrationMod {
 
         // Better bookshelves -> MOAR knowledge
         Block betterBookshelf = Block.getBlockFromName("Automagy:blockBookshelfEnchanted");
+        Block testBookshelf = Block.getBlockFromName("Thaumcraft:blockCosmeticSolid");
         if (betterBookshelf != null) {
             TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 0), 2);
             TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 1), 4);
+            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(testBookshelf, 4), 20);
         }
     }
 
