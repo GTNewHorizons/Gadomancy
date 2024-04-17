@@ -55,8 +55,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final int SURROUNDINGS_SEARCH_Y = 1;
     private static final double MULTIPLIER = 1;
 
-    @Deprecated
-    public static Map<BlockSnapshot, Integer> knowledgeIncreaseMap = new HashMap<BlockSnapshot, Integer>();
+    public static Map<BlockSnapshot, int[]> knowledgeIncreaseMap = new HashMap<BlockSnapshot, int[]>();
 
     private FloatingBookAttributes bookAttributes = new FloatingBookAttributes();
 
@@ -78,7 +77,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private boolean researching;
     private AspectList workResearchAspects;
     private int surroundingKnowledge;
-
+    private int[] knowledgeTierCounts;
     // Additions for the rework
     private int researchWarp;
     private int researchComplexity;
@@ -169,6 +168,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
+        this.knowledgeTierCounts = new int[5];
         for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
             for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz
                     <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
@@ -182,7 +182,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     int meta = this.worldObj.getBlockMetadata(absX, absY, absZ);
                     TileEntity te = this.worldObj.getTileEntity(absX, absY, absZ);
                     if (at.equals(Blocks.bookshelf)) {
-                        this.surroundingKnowledge += 1;
+                        if (this.knowledgeTierCounts[0] < 20) {
+                            this.surroundingKnowledge += 1;
+                            this.knowledgeTierCounts[0] += 1;
+                        }
                     } else if (te != null && te instanceof IKnowledgeProvider) {
                         this.surroundingKnowledge += ((IKnowledgeProvider) te)
                                 .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
@@ -192,7 +195,14 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     } else {
                         for (BlockSnapshot sn : TileKnowledgeBook.knowledgeIncreaseMap.keySet()) {
                             if (sn.block.equals(at) && sn.metadata == meta) {
-                                this.surroundingKnowledge += TileKnowledgeBook.knowledgeIncreaseMap.get(sn);
+                                int[] bookshelfProperties = TileKnowledgeBook.knowledgeIncreaseMap.get(sn);
+                                int bookshelfTier = bookshelfProperties[0];
+                                if (bookshelfTier >= 1 && bookshelfTier <= 4) {
+                                    if (knowledgeTierCounts[bookshelfTier] < 10) {
+                                        knowledgeTierCounts[bookshelfTier] += 1;
+                                        this.surroundingKnowledge += bookshelfProperties[1];
+                                    }
+                                }
                                 continue lblYLoop;
                             }
                         }

@@ -52,9 +52,9 @@ public class IntegrationAutomagy extends IntegrationMod {
         Block betterBookshelf = Block.getBlockFromName("Automagy:blockBookshelfEnchanted");
         Block testBookshelf = Block.getBlockFromName("Thaumcraft:blockCosmeticSolid");
         if (betterBookshelf != null) {
-            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 0), 2);
-            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 1), 4);
-            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(testBookshelf, 4), 20);
+            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 0), new int[]{1, 2});
+            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 1), new int[]{1, 4});
+            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(testBookshelf, 4), new int[]{2, 20});
         }
     }
 
