@@ -50,7 +50,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final Random rand = new Random();
     private static final int LOWEST_AMOUNT = 1;
     private static final int COGNITIO_TICKS = 200;
-    private static final int MAX_NEEDED_KNOWLEDGE = 60;
+    private static final int MAX_NEEDED_KNOWLEDGE = 210;
     private static final int SURROUNDINGS_SEARCH_XZ = 4;
     private static final int SURROUNDINGS_SEARCH_Y = 1;
     private static final double MULTIPLIER = 1;
@@ -69,6 +69,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private int ticksCognitio;
     private int ticksEnvironmentCheck;
     private int ticksResearchSearch;
+    private int ticksResearchFailure;
 
     // Sound effect stuff. I didn't like it when it's like changing pages 4 times in a row...
     private boolean turnedPagesLastTick;
@@ -77,10 +78,13 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private boolean researching;
     private AspectList workResearchAspects;
     private int surroundingKnowledge;
+    private int surroundingWisdom;
     private int[] knowledgeTierCounts;
     // Additions for the rework
     private int researchWarp;
     private int researchComplexity;
+    private int totalAspectCount;
+    private int highestShelfTier;
 
     @Override
     public void updateEntity() {
@@ -129,11 +133,26 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.checkSurroundings();
 
-        int chance = Math.max(0, TileKnowledgeBook.MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge);
-        if (TileKnowledgeBook.rand.nextInt(chance) == 0) {
-            this.doResearchProgress();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
+        // Researches are too complex if the sum of all aspects is higher than knowledge + wisdom on the bookshelves
+        // Researches that are too complex will fail after a few seconds and no aspects will be consumed
+        if (totalAspectCount > surroundingKnowledge + surroundingWisdom) {
+            ticksResearchFailure++;
+            if (ticksResearchFailure >= 100) {
+                ticksResearchFailure = 0;
+                finishFailedResearch();
+            }
+        }
+        else {
+            // Research will speed up as aspect count goes down, up to a limit
+            // Speed limit is calculated from the highest bookshelf tier available, and goes faster with every tier
+            int researchChance = this.totalAspectCount - this.surroundingKnowledge;
+            if (researchChance <= 1) researchChance = (int) Math.pow(4 - highestShelfTier, 2) + 1;
+
+            if (TileKnowledgeBook.rand.nextInt(researchChance) == 0) {
+                this.doResearchProgress();
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                this.markDirty();
+            }
         }
     }
 
@@ -147,6 +166,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         int value = this.workResearchAspects.aspects.get(a);
         if (drainResearchAspect(a)) {
             value--;
+            totalAspectCount--;
             if (value <= 0) {
                 this.workResearchAspects.aspects.remove(a);
             } else {
@@ -168,7 +188,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
+        this.surroundingWisdom = 0;
         this.knowledgeTierCounts = new int[5];
+        this.highestShelfTier = 0;
         for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
             for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz
                     <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
@@ -183,8 +205,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     TileEntity te = this.worldObj.getTileEntity(absX, absY, absZ);
                     if (at.equals(Blocks.bookshelf)) {
                         if (this.knowledgeTierCounts[0] < 20) {
-                            this.surroundingKnowledge += 1;
                             this.knowledgeTierCounts[0] += 1;
+                            this.surroundingKnowledge += 1;
+                            this.surroundingWisdom += 1;
                         }
                     } else if (te != null && te instanceof IKnowledgeProvider) {
                         this.surroundingKnowledge += ((IKnowledgeProvider) te)
@@ -201,6 +224,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                                     if (knowledgeTierCounts[bookshelfTier] < 10) {
                                         knowledgeTierCounts[bookshelfTier] += 1;
                                         this.surroundingKnowledge += bookshelfProperties[1];
+                                        this.surroundingWisdom += bookshelfProperties[2];
                                     }
                                 }
                                 continue lblYLoop;
@@ -210,8 +234,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 }
             }
         }
-        // Maximum cap for bookshelf boost - 3 layers of bookshelves surrounding the book
-        if (this.surroundingKnowledge > 50) this.surroundingKnowledge = 50;
+        highestShelfTier = getHighestShelfTier(knowledgeTierCounts);
+        // Maximum cap for bookshelf boost
+        if (this.surroundingKnowledge > 200) this.surroundingKnowledge = 200;
     }
 
     private void drainCognitio() {
@@ -264,6 +289,23 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             }
         }
         return false;
+    }
+
+    private int getResearchDifficulty(int researchDemand) {
+        if (knowledgeTierCounts == null) {
+            return researchDemand;
+        }
+        return Math.max(1, researchDemand - getHighestShelfTier(knowledgeTierCounts));
+
+    }
+
+    private int getHighestShelfTier(int[] shelfTiers) {
+        for (int i = knowledgeTierCounts.length - 1; i >= 0; i--) {
+            if (knowledgeTierCounts[i] > 0) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -370,7 +412,17 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                     ResearchItem ri = ResearchCategories.getResearch(nd.key);
                     if (ri != null) {
                         researchWarp = ThaumcraftApi.getWarp(ri.key);
+
+                        // researchComplexity capped at 3 for auto-research purposes
+                        // Higher complexity researches such as Infusion Claw (complexity 5) seem to be lowered
+                        // to complexity 3 before this step, so this looked like a reasonable maximum
                         researchComplexity = ri.getComplexity();
+                        if (researchComplexity > 3) researchComplexity = 3;
+
+                        if (knowledgeTierCounts == null) {
+                            checkSurroundings();
+                        }
+
                         this.beginResearch(ri.tags);
                         return true;
                     }
@@ -381,10 +433,12 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void beginResearch(AspectList researchTags) {
+        totalAspectCount = 0;
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
             int value = researchTags.aspects.get(a);
-            int newVal = (int) (value * TileKnowledgeBook.MULTIPLIER * researchComplexity + (researchWarp ^ 2));
+            int newVal = (int) (value * getResearchDifficulty(researchComplexity) + (researchWarp * researchWarp));
+            totalAspectCount += newVal;
             workResearchList.add(a, newVal);
         }
         this.workResearchAspects = workResearchList;
@@ -548,6 +602,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.workResearchAspects = NBTHelper.getAspectList(compound, "workAspects");
         this.researching = compound.getBoolean("researching");
         this.storedResearchNote = NBTHelper.getStack(compound, "crystalStack");
+        this.knowledgeTierCounts = compound.getIntArray("knowledgeTierCounts");
     }
 
     @Override
@@ -558,6 +613,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         compound.setInteger("cognitio", this.ticksCognitio);
         compound.setBoolean("researching", this.researching);
         if (this.storedResearchNote != null) NBTHelper.setStack(compound, "crystalStack", this.storedResearchNote);
+        if (this.knowledgeTierCounts != null) compound.setIntArray("knowledgeTierCounts", knowledgeTierCounts);
     }
 
     @Override
