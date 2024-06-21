@@ -85,32 +85,20 @@ public class ItemBlockRemoteJar extends ItemBlock {
             float hitX, float hitY, float hitZ) {
         TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
         if (stack.stackSize == 1 && tile != null) {
-            if (!world.isRemote) {
+            if (!world.isRemote && !player.isSneaking()) {
                 NBTTagCompound compound = NBTHelper.getData(stack);
-                if (!player.isSneaking()) {
-                    UUID networkId = null;
-                    if (tile.networkId == null) {
-                        player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
-                        networkId = UUID.randomUUID();
-                        tile.networkId = networkId;
-                        tile.markForUpdate();
-                    } else {
-                        UUID current = NBTHelper.getUUID(compound, "networkId");
-                        if (current == null || !current.equals(tile.networkId)) {
-                            player.addChatComponentMessage(
-                                    new ChatComponentTranslation("gadomancy.info.RemoteJar.connected"));
-                            networkId = tile.networkId;
-                        }
-                    }
+                UUID networkId = UUID.randomUUID();
 
-                    if (networkId != null) {
-                        NBTHelper.setUUID(compound, "networkId", networkId);
-                    }
-                }
+                player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
+                NBTHelper.setUUID(compound, "networkId", networkId);
+
+                tile.disconnectJar(tile);
+                tile.networkId = networkId;
+                tile.markForUpdate();
+
                 return true;
-            } else {
-                return player.isSneaking();
             }
+            return player.isSneaking();
         }
         return false;
     }
