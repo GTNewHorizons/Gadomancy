@@ -128,7 +128,14 @@ public class TileEssentiaCompressor extends SynchronizedTileEntity implements IE
     @Override
     @Optional.Method(modid = "Automagy")
     public AspectList getAspectsBase() {
-        return this.getAspects();
+        if (this.isMultiblockFormed() && this.isAccessPoint()) {
+            TileEssentiaCompressor master = this.tryFindMasterTile();
+            if (master != null) {
+                return master.getAspects();
+            }
+        }
+
+        return null;
     }
 
     @Override
