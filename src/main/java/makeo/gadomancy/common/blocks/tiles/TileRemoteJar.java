@@ -93,18 +93,17 @@ public class TileRemoteJar extends TileJarFillable {
         private void update() {
             long time = MinecraftServer.getServer().getEntityWorld().getTotalWorldTime();
             if (time > this.lastTime) {
+                int networkSize = this.jars.size();
 
-                // Not enough jars...
-                if (this.jars.size() < 2) return;
-
-                // Just enough jars...
-                if (this.jars.size() == 2) {
-                    if (hasProcessedJars()) this.lastTime = time + 3;
-                    return;
+                // Too many jars...
+                if (networkSize > 2) {
+                    jars.subList(2, jars.size()).clear();
                 }
 
-                // Too many jars. Refreshing network...
-                this.jars.clear();
+                // Just enough jars...
+                if (networkSize == 2 && hasProcessedJars()) {
+                    this.lastTime = time + 3;
+                }
             }
         }
 
@@ -150,6 +149,24 @@ public class TileRemoteJar extends TileJarFillable {
             TileRemoteJar.networks.put(id, network);
         }
         return network;
+    }
+
+    public void disconnectJar(TileRemoteJar jar) {
+        UUID id = jar.networkId;
+
+        if (id != null) {
+            JarNetwork network = TileRemoteJar.networks.get(id);
+
+            if (network != null) {
+                if (network.jars.size() < 2) {
+                    // Network consists of only this Jar. Discarding Network instead
+                    networks.remove(id);
+                }
+
+                // Discarding Jar from Network
+                network.jars.remove(jar);
+            }
+        }
     }
 
     public void markForUpdate() {
