@@ -1,8 +1,6 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,24 +26,45 @@ public class TileRemoteJar extends TileJarFillable {
 
     private boolean registered_to_network;
 
+    private boolean shouldUpdate() {
+        return this.count % 3 == 0 && !this.getWorldObj().isRemote
+                && this.networkId != null
+                && (!this.registered_to_network || this.amount < this.maxAmount);
+    }
+
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (this.count % 3 == 0 && !this.getWorldObj().isRemote
-                && this.networkId != null
-                && (!this.registered_to_network || this.amount < this.maxAmount)) {
+
+        if (shouldUpdate()) {
             this.count = 0;
 
             JarNetwork network = TileRemoteJar.getNetwork(this.networkId);
 
-            this.registered_to_network = true;
+            if (handleNetworkConnections(network)) {
+                network.update();
+                this.registered_to_network = true;
+            }
+        }
+
+        this.count++;
+    }
+
+    private boolean handleNetworkConnections(JarNetwork network) {
+        int networkCapacity = network.jars.size();
+
+        // Network requiring jars for operation, registering jar...
+        if (networkCapacity <= 2) {
             if (!network.jars.contains(this)) {
                 network.jars.add((TileJarFillable) this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord));
             }
 
-            network.update();
+            return true;
         }
-        this.count++;
+
+        this.networkId = null;
+        this.registered_to_network = false;
+        return false;
     }
 
     @Override
@@ -64,43 +83,55 @@ public class TileRemoteJar extends TileJarFillable {
         }
     }
 
-    private static Map<UUID, JarNetwork> networks = new HashMap<UUID, JarNetwork>();
+    private static final Map<UUID, JarNetwork> networks = new HashMap<UUID, JarNetwork>();
 
     private static class JarNetwork {
 
         private long lastTime;
-        private List<TileJarFillable> jars = new ArrayList<TileJarFillable>();
+        private final List<TileJarFillable> jars = new ArrayList<TileJarFillable>(2);
 
         private void update() {
             long time = MinecraftServer.getServer().getEntityWorld().getTotalWorldTime();
             if (time > this.lastTime) {
-                if (this.jars.size() > 1) {
-                    Collections.sort(this.jars, new Comparator<TileJarFillable>() {
+                int networkSize = this.jars.size();
 
-                        @Override
-                        public int compare(TileJarFillable o1, TileJarFillable o2) {
-                            return o2.amount - o1.amount;
-                        }
-                    });
-
-                    TileJarFillable jar1 = this.jars.get(0);
-                    if (!JarNetwork.isValid(jar1)) {
-                        this.jars.remove(0);
-                        return;
-                    }
-
-                    TileJarFillable jar2 = this.jars.get(this.jars.size() - 1);
-                    if (!JarNetwork.isValid(jar2)) {
-                        this.jars.remove(this.jars.size() - 1);
-                        return;
-                    }
-
-                    if ((jar2.amount + 1) < jar1.amount && jar2.addToContainer(jar1.aspect, 1) == 0) {
-                        jar1.takeFromContainer(jar1.aspect, 1);
-                    }
+                // Too many jars...
+                if (networkSize > 2) {
+                    jars.subList(2, jars.size()).clear();
                 }
-                this.lastTime = time + 3;
+
+                // Just enough jars...
+                if (networkSize == 2 && hasProcessedJars()) {
+                    this.lastTime = time + 3;
+                }
             }
+        }
+
+        private boolean hasProcessedJars() {
+
+            TileJarFillable jar1 = this.jars.get(0);
+            if (!JarNetwork.isValid(jars.get(0))) {
+                this.jars.remove(0);
+                return false;
+            }
+
+            TileJarFillable jar2 = this.jars.get(1);
+            if (!JarNetwork.isValid(jars.get(1))) {
+                this.jars.remove(1);
+                return false;
+            }
+
+            // Transfer Essence if necessary
+            if (Math.abs(jar1.amount - jar2.amount) > 1) {
+
+                TileJarFillable sourceJar = (jar1.amount > jar2.amount) ? jar1 : jar2;
+                TileJarFillable destinationJar = (sourceJar == jar1) ? jar2 : jar1;
+
+                if (destinationJar.addToContainer(sourceJar.aspect, 1) == 0) {
+                    sourceJar.takeFromContainer(sourceJar.aspect, 1);
+                }
+            }
+            return true;
         }
 
         private static boolean isValid(TileJarFillable jar) {
@@ -118,6 +149,24 @@ public class TileRemoteJar extends TileJarFillable {
             TileRemoteJar.networks.put(id, network);
         }
         return network;
+    }
+
+    public void disconnectJar(TileRemoteJar jar) {
+        UUID id = jar.networkId;
+
+        if (id != null) {
+            JarNetwork network = TileRemoteJar.networks.get(id);
+
+            if (network != null) {
+                if (network.jars.size() < 2) {
+                    // Network consists of only this Jar. Discarding Network instead
+                    networks.remove(id);
+                }
+
+                // Discarding Jar from Network
+                network.jars.remove(jar);
+            }
+        }
     }
 
     public void markForUpdate() {
