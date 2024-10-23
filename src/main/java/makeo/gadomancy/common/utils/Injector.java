@@ -4,11 +4,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 import com.google.common.base.Throwables;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import sun.misc.Unsafe;
 
 /**
@@ -61,24 +59,12 @@ public class Injector {
         }
     }
 
-    public void setObjectClass(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-
-    public Class<?> getObjectClass() {
-        return this.clazz;
-    }
-
     public void setObject(Object object) {
         this.object = object;
     }
 
     public Object getObject() {
         return this.object;
-    }
-
-    public <T> T invokeConstructor(Object... params) {
-        return this.invokeConstructor(this.extractClasses(params), params);
     }
 
     public <T> T invokeConstructor(Class<?> clazz, Object param) {
@@ -108,10 +94,6 @@ public class Injector {
         throw new IllegalStateException();
     }
 
-    public <T> T invokeMethod(String name, Object... params) {
-        return this.invokeMethod(name, this.extractClasses(params), params);
-    }
-
     public <T> T invokeMethod(String name, Class clazz, Object param) {
         return this.invokeMethod(name, new Class[] { clazz }, param);
     }
@@ -135,12 +117,6 @@ public class Injector {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private Class[] extractClasses(Object... objects) {
-        Class[] classes = new Class[objects.length];
-        for (int i = 0; i < objects.length; i++) classes[i] = objects[i].getClass();
-        return classes;
     }
 
     public boolean setField(String name, Object value) {
@@ -222,29 +198,8 @@ public class Injector {
         return null;
     }
 
-    public Method findMethod(Class returnType, Class... paramTypes) {
-        return Injector.findMethod(this.clazz, returnType, paramTypes);
-    }
-
     public Field findField(Class type) {
         return Injector.findField(this.clazz, type);
-    }
-
-    public static Method findMethod(Class clazz, Class returnType, Class[] paramTypes) {
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (Arrays.equals(m.getParameterTypes(), paramTypes) && m.getReturnType().equals(returnType)) {
-                return m;
-            }
-        }
-        return null;
-    }
-
-    public static <E> Method findMethod(Class<? super E> clazz, String[] methodNames, Class<?>... methodTypes) {
-        return ReflectionHelper.findMethod(clazz, null, methodNames, methodTypes);
-    }
-
-    public static Field findField(Class clazz, String... names) {
-        return ReflectionHelper.findField(clazz, names);
     }
 
     public static Field findField(Class clazz, Class type) {
