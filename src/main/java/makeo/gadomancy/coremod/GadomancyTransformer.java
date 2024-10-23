@@ -28,7 +28,6 @@ public class GadomancyTransformer implements IClassTransformer {
     private static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     private static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     private static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
-    private static final String NAME_NEI_ITEMPANEL = "codechicken.nei.ItemPanel";
     private static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     @Override
@@ -38,7 +37,6 @@ public class GadomancyTransformer implements IClassTransformer {
                 || transformedName.equals(GadomancyTransformer.NAME_WANDMANAGER)
                 || transformedName.equals(GadomancyTransformer.NAME_NODE_RENDERER)
                 || transformedName.equals(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER)
-                || transformedName.equals(GadomancyTransformer.NAME_NEI_ITEMPANEL)
                 || transformedName.equals(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) {
             return basicClass;
@@ -172,23 +170,6 @@ public class GadomancyTransformer implements IClassTransformer {
                                 mn.instructions.insertBefore(insnNode, setAfter);
                             }
                         }
-                    }
-                }
-                break;
-            case GadomancyTransformer.NAME_NEI_ITEMPANEL:
-                for (MethodNode mn : node.methods) {
-                    if (mn.name.equals("updateItemList")) {
-                        InsnList newInstructions = new InsnList();
-                        newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                        newInstructions.add(
-                                new MethodInsnNode(
-                                        Opcodes.INVOKESTATIC,
-                                        "makeo/gadomancy/common/integration/IntegrationNEI",
-                                        "checkItems",
-                                        "(Ljava/util/ArrayList;)V",
-                                        false));
-                        newInstructions.add(mn.instructions);
-                        mn.instructions = newInstructions;
                     }
                 }
                 break;
