@@ -12,9 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.client.renderers.entity.PlayerCameraRenderer;
+import makeo.gadomancy.common.integration.IntegrationMorph;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketAbortTransform;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
 /**
@@ -49,14 +49,14 @@ public class TransformationHelper {
 
     public static boolean isTransformable() {
         Minecraft mc = Minecraft.getMinecraft();
-        return mc.thePlayer.equals(mc.renderViewEntity) && !RegisteredIntegrations.morph.isMorphed()
+        return mc.thePlayer.equals(mc.renderViewEntity) && !IntegrationMorph.isMorphed()
                 && mc.entityRenderer.getClass().equals(EntityRenderer.class)
                 && (TransformationHelper.renderer == null || TransformationHelper.renderer.isRemoved());
     }
 
     public static boolean isForeignTransformed() {
         Minecraft mc = Minecraft.getMinecraft();
-        return !mc.renderViewEntity.equals(mc.thePlayer) || RegisteredIntegrations.morph.isMorphed()
+        return !mc.renderViewEntity.equals(mc.thePlayer) || IntegrationMorph.isMorphed()
                 || (!mc.entityRenderer.getClass().equals(EntityRenderer.class)
                         && !(mc.entityRenderer instanceof PlayerCameraRenderer));
     }

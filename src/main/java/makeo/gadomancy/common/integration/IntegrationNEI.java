@@ -12,15 +12,9 @@ import makeo.gadomancy.common.registration.RegisteredItems;
  * <p/>
  * Created by makeo @ 02.12.2015 13:46
  */
-public class IntegrationNEI extends IntegrationMod {
+public class IntegrationNEI {
 
-    @Override
-    public String getModId() {
-        return "NotEnoughItems";
-    }
-
-    @Override
-    protected void doInit() {
+    public static void doInit() {
         API.hideItem(new ItemStack(RegisteredItems.itemFakeModIcon));
         API.hideItem(new ItemStack(RegisteredBlocks.blockStickyJar, 1, Short.MAX_VALUE));
         API.hideItem(new ItemStack(RegisteredItems.itemPackage, 1, Short.MAX_VALUE));

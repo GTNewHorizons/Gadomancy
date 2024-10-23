@@ -13,15 +13,9 @@ import makeo.gadomancy.common.registration.RegisteredItems;
  *
  * Created by makeo @ 04.10.2015 01:52
  */
-public class IntegrationThaumicExploration extends IntegrationMod {
+public class IntegrationThaumicExploration {
 
-    @Override
-    public String getModId() {
-        return "ThaumicExploration";
-    }
-
-    @Override
-    protected void doInit() {
+    public static void doInit() {
         Block trashJar = Block.getBlockFromName("ThaumicExploration:trashJar");
         if (trashJar != null) {
             RegisteredBlocks.registerStickyJar(trashJar, 0, false, true);

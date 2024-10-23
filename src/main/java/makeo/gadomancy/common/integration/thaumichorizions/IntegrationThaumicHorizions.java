@@ -21,7 +21,6 @@ import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
-import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 
 /**
@@ -30,17 +29,11 @@ import makeo.gadomancy.common.registration.RegisteredBlocks;
  *
  * Created by makeo @ 07.10.2015 13:10
  */
-public class IntegrationThaumicHorizions extends IntegrationMod {
+public class IntegrationThaumicHorizions {
 
     private static Block modMatrix;
 
-    @Override
-    public String getModId() {
-        return "ThaumicHorizons";
-    }
-
-    @Override
-    protected void doInit() {
+    public static void doInit() {
         if (Gadomancy.proxy.getSide() == Side.CLIENT) {
             RendererLivingEntity render = ClientProxy.unregisterRenderer(EntityGolemTH.class, RenderGolemTH.class);
             if (render != null) {
@@ -76,7 +69,7 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
             });
         }
 
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new IntegrationThaumicHorizions());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
