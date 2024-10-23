@@ -9,8 +9,6 @@ import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -18,13 +16,13 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
  * <p/>
  * Created by makeo @ 07.12.2015 21:17
  */
-@TransformerExclusions("makeo.gadomancy.coremod")
-@MCVersion("1.7.10")
+@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.TransformerExclusions("makeo.gadomancy.coremod")
 public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
-        return null;
+        return new String[] { GadomancyTransformer.class.getName() };
     }
 
     @Override
@@ -42,7 +40,7 @@ public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String getAccessTransformerClass() {
-        return "makeo.gadomancy.coremod.GadomancyTransformer";
+        return null;
     }
 
     @Override
