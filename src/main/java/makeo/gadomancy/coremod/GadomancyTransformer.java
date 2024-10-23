@@ -7,11 +7,6 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
 
 import cpw.mods.fml.common.FMLLog;
 
@@ -23,15 +18,12 @@ import cpw.mods.fml.common.FMLLog;
  */
 public class GadomancyTransformer implements IClassTransformer {
 
-    private static final String NAME_ENCHANTMENT_HELPER = "net.minecraft.enchantment.EnchantmentHelper";
     private static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (basicClass == null) return null;
-        boolean needsTransform = transformedName.equals(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)
-                || transformedName.equals(GadomancyTransformer.NAME_GOLEM_ENUM);
-        if (!needsTransform) {
+        if (!GadomancyTransformer.NAME_GOLEM_ENUM.equals(transformedName)) {
             return basicClass;
         }
 
@@ -41,71 +33,35 @@ public class GadomancyTransformer implements IClassTransformer {
         ClassReader reader = new ClassReader(basicClass);
         reader.accept(node, 0);
 
-        switch (transformedName) {
-            case GadomancyTransformer.NAME_ENCHANTMENT_HELPER:
-                for (MethodNode mn : node.methods) {
-                    // TODO fix mappings to obf since we run at index 0 now
-                    if (mn.name.equals("getFortuneModifier") || mn.name.equals("func_77517_e")) {
-                        mn.instructions = new InsnList();
-
-                        mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                        mn.instructions.add(
-                                new MethodInsnNode(
-                                        Opcodes.INVOKESTATIC,
-                                        "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                        "getFortuneLevel",
-                                        "(Lnet/minecraft/entity/EntityLivingBase;)I",
-                                        false));
-                        mn.instructions.add(new InsnNode(Opcodes.IRETURN));
-
-                    } else if (mn.name.equals("getEnchantmentLevel") || mn.name.equals("func_77506_a")) {
-                        mn.instructions = new InsnList();
-
-                        mn.instructions.add(new VarInsnNode(Opcodes.ILOAD, 0));
-                        mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                        mn.instructions.add(
-                                new MethodInsnNode(
-                                        Opcodes.INVOKESTATIC,
-                                        "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                        "onGetEnchantmentLevel",
-                                        "(ILnet/minecraft/item/ItemStack;)I",
-                                        false));
-                        mn.instructions.add(new InsnNode(Opcodes.IRETURN));
-                    }
-                }
-                break;
-            case GadomancyTransformer.NAME_GOLEM_ENUM:
-                // Create constructor accessor
-                final MethodVisitor methodVisitor = node.visitMethod(
-                        Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
-                        "gadomancyRawCreate",
-                        "(Ljava/lang/String;IIIFZIIII)Lthaumcraft/common/entities/golems/EnumGolemType;",
-                        null,
-                        null);
-                methodVisitor.visitCode();
-                methodVisitor.visitTypeInsn(Opcodes.NEW, "thaumcraft/common/entities/golems/EnumGolemType");
-                methodVisitor.visitInsn(Opcodes.DUP);
-                methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 1);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
-                methodVisitor.visitVarInsn(Opcodes.FLOAD, 4);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 5);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 6);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 7);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 8);
-                methodVisitor.visitVarInsn(Opcodes.ILOAD, 9);
-                methodVisitor.visitMethodInsn(
-                        Opcodes.INVOKESPECIAL,
-                        "thaumcraft/common/entities/golems/EnumGolemType",
-                        "<init>",
-                        "(Ljava/lang/String;IIIFZIIII)V",
-                        false);
-                methodVisitor.visitInsn(Opcodes.ARETURN);
-                methodVisitor.visitMaxs(12, 10);
-                methodVisitor.visitEnd();
-                break;
-        }
+        // Create constructor accessor
+        final MethodVisitor methodVisitor = node.visitMethod(
+                Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
+                "gadomancyRawCreate",
+                "(Ljava/lang/String;IIIFZIIII)Lthaumcraft/common/entities/golems/EnumGolemType;",
+                null,
+                null);
+        methodVisitor.visitCode();
+        methodVisitor.visitTypeInsn(Opcodes.NEW, "thaumcraft/common/entities/golems/EnumGolemType");
+        methodVisitor.visitInsn(Opcodes.DUP);
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 1);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
+        methodVisitor.visitVarInsn(Opcodes.FLOAD, 4);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 5);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 6);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 7);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 8);
+        methodVisitor.visitVarInsn(Opcodes.ILOAD, 9);
+        methodVisitor.visitMethodInsn(
+                Opcodes.INVOKESPECIAL,
+                "thaumcraft/common/entities/golems/EnumGolemType",
+                "<init>",
+                "(Ljava/lang/String;IIIFZIIII)V",
+                false);
+        methodVisitor.visitInsn(Opcodes.ARETURN);
+        methodVisitor.visitMaxs(12, 10);
+        methodVisitor.visitEnd();
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         node.accept(writer);

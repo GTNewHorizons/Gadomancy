@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
-import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 /**
@@ -51,7 +50,8 @@ public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
     @Override
     public List<String> getMixins(Set<String> loadedCoreMods) {
         final List<String> mixins = new ArrayList<>();
-        if (FMLLaunchHandler.side().isClient()) {}
+        // if (FMLLaunchHandler.side().isClient()) {add client mixins here}
+        mixins.add("minecraft.MixinEnchantmentHelper");
         return mixins;
     }
 }
