@@ -94,10 +94,6 @@ public class Injector {
         throw new IllegalStateException();
     }
 
-    public <T> T invokeMethod(String name, Class clazz, Object param) {
-        return this.invokeMethod(name, new Class[] { clazz }, param);
-    }
-
     public <T> T invokeMethod(String name, Class[] classes, Object... params) {
         try {
             Method method = this.clazz.getDeclaredMethod(name, classes);
@@ -211,15 +207,6 @@ public class Injector {
         return null;
     }
 
-    public static Class getClass(String name) {
-        try {
-            return Class.forName(name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public static Method getMethod(String name, Class clazz, Class... classes) {
         if (clazz == null) return null;
 
@@ -229,10 +216,6 @@ public class Injector {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static Method getMethod(String name, String clazz, Class... classes) {
-        return Injector.getMethod(name, Injector.getClass(clazz), classes);
     }
 
     public static Field getField(String name, Class clazz) {
