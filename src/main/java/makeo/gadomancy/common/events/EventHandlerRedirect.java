@@ -11,15 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigItems;
 
 /**
@@ -60,29 +57,13 @@ public class EventHandlerRedirect {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void preNodeRender(TileEntity tile) {
+    public static void preNodeRender() {
         EventHandlerRedirect.addGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 
     @SideOnly(Side.CLIENT)
-    public static void postNodeRender(TileEntity tile) {
+    public static void postNodeRender() {
         EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
-    }
-
-    public static void preBlockHighlight(DrawBlockHighlightEvent event) {
-        EventHandlerRedirect.addGoggles(event.player);
-    }
-
-    public static void postBlockHighlight(DrawBlockHighlightEvent event) {
-        EventHandlerRedirect.removeGoggles(event.player);
-    }
-
-    public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
-        if (player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
-            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT).getAmplifier() + 1)
-                    * 8;
-        }
-        return currentTotalDiscount;
     }
 
     public static int getFortuneLevel(EntityLivingBase entity) {
