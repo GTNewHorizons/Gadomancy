@@ -46,6 +46,7 @@ import makeo.gadomancy.common.utils.Injector;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.Vector3;
+import makeo.gadomancy.mixins.late.thamcraft.AccessorGuiResearchRecipe;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitect;
 import thaumcraft.api.research.ResearchItem;
@@ -162,11 +163,10 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void guiOpen(GuiOpenEvent event) {
-        if (event.gui != null && event.gui instanceof GuiResearchRecipe) {
+        if (event.gui instanceof GuiResearchRecipe && !(event.gui instanceof GuiResearchRecipeAuraEffects)) {
             GuiResearchRecipe gui = (GuiResearchRecipe) event.gui;
-            ResearchItem research = new Injector(gui, GuiResearchRecipe.class).getField("research");
-            if (research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")
-                    && !(gui instanceof GuiResearchRecipeAuraEffects)) {
+            ResearchItem research = ((AccessorGuiResearchRecipe) gui).getResearch();
+            if (research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")) {
                 event.gui = GuiResearchRecipeAuraEffects.create(gui);
             }
         }

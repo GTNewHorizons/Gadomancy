@@ -1,6 +1,5 @@
 package makeo.gadomancy.client.gui;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.aura.AuraResearchManager;
 import makeo.gadomancy.common.aura.ResearchPageAuraAspects;
-import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.mixins.late.thamcraft.AccessorGuiResearchRecipe;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;
@@ -31,30 +30,29 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by HellFirePvP @ 30.11.2015 12:24
  */
 public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
 
-    private HashMap<String, ArrayList<ItemStack>> itemMap = new HashMap<String, ArrayList<ItemStack>>();
+    private final HashMap<String, ArrayList<ItemStack>> itemMap = new HashMap<>();
 
     public GuiResearchRecipeAuraEffects(ResearchItem research, int page, double x, double y) {
         super(research, page, x, y);
 
-        Injector inj = new Injector(this, GuiResearchRecipe.class);
-
+        AccessorGuiResearchRecipe acc = (AccessorGuiResearchRecipe) this;
         ResearchPage[] additionalPages = ResearchPageAuraAspects
                 .createAllAuraPagesFor(Minecraft.getMinecraft().thePlayer);
-        ResearchPage[] pages = inj.getField("pages");
+        ResearchPage[] pages = acc.getPages();
         ResearchPage[] newPages = new ResearchPage[pages.length + additionalPages.length];
         System.arraycopy(pages, 0, newPages, 0, pages.length);
         System.arraycopy(additionalPages, 0, newPages, pages.length, additionalPages.length);
-        inj.setField("pages", newPages);
-        inj.setField("maxPages", newPages.length);
+        acc.setPages(newPages);
+        acc.setMaxPages(newPages.length);
 
         List<String> list = Thaumcraft.proxy.getScannedObjects()
                 .get(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
-        if ((list != null) && (list.size() > 0)) {
+        if ((list != null) && (!list.isEmpty())) {
             for (String s : list) {
                 try {
                     String s2 = s.substring(1);
@@ -81,15 +79,15 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
     }
 
     public static GuiResearchRecipeAuraEffects create(GuiResearchRecipe oldGui) {
-        Injector inj = new Injector(oldGui);
-        ResearchItem ri = inj.getField("research");
-        double guiX = inj.getField("guiMapX");
-        double guiY = inj.getField("guiMapY");
-        int page = inj.getField("page");
+        AccessorGuiResearchRecipe acc = ((AccessorGuiResearchRecipe) oldGui);
+        ResearchItem ri = acc.getResearch();
+        double guiX = acc.getGuiMapX();
+        double guiY = acc.getGuiMapY();
+        int page = acc.getPage();
         return new GuiResearchRecipeAuraEffects(ri, page, guiX, guiY);
     }
 
-    String tex1 = "textures/gui/gui_researchbook.png";
+    private static final String tex1 = "textures/gui/gui_researchbook.png";
 
     @Override
     protected void genResearchBackground(int par1, int par2, float par3) {
@@ -100,7 +98,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         float var11 = (this.height - this.paneHeight * 1.3F) / 2.0F;
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        UtilsFX.bindTexture(this.tex1);
+        UtilsFX.bindTexture(tex1);
 
         GL11.glPushMatrix();
         GL11.glTranslatef(var10, var11, 0.0F);
@@ -109,37 +107,22 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
         this.drawTexturedModalRect(0, 0, 0, 0, this.paneWidth, this.paneHeight);
         GL11.glPopMatrix();
 
-        Injector inj = new Injector(this, GuiResearchRecipe.class);
+        AccessorGuiResearchRecipe acc = ((AccessorGuiResearchRecipe) this);
 
-        ArrayList<List> reference = inj.getField("reference");
-        inj.setField("tooltip", null);
-        ResearchPage[] pages = inj.getField("pages");
-        int page = inj.getField("page");
-        int maxPages = inj.getField("maxPages");
+        ArrayList<List> reference = acc.getReference();
+        acc.setTooltip(null);
+        ResearchPage[] pages = acc.getPages();
+        int page = acc.getPage();
+        int maxPages = acc.getMaxPages();
 
         reference.clear();
         int current = 0;
-        for (int a = 0; a < pages.length; a++) {
+        for (ResearchPage researchPage : pages) {
             if (((current == page) || (current == page + 1)) && (current < maxPages)) {
-                ResearchPage rPage = pages[a];
-                if (rPage instanceof ResearchPageAuraAspects) {
-                    this.drawAuraAspectPagePre(rPage, current % 2, sw, sh, par1, par2, page);
-                } else if (rPage != null) {
-                    try {
-                        Method m = Injector.getMethod(
-                                "drawPage",
-                                GuiResearchRecipe.class,
-                                ResearchPage.class,
-                                int.class,
-                                int.class,
-                                int.class,
-                                int.class,
-                                int.class);
-                        m.setAccessible(true);
-                        m.invoke(this, pages[a], current % 2, sw, sh, par1, par2);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if (researchPage instanceof ResearchPageAuraAspects) {
+                    this.drawAuraAspectPagePre(researchPage, current % 2, sw, sh, par1, par2, page);
+                } else if (researchPage != null) {
+                    acc.callDrawPage(researchPage, current % 2, sw, sh, par1, par2);
                 }
             }
             current++;
@@ -147,7 +130,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
                 break;
             }
         }
-        UtilsFX.bindTexture(this.tex1);
+        UtilsFX.bindTexture(tex1);
         float bob = MathHelper.sin(this.mc.thePlayer.ticksExisted / 3.0F) * 0.2F + 0.1F;
         if (!GuiResearchRecipe.history.isEmpty()) {
             GL11.glEnable(GL11.GL_BLEND);
@@ -162,7 +145,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
             this.drawTexturedModalRectScaled(sw + 262, sh + 190, 12, 184, 12, 8, bob);
         }
 
-        inj.setField("reference", reference);
+        acc.setReference(reference);
     }
 
     private void drawAuraAspectPagePre(ResearchPage page, int side, int x, int y, int mx, int my, int thisPage) {
@@ -193,7 +176,7 @@ public class GuiResearchRecipeAuraEffects extends GuiResearchRecipe {
 
     private void drawAuraPage(int side, int x, int y, int mx, int my, AspectList aspects) {
         if ((aspects != null) && (aspects.size() > 0)) {
-            TCFontRenderer fr = new Injector(this, GuiResearchRecipe.class).getField("fr");
+            TCFontRenderer fr = ((AccessorGuiResearchRecipe) this).getFontRenderer();
             GL11.glPushMatrix();
             int start = side * 152;
             int count = 0;

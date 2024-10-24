@@ -21,6 +21,7 @@ public class GadomancyLateMixinLoader implements ILateMixinLoader {
     public List<String> getMixins(Set<String> loadedMods) {
         final List<String> mixins = new ArrayList<>();
         if (FMLLaunchHandler.side().isClient()) {
+            mixins.add("thamcraft.AccessorGuiResearchRecipe");
             mixins.add("thamcraft.MixinRenderEventHandler");
             mixins.add("thamcraft.MixinTileNodeRenderer");
         }
