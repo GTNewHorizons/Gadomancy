@@ -23,6 +23,7 @@ import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.blocks.ItemJarFilled;
 import thaumcraft.common.config.ConfigItems;
@@ -83,33 +84,21 @@ public class ItemBlockRemoteJar extends ItemBlock {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
             float hitX, float hitY, float hitZ) {
         TileRemoteJar tile = BlockRemoteJar.getJarTile(world, x, y, z);
-        if (tile != null) {
-            if (!world.isRemote) {
+        if (stack.stackSize == 1 && tile != null) {
+            if (!world.isRemote && !player.isSneaking()) {
                 NBTTagCompound compound = NBTHelper.getData(stack);
-                if (!player.isSneaking()) {
-                    UUID networkId = null;
-                    if (tile.networkId == null) {
-                        player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
-                        networkId = UUID.randomUUID();
-                        tile.networkId = networkId;
-                        tile.markForUpdate();
-                    } else {
-                        UUID current = NBTHelper.getUUID(compound, "networkId");
-                        if (current == null || !current.equals(tile.networkId)) {
-                            player.addChatComponentMessage(
-                                    new ChatComponentTranslation("gadomancy.info.RemoteJar.connected"));
-                            networkId = tile.networkId;
-                        }
-                    }
+                UUID networkId = UUID.randomUUID();
 
-                    if (networkId != null) {
-                        NBTHelper.setUUID(compound, "networkId", networkId);
-                    }
-                }
+                player.addChatComponentMessage(new ChatComponentTranslation("gadomancy.info.RemoteJar.new"));
+                NBTHelper.setUUID(compound, "networkId", networkId);
+
+                tile.disconnectJar(tile);
+                tile.networkId = networkId;
+                tile.markForUpdate();
+
                 return true;
-            } else {
-                return player.isSneaking();
             }
+            return player.isSneaking();
         }
         return false;
     }
@@ -129,6 +118,7 @@ public class ItemBlockRemoteJar extends ItemBlock {
 
             if (!world.isRemote) {
                 tile.networkId = NBTHelper.getUUID(stack.getTagCompound(), "networkId");
+                tile.aspectFilter = Aspect.getAspect(stack.getTagCompound().getString("AspectFilter"));
                 tile.markForUpdate();
             }
         }
