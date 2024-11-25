@@ -1,78 +1,30 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.Loader;
-import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationAutomagy;
-import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.integration.IntegrationMorph;
 import makeo.gadomancy.common.integration.IntegrationNEI;
 import makeo.gadomancy.common.integration.IntegrationThaumicExploration;
-import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
+import makeo.gadomancy.common.integration.LoadedMods;
 import makeo.gadomancy.common.integration.mystcraft.IntegrationMystcraft;
-import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions;
+import makeo.gadomancy.common.integration.waila.IntegrationWaila;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 09.07.2015 16:00
  */
 public class RegisteredIntegrations {
 
-    public static IntegrationMorph morph;
-    public static IntegrationThaumicExploration thaumicExploration;
-    public static IntegrationAutomagy automagy;
-    public static IntegrationNEI nei;
-    public static IntegrationMystcraft mystcraft;
-    public static IntegrationThaumicTinkerer thaumicTinkerer;
-
-    private RegisteredIntegrations() {}
-
     public static void init() {
-        RegisteredIntegrations.morph = RegisteredIntegrations.registerIndependent(IntegrationMorph.class);
-        RegisteredIntegrations.thaumicExploration = RegisteredIntegrations
-                .registerIndependent(IntegrationThaumicExploration.class);
-        RegisteredIntegrations.automagy = RegisteredIntegrations.registerIndependent(IntegrationAutomagy.class);
-        RegisteredIntegrations.nei = RegisteredIntegrations.registerIndependent(IntegrationNEI.class);
-        RegisteredIntegrations.mystcraft = RegisteredIntegrations.registerIndependent(IntegrationMystcraft.class);
-        RegisteredIntegrations.thaumicTinkerer = RegisteredIntegrations
-                .registerIndependent(IntegrationThaumicTinkerer.class);
-
-        RegisteredIntegrations.registerDependent(
-                "ThaumicHorizons",
-                "makeo.gadomancy.common.integration.thaumichorizions.IntegrationThaumicHorizions");
-        RegisteredIntegrations.registerDependent("Waila", "makeo.gadomancy.common.integration.waila.IntegrationWaila");
+        if (LoadedMods.MORPH) IntegrationMorph.doInit();
+        if (LoadedMods.THAUMICEXPLORATION) IntegrationThaumicExploration.doInit();
+        if (LoadedMods.AUTOMAGY) IntegrationAutomagy.doInit();
+        if (LoadedMods.NOTENOUGHITEMS) IntegrationNEI.doInit();
+        if (LoadedMods.MYSTCRAFT) IntegrationMystcraft.doInit();
+        if (LoadedMods.THAUMICHORIZONS) IntegrationThaumicHorizions.doInit();
+        if (LoadedMods.WAILA) IntegrationWaila.doInit();
     }
 
-    private static void registerDependent(String modId, String clazz) {
-        if (!Loader.isModLoaded(modId)) {
-            return;
-        }
-
-        Object integration;
-        try {
-            integration = Injector.getClass(clazz).newInstance();
-        } catch (Throwable e) { // InstantiationException | IllegalAccessException
-            return;
-        }
-
-        if (integration instanceof IntegrationMod) {
-            ((IntegrationMod) integration).init();
-        }
-    }
-
-    private static <T extends IntegrationMod> T registerIndependent(Class<T> clazz) {
-        T integration;
-        try {
-            integration = clazz.newInstance();
-        } catch (Exception e) { // InstantiationException | IllegalAccessException
-            return null;
-        }
-
-        integration.init();
-        if (integration.isPresent()) {
-            Gadomancy.log.info("Initialized hook for mod \"" + integration.getModId() + "\"!");
-        }
-        return integration;
-    }
 }

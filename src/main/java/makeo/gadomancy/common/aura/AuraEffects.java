@@ -34,8 +34,9 @@ import net.minecraft.world.World;
 
 import makeo.gadomancy.api.AuraEffect;
 import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.integration.IntegrationAutomagy;
 import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
+import makeo.gadomancy.common.integration.LoadedMods;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
 import thaumcraft.api.aspects.Aspect;
@@ -458,12 +459,12 @@ public class AuraEffects {
 
         @Override
         public int getBlockCount(Random random) {
-            return RegisteredIntegrations.automagy.isPresent() ? 50 : 0;
+            return LoadedMods.AUTOMAGY ? 50 : 0;
         }
 
         @Override
         public void doBlockEffect(ChunkCoordinates originTile, ChunkCoordinates selectedBlock, World world) {
-            RegisteredIntegrations.automagy.tryFillGolemCrafttable(selectedBlock, world);
+            IntegrationAutomagy.tryFillGolemCrafttable(selectedBlock, world);
         }
     }.register(Aspect.CRAFT);
     public static final AuraEffect HERBA = new AuraEffect.BlockAuraEffect() {
@@ -738,9 +739,9 @@ public class AuraEffects {
                     block,
                     world.rand.nextInt(8) + 2);
         }
-        if (IntegrationThaumicTinkerer.isCropBlock(block)) {
+        if (LoadedMods.THAUMICTINKERER && IntegrationThaumicTinkerer.isCropBlock(block)) {
             TileEntity te = world.getTileEntity(coordinates.posX, coordinates.posY, coordinates.posZ);
-            if (te != null && IntegrationThaumicTinkerer.isCropTile(te)) {
+            if (IntegrationThaumicTinkerer.isCropTile(te)) {
                 for (int i = 0; i < 10; i++) {
                     te.updateEntity(); // Badumm tss..
                 }
