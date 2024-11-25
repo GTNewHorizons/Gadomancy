@@ -10,21 +10,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.SaveHandler;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.*;
-    
+
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -282,7 +278,11 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             }
 
             AdvancedFakePlayer fakePlayer = new AdvancedFakePlayer((WorldServer) world, TileInfusionClaw.FAKE_UUID);
-            fakePlayer.playerNetServerHandler = new NetHandlerPlayServer(MinecraftServer.getServer(), new NetworkManager(false), fakePlayer){
+            fakePlayer.playerNetServerHandler = new NetHandlerPlayServer(
+                    MinecraftServer.getServer(),
+                    new NetworkManager(false),
+                    fakePlayer) {
+
                 @Override
                 public void sendPacket(Packet discard) {}
             };
@@ -478,5 +478,4 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
         return (!this.isLocked() || !this.hasSufficientVis()) && this.canInsertItem(slot, stack, side);
     }
 
-   
 }
