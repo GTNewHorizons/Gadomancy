@@ -10,6 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.world.World;
@@ -275,6 +278,14 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
             }
 
             AdvancedFakePlayer fakePlayer = new AdvancedFakePlayer((WorldServer) world, TileInfusionClaw.FAKE_UUID);
+            fakePlayer.playerNetServerHandler = new NetHandlerPlayServer(
+                    MinecraftServer.getServer(),
+                    new NetworkManager(false),
+                    fakePlayer) {
+
+                @Override
+                public void sendPacket(Packet discard) {}
+            };
             this.loadResearch(fakePlayer);
 
             if (behavior.hasVisCost()) {
@@ -287,6 +298,7 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
 
             if (this.im == null) {
                 this.im = new ItemInWorldManager(world);
+                this.im.thisPlayerMP = fakePlayer;
             } else {
                 this.im.setWorld((WorldServer) world);
             }
@@ -465,4 +477,5 @@ public class TileInfusionClaw extends SynchronizedTileEntity implements ISidedIn
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
         return (!this.isLocked() || !this.hasSufficientVis()) && this.canInsertItem(slot, stack, side);
     }
+
 }
