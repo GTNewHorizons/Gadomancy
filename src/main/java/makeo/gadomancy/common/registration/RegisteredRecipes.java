@@ -1303,7 +1303,7 @@ public class RegisteredRecipes {
             ThaumcraftApi.getCraftingRecipes().add(infusion);
             (recipes[11])[i] = infusion;
 
-            ItemStack balancedShard = new ItemStack(ConfigItems.itemResource, 1, 6);
+            ItemStack balancedShard = new ItemStack(ConfigItems.itemShard, 1, 6);
             ItemStack gunpowder = new ItemStack(Items.gunpowder);
 
             // Damage 0 -> 1
