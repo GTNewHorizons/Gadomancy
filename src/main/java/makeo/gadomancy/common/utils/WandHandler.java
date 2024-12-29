@@ -21,12 +21,13 @@ import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNodeJar;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.EntityAuraCore;
+import makeo.gadomancy.common.integration.IntegrationAutomagy;
+import makeo.gadomancy.common.integration.LoadedMods;
 import makeo.gadomancy.common.items.ItemAuraCore;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketStartAnimation;
 import makeo.gadomancy.common.node.ExtendedNodeType;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -60,7 +61,7 @@ public class WandHandler {
                     WandHandler.tryTCJarNodeCreation(i, entityPlayer, world, x, y, z);
                 }
             } else if (target.equals(ConfigBlocks.blockWarded)) {
-                if (RegisteredIntegrations.automagy.isPresent()
+                if (LoadedMods.AUTOMAGY
                         && ResearchManager.isResearchComplete(entityPlayer.getCommandSenderName(), "ADVNODEJAR")) {
                     WandHandler.tryAutomagyJarNodeCreation(i, entityPlayer, world, x, y, z);
                 }
@@ -254,10 +255,10 @@ public class WandHandler {
             return;
         }
 
-        if (!RegisteredIntegrations.automagy.handleNodeJarVisCost(wandStack, player)) return;
+        if (!IntegrationAutomagy.handleNodeJarVisCost(wandStack, player)) return;
 
         if (world.isRemote) return;
-        if (!RegisteredIntegrations.automagy.isPresent()) return;
+        if (!LoadedMods.AUTOMAGY) return;
         WandHandler.replaceJar(world, result[0], result[1], result[2], false);
     }
 
