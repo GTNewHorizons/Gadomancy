@@ -1,9 +1,8 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -64,49 +63,47 @@ public class TileRemoteJar extends TileJarFillable {
         }
     }
 
-    private static Map<UUID, JarNetwork> networks = new HashMap<UUID, JarNetwork>();
+    private static final Map<UUID, JarNetwork> networks = new HashMap<>();
 
     private static class JarNetwork {
 
         private long lastTime;
-        private List<TileJarFillable> jars = new ArrayList<TileJarFillable>();
+        private final List<TileJarFillable> jars = new ArrayList<>();
 
         private void update() {
             long time = MinecraftServer.getServer().getEntityWorld().getTotalWorldTime();
             if (time > this.lastTime) {
                 if (this.jars.size() > 1) {
-                    Collections.sort(this.jars, new Comparator<TileJarFillable>() {
 
-                        @Override
-                        public int compare(TileJarFillable o1, TileJarFillable o2) {
-                            return o2.amount - o1.amount;
+                    TileJarFillable high = null, low = null;
+                    Iterator<TileJarFillable> itr = this.jars.iterator();
+                    while (itr.hasNext()) {
+                        TileJarFillable jar = itr.next();
+                        if (isInvalid(jar)) {
+                            itr.remove();
+                            continue;
                         }
-                    });
 
-                    TileJarFillable jar1 = this.jars.get(0);
-                    if (!JarNetwork.isValid(jar1)) {
-                        this.jars.remove(0);
-                        return;
+                        if (low == null || low.amount > jar.amount) {
+                            low = jar;
+                        }
+                        if (high == null || high.amount <= jar.amount) {
+                            high = jar;
+                        }
                     }
 
-                    TileJarFillable jar2 = this.jars.get(this.jars.size() - 1);
-                    if (!JarNetwork.isValid(jar2)) {
-                        this.jars.remove(this.jars.size() - 1);
-                        return;
-                    }
-
-                    if ((jar2.amount + 1) < jar1.amount && jar2.addToContainer(jar1.aspect, 1) == 0) {
-                        jar1.takeFromContainer(jar1.aspect, 1);
+                    if (low != high && (low.amount + 1) < high.amount && low.addToContainer(high.aspect, 1) == 0) {
+                        high.takeFromContainer(high.aspect, 1);
                     }
                 }
                 this.lastTime = time + 3;
             }
         }
 
-        private static boolean isValid(TileJarFillable jar) {
-            return jar != null && jar.getWorldObj() != null
-                    && !jar.isInvalid()
-                    && jar.getWorldObj().blockExists(jar.xCoord, jar.yCoord, jar.zCoord);
+        private static boolean isInvalid(TileJarFillable jar) {
+            return jar == null || jar.getWorldObj() == null
+                    || jar.isInvalid()
+                    || !jar.getWorldObj().blockExists(jar.xCoord, jar.yCoord, jar.zCoord);
         }
     }
 
