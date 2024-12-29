@@ -75,15 +75,10 @@ public class TileRemoteJar extends TileJarFillable {
             if (time > this.lastTime) {
                 if (this.jars.size() > 1) {
 
-                    TileJarFillable high = null, low = null;
-                    Iterator<TileJarFillable> itr = this.jars.iterator();
-                    while (itr.hasNext()) {
-                        TileJarFillable jar = itr.next();
-                        if (isInvalid(jar)) {
-                            itr.remove();
-                            continue;
-                        }
+                    this.jars.removeIf(JarNetwork::isInvalid);
 
+                    TileJarFillable high = null, low = null;
+                    for (TileJarFillable jar : this.jars) {
                         if (low == null || low.amount > jar.amount) {
                             low = jar;
                         }
