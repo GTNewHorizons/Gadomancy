@@ -3,14 +3,14 @@
 dependencies {
     api('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     api('com.github.GTNewHorizons:Baubles:1.0.4:dev')
-    api("com.github.GTNewHorizons:GTNHLib:0.5.11:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.5.23:dev")
 
-    api('com.github.GTNewHorizons:ThaumicEnergistics:1.6.25-GTNH:dev')
+    api('com.github.GTNewHorizons:ThaumicEnergistics:1.6.27-GTNH:dev')
 
     compileOnly('com.github.GTNewHorizons:waila:1.8.1:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:ThaumicHorizons:1.6.3:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:ThaumicHorizons:1.6.5:dev') {transitive=false}
     compileOnly('curse.maven:automagy-222153:2285272')
     compileOnly('curse.maven:mystcraft-224599:2417044')
 
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.6.38-GTNH:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.6.53-GTNH:dev')
 }
