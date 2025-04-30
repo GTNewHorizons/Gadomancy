@@ -2,19 +2,21 @@ package makeo.gadomancy.coremod.mixins;
 
 import static com.gtnewhorizon.gtnhlib.mixin.TargetedMod.THAUMCRAFT;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.gtnewhorizon.gtnhlib.mixin.IMixins;
 import com.gtnewhorizon.gtnhlib.mixin.ITargetedMod;
 import com.gtnewhorizon.gtnhlib.mixin.MixinBuilder;
 import com.gtnewhorizon.gtnhlib.mixin.Phase;
 import com.gtnewhorizon.gtnhlib.mixin.Side;
-import java.util.List;
-import java.util.function.Supplier;
 
 public enum Mixins implements IMixins {
+
     // Config for this one is in the mixin itself, as it may not be present at apply time
-    ADD_ADDITIONAL_NODES(new MixinBuilder("Replaces Thaumcraft's blockAiry with more nodes")
-            .setPhase(Phase.LATE).setSide(Side.BOTH).addTargetedMod(THAUMCRAFT)
-            .addMixinClasses("thaumcraft.MixinConfigBlocks").setApplyIf(() -> true));
+    ADD_ADDITIONAL_NODES(
+            new MixinBuilder("Replaces Thaumcraft's blockAiry with more nodes").setPhase(Phase.LATE).setSide(Side.BOTH)
+                    .addTargetedMod(THAUMCRAFT).addMixinClasses("thaumcraft.MixinConfigBlocks").setApplyIf(() -> true));
 
     private final List<String> mixinClasses;
     private final List<ITargetedMod> targetedMods;

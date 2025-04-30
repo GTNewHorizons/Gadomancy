@@ -1,8 +1,15 @@
 package makeo.gadomancy.common.registration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
@@ -38,11 +45,6 @@ import makeo.gadomancy.common.items.ItemBlockKnowledgeBook;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockStoneMachine;
 import makeo.gadomancy.common.items.ItemNodeManipulator;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
