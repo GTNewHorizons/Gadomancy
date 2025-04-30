@@ -1,7 +1,5 @@
 package makeo.gadomancy.common.events;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -112,7 +110,7 @@ public class EventHandlerRedirect {
         if (stack != null) {
             MinecraftServer server = MinecraftServer.getServer();
             if (server != null && server.getConfigurationManager() != null) {
-                for (EntityPlayer player : (List<EntityPlayer>) server.getConfigurationManager().playerEntityList) {
+                for (EntityPlayer player : server.getConfigurationManager().playerEntityList) {
                     if (player != null && player.getHeldItem() == stack) {
                         possiblePlayer = player;
                         break;

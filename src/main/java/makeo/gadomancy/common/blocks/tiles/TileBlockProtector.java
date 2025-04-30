@@ -162,16 +162,14 @@ public class TileBlockProtector extends TileJarFillable {
             }
         }
 
-        if (this.range > 0) {
-            for (EntityLivingBase entity : (List<EntityCreeper>) this.worldObj
-                    .getEntitiesWithinAABB(EntityLivingBase.class, this.getProtectedAABB())) {
-                if (entity instanceof EntityCreeper) {
-                    ((EntityCreeper) entity).timeSinceIgnited = 0;
-                }
+        if (this.range <= 0) return;
+        for (EntityLivingBase entity : worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getProtectedAABB())) {
+            if (entity instanceof EntityCreeper creeper) {
+                creeper.timeSinceIgnited = 0;
+            }
 
-                if (this.worldObj.isRemote && !(entity instanceof EntityPlayer)) {
-                    this.spawnEntityParticles(entity);
-                }
+            if (this.worldObj.isRemote && !(entity instanceof EntityPlayer)) {
+                this.spawnEntityParticles(entity);
             }
         }
     }
