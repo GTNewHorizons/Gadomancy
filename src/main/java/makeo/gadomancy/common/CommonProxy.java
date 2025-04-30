@@ -65,8 +65,6 @@ public class CommonProxy implements IGuiHandler {
         RegisteredBlocks.init();
         RegisteredItems.init();
         RegisteredGolemStuff.init();
-
-        ModSubstitutions.preInit();
     }
 
     public void initalize() {
@@ -83,7 +81,6 @@ public class CommonProxy implements IGuiHandler {
         RegisteredRecipes.init();
 
         SyncDataHolder.initialize();
-        ModSubstitutions.init();
 
         RegisteredEntities.init();
 

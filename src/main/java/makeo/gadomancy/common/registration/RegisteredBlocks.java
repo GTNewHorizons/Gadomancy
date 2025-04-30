@@ -1,15 +1,8 @@
 package makeo.gadomancy.common.registration;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.common.blocks.BlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.blocks.BlockArcaneDropper;
@@ -18,7 +11,6 @@ import makeo.gadomancy.common.blocks.BlockEssentiaCompressor;
 import makeo.gadomancy.common.blocks.BlockExtendedNodeJar;
 import makeo.gadomancy.common.blocks.BlockInfusionClaw;
 import makeo.gadomancy.common.blocks.BlockKnowledgeBook;
-import makeo.gadomancy.common.blocks.BlockNode;
 import makeo.gadomancy.common.blocks.BlockNodeManipulator;
 import makeo.gadomancy.common.blocks.BlockRemoteJar;
 import makeo.gadomancy.common.blocks.BlockStickyJar;
@@ -39,7 +31,6 @@ import makeo.gadomancy.common.blocks.tiles.TileManipulatorPillar;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
-import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.items.ItemBlockAdditionalEldritchPortal;
 import makeo.gadomancy.common.items.ItemBlockAuraPylon;
 import makeo.gadomancy.common.items.ItemBlockEssentiaCompressor;
@@ -47,6 +38,11 @@ import makeo.gadomancy.common.items.ItemBlockKnowledgeBook;
 import makeo.gadomancy.common.items.ItemBlockRemoteJar;
 import makeo.gadomancy.common.items.ItemBlockStoneMachine;
 import makeo.gadomancy.common.items.ItemNodeManipulator;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import thaumcraft.common.blocks.BlockAiry;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileInfusionMatrix;
@@ -69,7 +65,7 @@ public class RegisteredBlocks {
     public static BlockArcaneDropper blockArcaneDropper;
     public static BlockInfusionClaw blockInfusionClaw;
     public static BlockRemoteJar blockRemoteJar;
-    public static BlockAiry blockNode = (BlockAiry) ConfigBlocks.blockAiry;
+    public static BlockAiry blockNode;
     public static BlockExtendedNodeJar blockExtendedNodeJar;
     public static BlockNodeManipulator blockNodeManipulator;
     public static BlockStoneMachine blockStoneMachine;
@@ -94,9 +90,7 @@ public class RegisteredBlocks {
         RegisteredBlocks.blockInfusionClaw = RegisteredBlocks.registerBlock(new BlockInfusionClaw());
         RegisteredBlocks.blockRemoteJar = RegisteredBlocks
                 .registerBlock(new BlockRemoteJar(), ItemBlockRemoteJar.class);
-        RegisteredBlocks.blockNode = ModConfig.enableAdditionalNodeTypes
-                ? (BlockAiry) new BlockNode().setBlockName("blockAiry")
-                : (BlockAiry) ConfigBlocks.blockAiry;
+        RegisteredBlocks.blockNode = (BlockAiry) ConfigBlocks.blockAiry;
         RegisteredBlocks.blockExtendedNodeJar = RegisteredBlocks.registerBlock(new BlockExtendedNodeJar());
         RegisteredBlocks.blockNodeManipulator = RegisteredBlocks
                 .registerBlock(new BlockNodeManipulator(), ItemNodeManipulator.class);

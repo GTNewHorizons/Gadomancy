@@ -1,5 +1,6 @@
 package makeo.gadomancy.common;
 
+import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -68,13 +69,13 @@ public class Gadomancy {
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
         GadomancyApi.setInstance(new DefaultApiHandler());
+        ModConfig.init(new File("./config/gadomancy.cfg"));
         Gadomancy.proxy.onConstruct();
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         event.getModMetadata().version = Gadomancy.VERSION;
-        ModConfig.init(event.getSuggestedConfigurationFile());
         Gadomancy.proxy.preInitalize();
     }
 
