@@ -34,7 +34,7 @@ public class Gadomancy {
     public static final String MODID = "gadomancy";
     public static final String NAME = "Gadomancy";
 
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String VERSION = Tags.VERSION;
 
     private static final String PROXY_CLIENT = "makeo.gadomancy.client.ClientProxy";
     private static final String PROXY_SERVER = "makeo.gadomancy.common.CommonProxy";
