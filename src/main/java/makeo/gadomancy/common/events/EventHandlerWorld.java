@@ -16,7 +16,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.GameRules;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -168,11 +167,6 @@ public class EventHandlerWorld {
 
             TCMazeHandler.init();
         }
-
-        GameRules rules = e.world.getGameRules();
-        rules.theGameRules.put(
-                "mobGriefing",
-                new ValueOverride(this, String.valueOf(rules.getGameRuleBooleanValue("mobGriefing"))));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -319,29 +313,6 @@ public class EventHandlerWorld {
                 }
                 e.toolTip.add("\u00a7a" + lore);
             }
-        }
-    }
-
-    private static class ValueOverride extends GameRules.Value {
-
-        private final EventHandlerWorld handler;
-
-        public ValueOverride(EventHandlerWorld handler, String value) {
-            super(value);
-            this.handler = handler;
-        }
-
-        @Override
-        public boolean getGameRuleBooleanValue() {
-            boolean mobGriefing = super.getGameRuleBooleanValue();
-            /*
-             * if(mobGriefing) { Entity lastUpdated = this.handler.lastUpdated; if(lastUpdated != null) {
-             * StackTraceElement[] elements = Thread.currentThread().getStackTrace(); for(StackTraceElement element :
-             * elements) { if(element.getClassName().equals(EntityLivingBase.class.getName()) &&
-             * (element.getMethodName().equals("func_70071_h") || element.getMethodName().equals("onUpdate"))) { return
-             * !TileBlockProtector.isSpotProtected(lastUpdated.worldObj, lastUpdated); } } } }
-             */
-            return mobGriefing;
         }
     }
 }
