@@ -1,4 +1,4 @@
-package makeo.gadomancy.coremod.mixins.late.thaumcraft;
+package makeo.gadomancy.mixins.late.thaumcraft;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

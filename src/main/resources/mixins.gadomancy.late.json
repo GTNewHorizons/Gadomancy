@@ -1,7 +1,7 @@
 {
   "required": true,
-  "minVersion": "0.8.3-GTNH",
-  "package": "makeo.gadomancy.coremod.mixins.late",
+  "minVersion": "0.8.5-GTNH",
+  "package": "makeo.gadomancy.mixins.late",
   "refmap": "mixins.gadomancy.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8"
