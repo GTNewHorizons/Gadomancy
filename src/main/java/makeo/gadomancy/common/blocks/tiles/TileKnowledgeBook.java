@@ -105,9 +105,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 this.markDirty();
             }
 
-            ticksLastResearch++;
-            if (this.researching & ticksLastResearch >= 5) {
-                ticksLastResearch = 0;
+            ticksLastResearch--;
+            if (this.researching & ticksLastResearch <= 0) {
+                ticksLastResearch = (int) Math.pow(5 - highestShelfTier, 2);
                 this.doResearchCycle();
             }
         } else {
@@ -138,10 +138,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.checkSurroundings();
 
         // Researches are too complex if the sum of all aspects is higher than knowledge + wisdom on the bookshelves
-        // Researches that are too complex will fail after ~10 seconds and no aspects will be consumed
+        // Researches that are too complex will fail after a few seconds and no aspects will be consumed
         if (totalAspectCount > surroundingKnowledge + surroundingWisdom + surroundingAwareness) {
             timesFailedResearch++;
-            if (timesFailedResearch >= 40) {
+            if (timesFailedResearch >= 20) {
                 timesFailedResearch = 0;
                 finishFailedResearch();
             }
@@ -186,12 +186,21 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
     }
 
+    private void checkSurroundings(boolean forceCheck) {
+        if (forceCheck) {
+            ticksEnvironmentCheck = 0;
+            checkSurroundings();
+            return;
+        }
+        checkSurroundings();
+    }
+
     private void checkSurroundings() {
         if (this.ticksEnvironmentCheck > 0) {
             this.ticksEnvironmentCheck--;
             return;
         }
-        this.ticksEnvironmentCheck = 200;
+        this.ticksEnvironmentCheck = 50 * highestShelfTier;
         this.surroundingKnowledge = 0;
         this.surroundingWisdom = 0;
         this.surroundingAwareness = 0;
@@ -428,7 +437,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                         if (researchComplexity > 3) researchComplexity = 3;
 
                         if (knowledgeTierCounts == null) {
-                            checkSurroundings();
+                            checkSurroundings(true);
                         }
 
                         this.beginResearch(ri.tags);
@@ -441,6 +450,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void beginResearch(AspectList researchTags) {
+        // Force checkSurroundings here to ensure the bookshelves and their tiers are updated
+        checkSurroundings(true);
+
         totalAspectCount = 0;
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
