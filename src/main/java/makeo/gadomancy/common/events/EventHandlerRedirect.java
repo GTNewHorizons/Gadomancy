@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,12 +56,12 @@ public class EventHandlerRedirect {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void preNodeRender(TileEntity tile) {
+    public static void preNodeRender() {
         EventHandlerRedirect.addGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 
     @SideOnly(Side.CLIENT)
-    public static void postNodeRender(TileEntity tile) {
+    public static void postNodeRender() {
         EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 

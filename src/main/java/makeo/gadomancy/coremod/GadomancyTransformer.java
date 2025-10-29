@@ -6,7 +6,6 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
@@ -27,7 +26,6 @@ public class GadomancyTransformer extends AccessTransformer {
 
     public static final String NAME_ENCHANTMENT_HELPER = "net.minecraft.enchantment.EnchantmentHelper";
     public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
-    public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     public GadomancyTransformer() throws IOException {}
@@ -36,7 +34,6 @@ public class GadomancyTransformer extends AccessTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)
-                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
 
@@ -93,41 +90,6 @@ public class GadomancyTransformer extends AccessTransformer {
                                     false));
 
                     mn.instructions.insertBefore(mn.instructions.get(mn.instructions.size() - 5), updateTotal);
-                }
-            }
-        } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)) {
-            for (MethodNode mn : node.methods) {
-                if (mn.name.equals("renderTileEntityAt")) {
-                    InsnList setBefore = new InsnList();
-                    setBefore.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    setBefore.add(
-                            new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "preNodeRender",
-                                    "(Lnet/minecraft/tileentity/TileEntity;)V",
-                                    false));
-
-                    mn.instructions.insertBefore(mn.instructions.get(0), setBefore);
-
-                    AbstractInsnNode next = mn.instructions.get(0);
-                    while (next != null) {
-                        AbstractInsnNode insnNode = next;
-                        next = insnNode.getNext();
-
-                        if (insnNode.getOpcode() == Opcodes.RETURN) {
-                            InsnList setAfter = new InsnList();
-                            setAfter.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                            setAfter.add(
-                                    new MethodInsnNode(
-                                            Opcodes.INVOKESTATIC,
-                                            "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                            "postNodeRender",
-                                            "(Lnet/minecraft/tileentity/TileEntity;)V",
-                                            false));
-                            mn.instructions.insertBefore(insnNode, setAfter);
-                        }
-                    }
                 }
             }
         } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {

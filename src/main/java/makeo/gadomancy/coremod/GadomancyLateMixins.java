@@ -23,6 +23,7 @@ public class GadomancyLateMixins implements ILateMixinLoader {
         if (loadedMods.contains("Thaumcraft")) {
             if (FMLLaunchHandler.side().isClient()) {
                 mixins.add("thaumcraft.MixinRenderEventHandler");
+                mixins.add("thaumcraft.MixinTileNodeRenderer");
             }
             mixins.add("thaumcraft.MixinConfigBlocks");
         }
