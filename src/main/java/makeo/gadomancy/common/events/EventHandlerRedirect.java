@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -65,14 +64,6 @@ public class EventHandlerRedirect {
     @SideOnly(Side.CLIENT)
     public static void postNodeRender(TileEntity tile) {
         EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
-    }
-
-    public static void preBlockHighlight(DrawBlockHighlightEvent event) {
-        EventHandlerRedirect.addGoggles(event.player);
-    }
-
-    public static void postBlockHighlight(DrawBlockHighlightEvent event) {
-        EventHandlerRedirect.removeGoggles(event.player);
     }
 
     public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
