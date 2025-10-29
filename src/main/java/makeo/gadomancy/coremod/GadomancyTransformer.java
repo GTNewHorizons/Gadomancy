@@ -7,11 +7,6 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
@@ -24,15 +19,13 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
  */
 public class GadomancyTransformer extends AccessTransformer {
 
-    public static final String NAME_ENCHANTMENT_HELPER = "net.minecraft.enchantment.EnchantmentHelper";
     public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     public GadomancyTransformer() throws IOException {}
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)
-                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
+        boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
 
         FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
@@ -41,37 +34,7 @@ public class GadomancyTransformer extends AccessTransformer {
         ClassReader reader = new ClassReader(bytes);
         reader.accept(node, 0);
 
-        if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)) {
-            for (MethodNode mn : node.methods) {
-                if (mn.name.equals("getFortuneModifier") || mn.name.equals("func_77517_e")) {
-                    mn.instructions = new InsnList();
-
-                    mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                    mn.instructions.add(
-                            new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "getFortuneLevel",
-                                    "(Lnet/minecraft/entity/EntityLivingBase;)I",
-                                    false));
-                    mn.instructions.add(new InsnNode(Opcodes.IRETURN));
-
-                } else if (mn.name.equals("getEnchantmentLevel") || mn.name.equals("func_77506_a")) {
-                    mn.instructions = new InsnList();
-
-                    mn.instructions.add(new VarInsnNode(Opcodes.ILOAD, 0));
-                    mn.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    mn.instructions.add(
-                            new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "onGetEnchantmentLevel",
-                                    "(ILnet/minecraft/item/ItemStack;)I",
-                                    false));
-                    mn.instructions.add(new InsnNode(Opcodes.IRETURN));
-                }
-            }
-        } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
+        if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
             // Create constructor accessor
             final MethodVisitor methodVisitor = node.visitMethod(
                     Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,

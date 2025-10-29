@@ -1,19 +1,14 @@
 package makeo.gadomancy.common.events;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
-import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
 import thaumcraft.common.config.ConfigItems;
 
@@ -26,7 +21,6 @@ import thaumcraft.common.config.ConfigItems;
 public class EventHandlerRedirect {
 
     private static final ItemStack ITEM_GOGGLES = new ItemStack(ConfigItems.itemGoggles);
-
     private static boolean hasChanged;
     private static ItemStack oldItem;
 
@@ -64,69 +58,4 @@ public class EventHandlerRedirect {
         EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
     }
 
-    public static int getFortuneLevel(EntityLivingBase entity) {
-        int fortuneLevel = EventHandlerRedirect
-                .getRealEnchantmentLevel(Enchantment.fortune.effectId, entity.getHeldItem());
-        if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; // Amplifier
-                                                                                                      // 0-indexed
-            fortuneLevel += lvl;
-        }
-        return fortuneLevel;
-    }
-
-    public static int getLootingLevel(EntityLivingBase entity) {
-        int lootingLevel = EventHandlerRedirect
-                .getRealEnchantmentLevel(Enchantment.looting.effectId, entity.getHeldItem());
-        if (entity.isPotionActive(RegisteredPotions.POTION_LUCK)) {
-            int lvl = entity.getActivePotionEffect(RegisteredPotions.POTION_LUCK).getAmplifier() + 1; // Amplifier
-                                                                                                      // 0-indexed
-            lootingLevel += lvl;
-        }
-        return lootingLevel;
-    }
-
-    public static int onGetEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        EntityPlayer possiblePlayer = null;
-        if (stack != null) {
-            MinecraftServer server = MinecraftServer.getServer();
-            if (server != null && server.getConfigurationManager() != null) {
-                for (EntityPlayer player : server.getConfigurationManager().playerEntityList) {
-                    if (player != null && player.getHeldItem() == stack) {
-                        possiblePlayer = player;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (possiblePlayer != null) {
-            if (enchantmentId == Enchantment.fortune.effectId) {
-                return EventHandlerRedirect.getFortuneLevel(possiblePlayer);
-            } else if (enchantmentId == Enchantment.looting.effectId) {
-                return EventHandlerRedirect.getLootingLevel(possiblePlayer);
-            }
-        }
-
-        return EventHandlerRedirect.getRealEnchantmentLevel(enchantmentId, stack);
-    }
-
-    private static int getRealEnchantmentLevel(int enchantmentId, ItemStack stack) {
-        if (stack == null) {
-            return 0;
-        } else {
-            NBTTagList nbttaglist = stack.getEnchantmentTagList();
-            if (nbttaglist == null) {
-                return 0;
-            } else {
-                for (int j = 0; j < nbttaglist.tagCount(); ++j) {
-                    short id = nbttaglist.getCompoundTagAt(j).getShort("id");
-                    if (id == enchantmentId) {
-                        return nbttaglist.getCompoundTagAt(j).getShort("lvl");
-                    }
-                }
-                return 0;
-            }
-        }
-    }
 }
