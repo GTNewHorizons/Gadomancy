@@ -29,7 +29,6 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
-    public static final String NAME_NEI_ITEMPANEL = "codechicken.nei.ItemPanel";
     public static final String NAME_ENTITY_LIVING_BASE = "net.minecraft.entity.EntityLivingBase";
     public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
@@ -41,7 +40,6 @@ public class GadomancyTransformer extends AccessTransformer {
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER)
-                || transformedName.equals(GadomancyTransformer.NAME_NEI_ITEMPANEL)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENTITY_LIVING_BASE)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
@@ -169,22 +167,6 @@ public class GadomancyTransformer extends AccessTransformer {
                             mn.instructions.insertBefore(insnNode, setAfter);
                         }
                     }
-                }
-            }
-        } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NEI_ITEMPANEL)) {
-            for (MethodNode mn : node.methods) {
-                if (mn.name.equals("updateItemList")) {
-                    InsnList newInstructions = new InsnList();
-                    newInstructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                    newInstructions.add(
-                            new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/integration/IntegrationNEI",
-                                    "checkItems",
-                                    "(Ljava/util/ArrayList;)V",
-                                    false));
-                    newInstructions.add(mn.instructions);
-                    mn.instructions = newInstructions;
                 }
             }
         } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
