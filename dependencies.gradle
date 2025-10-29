@@ -12,5 +12,5 @@ dependencies {
     compileOnly('curse.maven:automagy-222153:2285272')
     compileOnly('curse.maven:mystcraft-224599:2417044')
 
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.8.25-GTNH:dev')
+    implementation('com.github.GTNewHorizons:NotEnoughItems:2.8.25-GTNH:dev')
 }
