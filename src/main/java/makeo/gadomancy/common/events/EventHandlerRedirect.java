@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.common.registration.RegisteredEnchantments;
 import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.utils.MiscUtils;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.config.ConfigItems;
 
 /**
@@ -63,14 +62,6 @@ public class EventHandlerRedirect {
     @SideOnly(Side.CLIENT)
     public static void postNodeRender() {
         EventHandlerRedirect.removeGoggles(Minecraft.getMinecraft().renderViewEntity);
-    }
-
-    public static int getAdditionalVisDiscount(EntityPlayer player, Aspect aspect, int currentTotalDiscount) {
-        if (player.isPotionActive(RegisteredPotions.VIS_DISCOUNT)) {
-            currentTotalDiscount += (player.getActivePotionEffect(RegisteredPotions.VIS_DISCOUNT).getAmplifier() + 1)
-                    * 8;
-        }
-        return currentTotalDiscount;
     }
 
     public static int getFortuneLevel(EntityLivingBase entity) {

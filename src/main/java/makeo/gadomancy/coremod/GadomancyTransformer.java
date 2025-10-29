@@ -25,7 +25,6 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 public class GadomancyTransformer extends AccessTransformer {
 
     public static final String NAME_ENCHANTMENT_HELPER = "net.minecraft.enchantment.EnchantmentHelper";
-    public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     public GadomancyTransformer() throws IOException {}
@@ -33,7 +32,6 @@ public class GadomancyTransformer extends AccessTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENCHANTMENT_HELPER)
-                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
 
@@ -71,25 +69,6 @@ public class GadomancyTransformer extends AccessTransformer {
                                     "(ILnet/minecraft/item/ItemStack;)I",
                                     false));
                     mn.instructions.add(new InsnNode(Opcodes.IRETURN));
-                }
-            }
-        } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)) {
-            for (MethodNode mn : node.methods) {
-                if (mn.name.equals("getTotalVisDiscount")) {
-                    InsnList updateTotal = new InsnList();
-
-                    updateTotal.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                    updateTotal.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                    updateTotal.add(new VarInsnNode(Opcodes.ILOAD, 2));
-                    updateTotal.add(
-                            new MethodInsnNode(
-                                    Opcodes.INVOKESTATIC,
-                                    "makeo/gadomancy/common/events/EventHandlerRedirect",
-                                    "getAdditionalVisDiscount",
-                                    "(Lnet/minecraft/entity/player/EntityPlayer;Lthaumcraft/api/aspects/Aspect;I)I",
-                                    false));
-
-                    mn.instructions.insertBefore(mn.instructions.get(mn.instructions.size() - 5), updateTotal);
                 }
             }
         } else if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
