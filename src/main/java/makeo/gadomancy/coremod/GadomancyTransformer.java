@@ -29,7 +29,6 @@ public class GadomancyTransformer extends AccessTransformer {
     public static final String NAME_WANDMANAGER = "thaumcraft.common.items.wands.WandManager";
     public static final String NAME_NODE_RENDERER = "thaumcraft.client.renderers.tile.TileNodeRenderer";
     public static final String NAME_RENDER_EVENT_HANDLER = "thaumcraft.client.lib.RenderEventHandler";
-    public static final String NAME_ENTITY_LIVING_BASE = "net.minecraft.entity.EntityLivingBase";
     public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
 
     public GadomancyTransformer() throws IOException {}
@@ -40,7 +39,6 @@ public class GadomancyTransformer extends AccessTransformer {
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_WANDMANAGER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_NODE_RENDERER)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_RENDER_EVENT_HANDLER)
-                || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_ENTITY_LIVING_BASE)
                 || transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
         if (!needsTransform) return super.transform(name, transformedName, bytes);
 
