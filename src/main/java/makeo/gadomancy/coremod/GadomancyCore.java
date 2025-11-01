@@ -21,7 +21,7 @@ public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
-        return null;
+        return new String[] { "makeo.gadomancy.coremod.GadomancyTransformer" };
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String getAccessTransformerClass() {
-        return "makeo.gadomancy.coremod.GadomancyTransformer";
+        return null;
     }
 
     @Override

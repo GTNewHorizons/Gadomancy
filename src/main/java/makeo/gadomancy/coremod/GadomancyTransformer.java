@@ -1,6 +1,6 @@
 package makeo.gadomancy.coremod;
 
-import java.io.IOException;
+import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -8,8 +8,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.asm.transformers.AccessTransformer;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -17,24 +16,18 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
  * <p/>
  * Created by makeo @ 07.12.2015 21:48
  */
-public class GadomancyTransformer extends AccessTransformer {
-
-    public static final String NAME_GOLEM_ENUM = "thaumcraft.common.entities.golems.EnumGolemType";
-
-    public GadomancyTransformer() throws IOException {}
+public class GadomancyTransformer implements IClassTransformer {
 
     @Override
-    public byte[] transform(String name, String transformedName, byte[] bytes) {
-        boolean needsTransform = transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM);
-        if (!needsTransform) return super.transform(name, transformedName, bytes);
+    public byte[] transform(String name, String transformedName, byte[] basicClass) {
+        if ("thaumcraft.common.entities.golems.EnumGolemType".equals(transformedName)) {
 
-        FMLLog.info("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
+            FMLRelaunchLog.fine("[GadomancyTransformer] Transforming " + name + ": " + transformedName);
 
-        ClassNode node = new ClassNode();
-        ClassReader reader = new ClassReader(bytes);
-        reader.accept(node, 0);
+            ClassNode node = new ClassNode();
+            ClassReader reader = new ClassReader(basicClass);
+            reader.accept(node, 0);
 
-        if (transformedName.equalsIgnoreCase(GadomancyTransformer.NAME_GOLEM_ENUM)) {
             // Create constructor accessor
             final MethodVisitor methodVisitor = node.visitMethod(
                     Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
@@ -64,11 +57,11 @@ public class GadomancyTransformer extends AccessTransformer {
             methodVisitor.visitInsn(Opcodes.ARETURN);
             methodVisitor.visitMaxs(12, 10);
             methodVisitor.visitEnd();
-        }
 
-        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        node.accept(writer);
-        bytes = writer.toByteArray();
-        return super.transform(name, transformedName, bytes);
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+            node.accept(writer);
+            return writer.toByteArray();
+        }
+        return basicClass;
     }
 }
