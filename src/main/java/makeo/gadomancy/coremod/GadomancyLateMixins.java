@@ -27,6 +27,7 @@ public class GadomancyLateMixins implements ILateMixinLoader {
                 mixins.add("thaumcraft.MixinWandManager");
             }
             mixins.add("thaumcraft.MixinConfigBlocks");
+            mixins.add("thaumcraft.MixinEnumGolemType");
         }
         return mixins;
     }

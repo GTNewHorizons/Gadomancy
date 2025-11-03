@@ -12,7 +12,6 @@ import makeo.gadomancy.common.network.packets.PacketSyncData;
 import makeo.gadomancy.common.network.packets.PacketTCNodeBolt;
 import makeo.gadomancy.common.network.packets.PacketTCNotificationText;
 import makeo.gadomancy.common.network.packets.PacketTCWispyLine;
-import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.network.packets.PacketUpdateOnlineState;
 
 /**
@@ -30,8 +29,6 @@ public class PacketHandler {
         int id = 0;
 
         // Random stuff
-        PacketHandler.INSTANCE
-                .registerMessage(PacketUpdateGolemTypeOrder.class, PacketUpdateGolemTypeOrder.class, id++, Side.CLIENT);
         PacketHandler.INSTANCE
                 .registerMessage(PacketStartAnimation.class, PacketStartAnimation.class, id++, Side.CLIENT);
         PacketHandler.INSTANCE
