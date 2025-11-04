@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import com.google.common.base.Throwables;
-
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import sun.misc.Unsafe;
 
@@ -95,17 +93,6 @@ public class Injector {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public <T> T invokeUnsafeConstructor(Class<?>[] paramTypes, Object... params) {
-        try {
-            final Method constructor = this.clazz.getMethod("gadomancyRawCreate", paramTypes);
-            Object created = constructor.invoke(null, params);
-            return (T) created;
-        } catch (Throwable e) {
-            Throwables.propagate(e);
-        }
-        throw new IllegalStateException();
     }
 
     public <T> T invokeMethod(String name, Object... params) {

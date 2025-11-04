@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -18,7 +19,7 @@ import makeo.gadomancy.common.utils.SimpleResourceLocation;
 public class ObsidianGolemType extends AdditionalGolemType {
 
     public ObsidianGolemType() {
-        super(50, 18, 0.27F, true, 2, 32, 100, 6);
+        super(EnumGolemType.valueOf("OBSIDIAN"), 50, 18, 0.27F, true, 2, 32, 100, 6);
     }
 
     @Override

@@ -16,7 +16,7 @@ import thaumcraft.common.entities.golems.EnumGolemType;
  */
 public abstract class AdditionalGolemType {
 
-    private EnumGolemType enumEntry;
+    private final EnumGolemType enumEntry;
     private Item placerItem;
     private String modId;
 
@@ -29,8 +29,9 @@ public abstract class AdditionalGolemType {
     public final int regenDelay;
     public final int strength;
 
-    public AdditionalGolemType(int maxHealth, int armor, float movementSpeed, boolean fireResist, int upgradeAmount,
-            int carryLimit, int regenDelay, int strength) {
+    public AdditionalGolemType(EnumGolemType enumEntry, int maxHealth, int armor, float movementSpeed,
+            boolean fireResist, int upgradeAmount, int carryLimit, int regenDelay, int strength) {
+        this.enumEntry = enumEntry;
         this.maxHealth = maxHealth;
         this.armor = armor;
         this.movementSpeed = movementSpeed;
@@ -72,11 +73,6 @@ public abstract class AdditionalGolemType {
 
     public String getModId() {
         return this.modId;
-    }
-
-    @Deprecated
-    public final void setEnumEntry(EnumGolemType enumEntry) {
-        this.enumEntry = enumEntry;
     }
 
     @Deprecated

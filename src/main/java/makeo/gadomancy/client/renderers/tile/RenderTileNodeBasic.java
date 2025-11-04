@@ -198,11 +198,11 @@ public class RenderTileNodeBasic {
     public static void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks,
             float size) {
         // Gadomancy Added event hook
-        EventHandlerRedirect.preNodeRender(tile);
+        EventHandlerRedirect.preNodeRender();
 
         if (!(tile instanceof INode)) {
             // Gadomancy Added event hook
-            EventHandlerRedirect.postNodeRender(tile);
+            EventHandlerRedirect.postNodeRender();
             return;
         }
         INode node = (INode) tile;
@@ -255,7 +255,7 @@ public class RenderTileNodeBasic {
                 ((TileNode) tile).drainCollision = null;
 
                 // Gadomancy Added event hook
-                EventHandlerRedirect.postNodeRender(tile);
+                EventHandlerRedirect.postNodeRender();
                 return;
             }
             MovingObjectPosition drainCollision = ((TileNode) tile).drainCollision;
@@ -299,6 +299,6 @@ public class RenderTileNodeBasic {
         }
 
         // Gadomancy Added event hook
-        EventHandlerRedirect.postNodeRender(tile);
+        EventHandlerRedirect.postNodeRender();
     }
 }

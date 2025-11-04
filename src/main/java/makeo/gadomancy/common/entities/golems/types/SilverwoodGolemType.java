@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.utils.SimpleResourceLocation;
+import thaumcraft.common.entities.golems.EnumGolemType;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -18,7 +19,7 @@ import makeo.gadomancy.common.utils.SimpleResourceLocation;
 public class SilverwoodGolemType extends AdditionalGolemType {
 
     public SilverwoodGolemType() {
-        super(20, 9, 0.38f, false, 3, 8, 75, 1);
+        super(EnumGolemType.valueOf("SILVERWOOD"), 20, 9, 0.38f, false, 3, 8, 75, 1);
     }
 
     @Override
