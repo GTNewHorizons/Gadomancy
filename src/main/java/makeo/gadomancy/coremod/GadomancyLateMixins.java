@@ -1,11 +1,13 @@
 package makeo.gadomancy.coremod;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
+
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 @LateMixin
 public class GadomancyLateMixins implements ILateMixinLoader {
@@ -17,12 +19,16 @@ public class GadomancyLateMixins implements ILateMixinLoader {
 
     @Override
     public List<String> getMixins(Set<String> loadedMods) {
+        final List<String> mixins = new ArrayList<>();
         if (loadedMods.contains("Thaumcraft")) {
-            // Replaces Thaumcraft's blockAiry with more nodes
-            // Config for this mixin is in the mixin itself
-            // config is not loaded at apply time
-            return Collections.singletonList("thaumcraft.MixinConfigBlocks");
+            if (FMLLaunchHandler.side().isClient()) {
+                mixins.add("thaumcraft.MixinRenderEventHandler");
+                mixins.add("thaumcraft.MixinTileNodeRenderer");
+                mixins.add("thaumcraft.MixinWandManager");
+            }
+            mixins.add("thaumcraft.MixinConfigBlocks");
+            mixins.add("thaumcraft.MixinEnumGolemType");
         }
-        return Collections.emptyList();
+        return mixins;
     }
 }

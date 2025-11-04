@@ -11,9 +11,7 @@ import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.network.PacketHandler;
 import makeo.gadomancy.common.network.packets.PacketSyncConfigs;
-import makeo.gadomancy.common.network.packets.PacketUpdateGolemTypeOrder;
 import makeo.gadomancy.common.network.packets.PacketUpdateOnlineState;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.world.TCMazeHandler;
 
 /**
@@ -28,7 +26,6 @@ public class EventHandlerNetwork {
     @SubscribeEvent
     public void on(PlayerEvent.PlayerLoggedInEvent e) {
         EntityPlayerMP p = (EntityPlayerMP) e.player;
-        PacketHandler.INSTANCE.sendTo(new PacketUpdateGolemTypeOrder(GolemEnumHelper.getCurrentMapping()), p);
         PacketHandler.INSTANCE.sendTo(new PacketSyncConfigs(), p);
         PacketHandler.INSTANCE
                 .sendTo(new PacketUpdateOnlineState(MinecraftServer.getServer().isServerInOnlineMode()), p);

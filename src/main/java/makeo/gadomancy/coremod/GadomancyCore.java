@@ -1,11 +1,13 @@
 package makeo.gadomancy.coremod;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import cpw.mods.fml.relauncher.IFMLCallHook;
+import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
@@ -13,14 +15,9 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
  * <p/>
  * Created by makeo @ 07.12.2015 21:17
  */
-@TransformerExclusions("makeo.gadomancy.coremod")
-@MCVersion("1.7.10")
-public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
-
-    @Override
-    public Void call() throws Exception {
-        return null;
-    }
+@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.TransformerExclusions("makeo.gadomancy.coremod")
+public class GadomancyCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
@@ -42,6 +39,16 @@ public class GadomancyCore implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String getAccessTransformerClass() {
-        return "makeo.gadomancy.coremod.GadomancyTransformer";
+        return null;
+    }
+
+    @Override
+    public String getMixinConfig() {
+        return "mixins.gadomancy.early.json";
+    }
+
+    @Override
+    public List<String> getMixins(Set<String> loadedCoreMods) {
+        return Collections.singletonList("minecraft.MixinEnchantmentHelper");
     }
 }

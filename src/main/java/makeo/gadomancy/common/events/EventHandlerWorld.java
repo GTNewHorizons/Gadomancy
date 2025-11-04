@@ -39,7 +39,6 @@ import makeo.gadomancy.common.entities.EntityItemElement;
 import makeo.gadomancy.common.items.ItemElement;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.ItemUtils;
 import makeo.gadomancy.common.utils.MiscUtils;
 import makeo.gadomancy.common.utils.NBTHelper;
@@ -161,10 +160,6 @@ public class EventHandlerWorld {
     public void on(WorldEvent.Load e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
             Gadomancy.loadModData();
-
-            GolemEnumHelper.validateSavedMapping();
-            GolemEnumHelper.reorderEnum();
-
             TCMazeHandler.init();
         }
     }

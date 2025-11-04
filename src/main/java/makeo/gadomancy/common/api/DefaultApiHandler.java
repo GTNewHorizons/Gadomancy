@@ -23,7 +23,6 @@ import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.entities.golems.ItemAdditionalGolemPlacer;
 import makeo.gadomancy.common.entities.golems.nbt.ExtendedGolemProperties;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
-import makeo.gadomancy.common.utils.GolemEnumHelper;
 import makeo.gadomancy.common.utils.NBTHelper;
 import makeo.gadomancy.common.utils.StringHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -39,20 +38,17 @@ public class DefaultApiHandler implements IApiHandler {
 
     private static final Logger log = LogManager.getLogger("Gadomancy_API");
 
-    private static Map<String, AdditionalGolemType> additionalGolemTypes = new HashMap<String, AdditionalGolemType>();
+    private static final Map<String, AdditionalGolemType> additionalGolemTypes = new HashMap<>();
 
     @Override
     public boolean registerAdditionalGolemType(String name, String modId, AdditionalGolemType newType) {
         String uniqueName = name.toUpperCase();
         if (!DefaultApiHandler.additionalGolemTypes.containsKey(uniqueName)) {
-            GolemEnumHelper.addGolemType(uniqueName, newType);
-
             ItemAdditionalGolemPlacer placerItem = new ItemAdditionalGolemPlacer(newType);
             GameRegistry
                     .registerItem(placerItem, "item" + StringHelper.firstToUpper(name.toLowerCase()) + "GolemPlacer");
             newType.setModId(modId);
             newType.setPlacerItem(placerItem);
-
             DefaultApiHandler.additionalGolemTypes.put(uniqueName, newType);
             return true;
         }

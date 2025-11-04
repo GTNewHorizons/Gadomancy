@@ -15,6 +15,7 @@ public class MixinConfigBlocks {
 
     @Redirect(method = "initializeBlocks", at = @At(value = "NEW", target = "()Lthaumcraft/common/blocks/BlockAiry;"))
     private static BlockAiry gadomancy$replaceBlockAiry() {
+        // Replaces Thaumcraft's blockAiry with more nodes
         return ModConfig.enableAdditionalNodeTypes ? new BlockNode() : new BlockAiry();
     }
 }
