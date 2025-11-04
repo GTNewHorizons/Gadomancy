@@ -47,7 +47,7 @@ public class RegisteredPotions {
     private static <T extends Potion> T registerPotion(Class<T> potionClass) {
         int id = ModConfig.loadPotionId(potionClass.getSimpleName());
         if (id == -1) {
-            for (int i = 0; i < Potion.potionTypes.length; i++) {
+            for (int i = 1; i < Potion.potionTypes.length; i++) {
                 if (Potion.potionTypes[i] == null) {
                     id = i;
                     break;
