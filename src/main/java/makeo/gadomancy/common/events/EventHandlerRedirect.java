@@ -5,6 +5,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,6 +47,18 @@ public class EventHandlerRedirect {
         if (MiscUtils.isANotApprovedOrMisunderstoodPersonFromMoreDoor(player)) return true;
         return stack != null
                 && EnchantmentHelper.getEnchantmentLevel(RegisteredEnchantments.revealer.effectId, stack) > 0;
+    }
+
+    // this overload is called by DragonAPI
+    @SideOnly(Side.CLIENT)
+    public static void preNodeRender(TileEntity tile) {
+        EventHandlerRedirect.preNodeRender();
+    }
+
+    // this overload is called by DragonAPI
+    @SideOnly(Side.CLIENT)
+    public static void postNodeRender(TileEntity tile) {
+        EventHandlerRedirect.postNodeRender();
     }
 
     @SideOnly(Side.CLIENT)
