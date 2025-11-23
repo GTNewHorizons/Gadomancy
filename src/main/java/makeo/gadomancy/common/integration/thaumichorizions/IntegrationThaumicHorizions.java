@@ -19,7 +19,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.api.ClickBehavior;
 import makeo.gadomancy.client.ClientProxy;
-import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
@@ -87,7 +86,8 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
 
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null && stack.getItem().onLeftClickEntity(stack, player, e.target) && e.target.isDead) {
-                CommonProxy.EVENT_HANDLER_GOLEM.on(new PlaySoundAtEntityEvent(e.target, "thaumcraft:zap", 0.5f, 1.0f));
+                Gadomancy.proxy.EVENT_HANDLER_GOLEM
+                        .on(new PlaySoundAtEntityEvent(e.target, "thaumcraft:zap", 0.5f, 1.0f));
             }
         }
     }
