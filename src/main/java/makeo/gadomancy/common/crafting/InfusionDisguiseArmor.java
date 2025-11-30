@@ -36,8 +36,13 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
             new ItemStack(ConfigItems.itemResource, 1, 3) };
     public static final AspectList ASPECTS = new AspectList().add(Aspect.SLIME, 12).add(Aspect.ARMOR, 10)
             .add(Aspect.MAGIC, 8);
+    private final Map<ItemStack, List<ItemStack>> cachedItems = new HashMap<>();
+    private final Object cachedOutput;
 
-    private Map<ItemStack, List<ItemStack>> cachedItems = new HashMap<ItemStack, List<ItemStack>>();
+    public InfusionDisguiseArmor() {
+        super();
+        this.cachedOutput = super.getRecipeOutput();
+    }
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
@@ -47,7 +52,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
         }
 
         List<ItemStack> copy = (List<ItemStack>) input.clone();
-        List<ItemStack> result = new ArrayList<ItemStack>(copy.size());
+        List<ItemStack> result = new ArrayList<>(copy.size());
         for (ItemStack required : InfusionDisguiseArmor.COMPONENTS) {
             boolean contains = false;
             for (int i = 0; i < copy.size(); i++) {
@@ -77,7 +82,7 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
     public ItemStack[] getComponents(ItemStack input) {
         List<ItemStack> components = this.cachedItems.get(input);
         if (components != null) {
-            return components.toArray(new ItemStack[components.size()]);
+            return components.toArray(new ItemStack[0]);
         }
         return new ItemStack[0];
     }
@@ -100,6 +105,11 @@ public class InfusionDisguiseArmor extends InfusionRunicAugmentRecipe {
             return InfusionDisguiseArmor.disguiseStack(input, components.get(0));
         }
         return input;
+    }
+
+    @Override
+    public Object getRecipeOutput() {
+        return this.cachedOutput;
     }
 
     public static ItemStack disguiseStack(ItemStack stack, ItemStack disguise) {
