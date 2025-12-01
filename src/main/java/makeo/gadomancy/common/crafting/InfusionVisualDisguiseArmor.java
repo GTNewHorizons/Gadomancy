@@ -60,23 +60,19 @@ public class InfusionVisualDisguiseArmor extends InfusionRecipe {
     }
 
     private void findArmorItems() {
-        List<ItemStack> items = new ArrayList<ItemStack>();
+        List<ItemStack> items = new ArrayList<>();
         for (Object o : Item.itemRegistry) {
-            if (o instanceof Item && ((Item) o).getCreativeTab() != null) {
-                List list = new ArrayList();
-
-                try {
-                    ((Item) o).getSubItems((Item) o, ((Item) o).getCreativeTab(), list);
-                } catch (Throwable ignored) {}
-
-                for (Object o2 : list) {
-                    if (o2 != null && o2 instanceof ItemStack && EntityLiving.getArmorPosition((ItemStack) o2) != 0) {
-                        items.add((ItemStack) o2);
-                    }
+            if (o instanceof Item item && item.getCreativeTab() != null) {
+                final ItemStack stack = new ItemStack(item);
+                if (EntityLiving.getArmorPosition(stack) != 0) {
+                    try {
+                        item.getSubItems(item, item.getCreativeTab(), items);
+                    } catch (Throwable ignored) {}
                 }
             }
         }
-        InfusionVisualDisguiseArmor.armorItems = items.toArray(new ItemStack[items.size()]);
+        items.removeIf(stack -> stack == null || EntityLiving.getArmorPosition(stack) == 0);
+        InfusionVisualDisguiseArmor.armorItems = items.toArray(new ItemStack[0]);
     }
 
     private boolean canSee(ItemStack stack) {
