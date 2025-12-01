@@ -25,14 +25,14 @@ import thaumcraft.common.entities.golems.EnumGolemType;
 public class InfusionUpgradeRecipe extends InfusionRecipe {
 
     private static final ItemStack DEFAULT_OUTPUT = new ItemStack(Blocks.dirt);
+    private final GolemUpgrade<?> upgrade;
+    private final Object cachedOutput;
 
-    private final GolemUpgrade upgrade;
-
-    private InfusionUpgradeRecipe(String research, GolemUpgrade upgrade, int inst, AspectList aspects2, ItemStack input,
-            ItemStack[] recipe) {
+    private InfusionUpgradeRecipe(String research, GolemUpgrade<?> upgrade, int inst, AspectList aspects2,
+            ItemStack input, ItemStack[] recipe) {
         super(research, InfusionUpgradeRecipe.DEFAULT_OUTPUT, inst, aspects2, input, recipe);
-
         this.upgrade = upgrade;
+        this.cachedOutput = super.getRecipeOutput();
     }
 
     @Override
@@ -45,6 +45,11 @@ public class InfusionUpgradeRecipe extends InfusionRecipe {
         ItemStack output = input.copy();
         this.upgrade.addUpgrade(output);
         return output;
+    }
+
+    @Override
+    public Object getRecipeOutput() {
+        return this.cachedOutput;
     }
 
     public static InfusionUpgradeRecipe[] createRecipes(String research, GolemUpgrade upgrade, int inst,
