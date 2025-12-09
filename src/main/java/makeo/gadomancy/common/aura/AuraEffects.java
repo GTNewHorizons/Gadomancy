@@ -33,7 +33,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 import makeo.gadomancy.api.AuraEffect;
-import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationThaumicTinkerer;
 import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import makeo.gadomancy.common.registration.RegisteredPotions;
@@ -201,8 +201,9 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if (!EventHandlerEntity.registeredLuxPylons.contains(originTile))
-                EventHandlerEntity.registeredLuxPylons.add(originTile);
+            if (!Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.contains(originTile)) {
+                Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.add(originTile);
+            }
         }
 
         @Override

@@ -14,6 +14,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
@@ -83,12 +85,21 @@ public class Gadomancy {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         Gadomancy.proxy.initalize();
-
         FMLInterModComms.sendMessage(Thaumcraft.MODID, "dimensionBlacklist", ModConfig.dimOuterId + ":0");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         Gadomancy.proxy.postInitalize();
+    }
+
+    @Mod.EventHandler
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        Gadomancy.proxy.onServerAboutToStart(event);
+    }
+
+    @Mod.EventHandler
+    public void onServerStopped(FMLServerStoppedEvent event) {
+        Gadomancy.proxy.onServerStopped(event);
     }
 }

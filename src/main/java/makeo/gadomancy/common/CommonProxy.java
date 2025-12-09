@@ -12,10 +12,11 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
-import makeo.gadomancy.client.ClientProxy;
 import makeo.gadomancy.common.aura.AuraEffects;
 import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
@@ -46,22 +47,18 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 29.11.2014 14:18
  */
 public class CommonProxy implements IGuiHandler {
 
     public static boolean serverOnlineState;
 
-    public static final EventHandlerGolem EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-
     public void onConstruct() {}
 
     public void preInitalize() {
         PacketHandler.init();
-
         RegisteredItems.preInit();
-
         RegisteredBlocks.init();
         RegisteredItems.init();
         RegisteredGolemStuff.init();
@@ -69,21 +66,10 @@ public class CommonProxy implements IGuiHandler {
 
     public void initalize() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
-
-        MinecraftForge.EVENT_BUS.register(CommonProxy.EVENT_HANDLER_GOLEM);
-        FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
-        EventHandlerWorld worldEventHandler = new EventHandlerWorld();
-        MinecraftForge.EVENT_BUS.register(worldEventHandler);
-        FMLCommonHandler.instance().bus().register(worldEventHandler);
-        MinecraftForge.EVENT_BUS.register(new EventHandlerEntity());
-
         RegisteredEnchantments.init();
         RegisteredRecipes.init();
-
         SyncDataHolder.initialize();
-
         RegisteredEntities.init();
-
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
     }
@@ -91,14 +77,10 @@ public class CommonProxy implements IGuiHandler {
     public void postInitalize() {
         RegisteredPotions.init();
         AuraEffects.AER.getTickInterval(); // initalize AuraEffects
-
         RegisteredResearches.init();
         RegisteredIntegrations.init();
-
         RegisteredResearches.postInit();
-
         RegisteredItems.postInit();
-
         ModSubstitutions.postInit();
     }
 
@@ -125,15 +107,12 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID) {
-            case 0:
-                return new ContainerGolem(player.inventory, ((EntityGolemBase) world.getEntityByID(x)).inventory);
-            case 1:
-                return new ContainerInfusionClaw(player.inventory, (IInventory) world.getTileEntity(x, y, z));
-            case 2:
-                return new ContainerArcanePackager(player.inventory, (IInventory) world.getTileEntity(x, y, z));
-        }
-        return null;
+        return switch (ID) {
+            case 0 -> new ContainerGolem(player.inventory, ((EntityGolemBase) world.getEntityByID(x)).inventory);
+            case 1 -> new ContainerInfusionClaw(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            case 2 -> new ContainerArcanePackager(player.inventory, (IInventory) world.getTileEntity(x, y, z));
+            default -> null;
+        };
     }
 
     @Override
@@ -144,6 +123,35 @@ public class CommonProxy implements IGuiHandler {
     public void runDelayedClientSide(Runnable run) {}
 
     public Side getSide() {
-        return this instanceof ClientProxy ? Side.CLIENT : Side.SERVER;
+        return Side.SERVER;
+    }
+
+    public EventHandlerGolem EVENT_HANDLER_GOLEM;
+    public EventHandlerNetwork EVENT_HANDLER_NETWORK;
+    public EventHandlerWorld EVENT_HANDLER_WORLD;
+    public EventHandlerEntity EVENT_HANDLER_ENTITY;
+
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        EVENT_HANDLER_GOLEM = new EventHandlerGolem();
+        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
+        EVENT_HANDLER_NETWORK = new EventHandlerNetwork();
+        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_NETWORK);
+        EVENT_HANDLER_WORLD = new EventHandlerWorld();
+        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
+        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
+        EVENT_HANDLER_ENTITY = new EventHandlerEntity();
+        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_ENTITY);
+    }
+
+    public void onServerStopped(FMLServerStoppedEvent event) {
+        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_GOLEM);
+        EVENT_HANDLER_GOLEM = null;
+        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_NETWORK);
+        EVENT_HANDLER_NETWORK = null;
+        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
+        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
+        EVENT_HANDLER_WORLD = null;
+        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_ENTITY);
+        EVENT_HANDLER_ENTITY = null;
     }
 }
