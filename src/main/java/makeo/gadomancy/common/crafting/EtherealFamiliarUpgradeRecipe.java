@@ -17,20 +17,22 @@ import thaumcraft.api.crafting.InfusionRecipe;
  */
 public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
-    private FamiliarAugment toAdd;
-    private int requiredPreviousLevel;
+    private final FamiliarAugment toAdd;
+    private final int requiredPreviousLevel;
+    private final Object cachedOutput;
 
     public EtherealFamiliarUpgradeRecipe(String research, int inst, AspectList aspects2, ItemStack familiarIn,
             FamiliarAugment toAdd, int reqPrev, ItemStack... surroundings) {
         super(research, null, inst, aspects2, familiarIn, surroundings);
         this.toAdd = toAdd;
         this.requiredPreviousLevel = reqPrev;
+        this.cachedOutput = super.getRecipeOutput();
     }
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack in, World world, EntityPlayer player) {
         if (in == null || !(in.getItem() instanceof ItemEtherealFamiliar)) return false; // We call it "FamiliarAugment"
-                                                                                         // Recipe for a reason..
+        // Recipe for a reason..
         if (this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemEtherealFamiliar))
             return false; // A bit late but still working..
 
@@ -56,7 +58,7 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
         // Normal infusionrecipe stuff...
 
         ItemStack inCopy;
-        ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> ii = new ArrayList<>();
         for (ItemStack is : input) {
             ii.add(is.copy());
         }
@@ -81,9 +83,14 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
     }
 
     @Override
-    public Object getRecipeOutput(ItemStack in) {
-        ItemStack inputCopy = in.copy();
+    public Object getRecipeOutput(ItemStack input) {
+        ItemStack inputCopy = input.copy();
         ItemEtherealFamiliar.incrementAugmentLevel(inputCopy, this.toAdd);
         return inputCopy;
+    }
+
+    @Override
+    public Object getRecipeOutput() {
+        return this.cachedOutput;
     }
 }
