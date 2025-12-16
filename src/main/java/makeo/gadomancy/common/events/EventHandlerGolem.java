@@ -50,6 +50,8 @@ import thaumcraft.common.items.wands.ItemWandCasting;
  */
 public class EventHandlerGolem {
 
+    private final Map<EntityGolemBase, EntityPlayer> markedGolems = new HashMap<>();
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
         if (e.entity instanceof EntityGolemBase) {
@@ -146,8 +148,6 @@ public class EventHandlerGolem {
             }
         }
     }
-
-    private final Map<EntityGolemBase, EntityPlayer> markedGolems = new HashMap<EntityGolemBase, EntityPlayer>();
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void on(PlaySoundAtEntityEvent event) {

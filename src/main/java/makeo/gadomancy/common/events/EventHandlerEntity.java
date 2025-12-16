@@ -38,7 +38,7 @@ import thaumcraft.common.items.armor.Hover;
  */
 public class EventHandlerEntity {
 
-    public static List<ChunkCoordinates> registeredLuxPylons = new ArrayList<ChunkCoordinates>();
+    public final List<ChunkCoordinates> registeredLuxPylons = new ArrayList<>();
 
     /*
      * @SubscribeEvent(priority = EventPriority.LOWEST) public void on(EntityEvent.EntityConstructing e) { if (e.entity
@@ -51,7 +51,7 @@ public class EventHandlerEntity {
         if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             double rangeSq = AuraEffects.LUX.getRange() * AuraEffects.LUX.getRange();
             Vector3 entityPos = MiscUtils.getPositionVector(event.entity);
-            for (ChunkCoordinates luxPylons : EventHandlerEntity.registeredLuxPylons) {
+            for (ChunkCoordinates luxPylons : registeredLuxPylons) {
                 Vector3 pylon = Vector3.fromCC(luxPylons);
                 if (entityPos.distanceSquared(pylon) <= rangeSq) {
                     event.setResult(Event.Result.DENY);

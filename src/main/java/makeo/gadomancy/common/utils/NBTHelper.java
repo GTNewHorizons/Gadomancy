@@ -50,7 +50,7 @@ public class NBTHelper {
 
     public static boolean hasPersistentData(NBTTagCompound base) {
         NBTBase modData = base.getTag(Gadomancy.MODID);
-        return modData != null && modData instanceof NBTTagCompound;
+        return modData instanceof NBTTagCompound;
     }
 
     public static void removePersistentData(Entity entity) {

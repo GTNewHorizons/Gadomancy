@@ -22,6 +22,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.client.events.RenderEventHandler;
@@ -309,5 +310,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void runDelayedClientSide(Runnable run) {
         this.clientActions.add(run);
+    }
+
+    @Override
+    public Side getSide() {
+        return Side.CLIENT;
     }
 }

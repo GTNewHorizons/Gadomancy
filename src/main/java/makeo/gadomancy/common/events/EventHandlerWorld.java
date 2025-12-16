@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,7 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -56,7 +54,9 @@ import thaumcraft.common.tiles.TileJarFillable;
  */
 public class EventHandlerWorld {
 
-    public Map<EntityItem, Long> trackedItems = new HashMap<EntityItem, Long>();
+    private final Map<EntityItem, Long> trackedItems = new HashMap<>();
+    private Map<EntityPlayer, Integer> interacts;
+    private int serverTick;
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void on(EntityJoinWorldEvent event) {
@@ -146,16 +146,6 @@ public class EventHandlerWorld {
         return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
-    private int serverTick;
-    private Entity lastUpdated;
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(LivingEvent.LivingUpdateEvent e) {
-        if (!e.entityLiving.worldObj.isRemote) {
-            this.lastUpdated = e.entityLiving;
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
@@ -200,11 +190,9 @@ public class EventHandlerWorld {
         SyncDataHolder.doNecessaryUpdates();
         this.serverTick++;
         if ((this.serverTick & 15) == 0) {
-            EventHandlerEntity.registeredLuxPylons.clear();
+            Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.clear();
         }
     }
-
-    private Map<EntityPlayer, Integer> interacts;
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void on(BlockEvent.PlaceEvent e) {
@@ -237,7 +225,7 @@ public class EventHandlerWorld {
         if (!event.world.isRemote) {
             if (event.block == RegisteredBlocks.blockNodeManipulator) {
                 TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
-                if (te != null && te instanceof TileNodeManipulator) {
+                if (te instanceof TileNodeManipulator) {
                     if (((TileNodeManipulator) te).isInMultiblock()) ((TileNodeManipulator) te).breakMultiblock();
                 }
             }
@@ -280,20 +268,19 @@ public class EventHandlerWorld {
     }
 
     private boolean isStickyJar(ItemStack stack) {
-        return stack != null && RegisteredItems.isStickyableJar(stack)
-                && stack.hasTagCompound()
+        return RegisteredItems.isStickyableJar(stack) && stack.hasTagCompound()
                 && stack.stackTagCompound.getBoolean("isStickyJar");
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(ItemTooltipEvent e) {
-        if (e.toolTip.size() > 0 && e.itemStack.hasTagCompound()) {
+        if (!e.toolTip.isEmpty() && e.itemStack.hasTagCompound()) {
             if (e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
-                e.toolTip.add(1, "\u00a7a" + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
+                e.toolTip.add(1, EnumChatFormatting.GREEN + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
             }
         }
 
-        if (e.toolTip.size() > 0 && NBTHelper.hasPersistentData(e.itemStack)) {
+        if (!e.toolTip.isEmpty() && NBTHelper.hasPersistentData(e.itemStack)) {
             NBTTagCompound compound = NBTHelper.getPersistentData(e.itemStack);
             if (compound.hasKey("disguise")) {
                 NBTBase base = compound.getTag("disguise");
@@ -306,7 +293,7 @@ public class EventHandlerWorld {
                 } else {
                     lore = StatCollector.translateToLocal("gadomancy.lore.disguise.none");
                 }
-                e.toolTip.add("\u00a7a" + lore);
+                e.toolTip.add(EnumChatFormatting.GREEN + lore);
             }
         }
     }
