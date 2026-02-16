@@ -65,6 +65,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void initalize() {
+        EVENT_HANDLER_GOLEM = new EventHandlerGolem();
+        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
         NetworkRegistry.INSTANCE.registerGuiHandler(Gadomancy.instance, this);
         RegisteredEnchantments.init();
         RegisteredRecipes.init();
@@ -132,8 +134,6 @@ public class CommonProxy implements IGuiHandler {
     public EventHandlerEntity EVENT_HANDLER_ENTITY;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
         EVENT_HANDLER_NETWORK = new EventHandlerNetwork();
         FMLCommonHandler.instance().bus().register(EVENT_HANDLER_NETWORK);
         EVENT_HANDLER_WORLD = new EventHandlerWorld();
@@ -144,8 +144,6 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_GOLEM);
-        EVENT_HANDLER_GOLEM = null;
         FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_NETWORK);
         EVENT_HANDLER_NETWORK = null;
         MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
