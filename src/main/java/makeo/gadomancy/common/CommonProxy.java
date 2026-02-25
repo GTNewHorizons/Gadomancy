@@ -130,15 +130,15 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public EventHandlerGolemServer handlerGolemServer;
-    private EventHandlerWorld EVENT_HANDLER_WORLD;
+    private EventHandlerWorld handlerWorld;
     public EventHandlerEntityServer handlerEntityServer;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         handlerGolemServer = new EventHandlerGolemServer();
         MinecraftForge.EVENT_BUS.register(handlerGolemServer);
-        EVENT_HANDLER_WORLD = new EventHandlerWorld();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
-        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
+        handlerWorld = new EventHandlerWorld();
+        MinecraftForge.EVENT_BUS.register(handlerWorld);
+        FMLCommonHandler.instance().bus().register(handlerWorld);
         handlerEntityServer = new EventHandlerEntityServer();
         MinecraftForge.EVENT_BUS.register(handlerEntityServer);
     }
@@ -146,9 +146,9 @@ public class CommonProxy implements IGuiHandler {
     public void onServerStopped(FMLServerStoppedEvent event) {
         MinecraftForge.EVENT_BUS.unregister(handlerGolemServer);
         handlerGolemServer = null;
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
-        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
-        EVENT_HANDLER_WORLD = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerWorld);
+        FMLCommonHandler.instance().bus().unregister(handlerWorld);
+        handlerWorld = null;
         MinecraftForge.EVENT_BUS.unregister(handlerEntityServer);
         handlerEntityServer = null;
     }

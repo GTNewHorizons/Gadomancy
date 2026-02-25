@@ -61,7 +61,7 @@ public class EventHandlerWorld {
     public void on(EntityJoinWorldEvent event) {
         if (!event.world.isRemote && event.entity instanceof EntityItem) {
             ItemStack stack = ((EntityItem) event.entity).getEntityItem();
-            if (this.isDisguised(stack)) {
+            if (isDisguised(stack)) {
                 long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
                 this.trackedItems.put((EntityItem) event.entity, time);
             }
@@ -93,7 +93,7 @@ public class EventHandlerWorld {
                 EntityItem entity = entry.getKey();
 
                 if (event.world == entity.worldObj) {
-                    if (entity.isDead || !this.isDisguised(entity.getEntityItem())) {
+                    if (entity.isDead || !isDisguised(entity.getEntityItem())) {
                         iterator.remove();
                         continue;
                     }
@@ -141,7 +141,7 @@ public class EventHandlerWorld {
         }
     }
 
-    private boolean isDisguised(ItemStack stack) {
+    private static boolean isDisguised(ItemStack stack) {
         return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
