@@ -227,15 +227,14 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInitalize() {
         IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
-        if (manager instanceof SimpleReloadableResourceManager) {
-            SimpleReloadableResourceManager rm = (SimpleReloadableResourceManager) manager;
+        if (manager instanceof SimpleReloadableResourceManager rm) {
             rm.registerReloadListener(ResourceReloadListener.getInstance());
         }
 
         MinecraftForge.EVENT_BUS.register(EffectHandler.getInstance());
-        MinecraftForge.EVENT_BUS.register(new RenderEventHandler());
-        FMLCommonHandler.instance().bus().register(new RenderEventHandler());
-
+        final RenderEventHandler renderHandler = new RenderEventHandler();
+        MinecraftForge.EVENT_BUS.register(renderHandler);
+        FMLCommonHandler.instance().bus().register(renderHandler);
         FMLCommonHandler.instance().bus().register(new ClientHandler());
 
         super.postInitalize();
