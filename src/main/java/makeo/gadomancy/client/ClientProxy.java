@@ -79,6 +79,7 @@ import makeo.gadomancy.common.blocks.tiles.TileRemoteJar;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.entities.EntityAuraCore;
 import makeo.gadomancy.common.entities.EntityPermNoClipItem;
+import makeo.gadomancy.common.events.EventHandlerTooltips;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import makeo.gadomancy.common.utils.Injector;
@@ -95,7 +96,7 @@ import thaumcraft.common.tiles.TileEldritchObelisk;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 29.11.2014 14:15
  */
 public class ClientProxy extends CommonProxy {
@@ -231,6 +232,7 @@ public class ClientProxy extends CommonProxy {
             rm.registerReloadListener(ResourceReloadListener.getInstance());
         }
 
+        MinecraftForge.EVENT_BUS.register(new EventHandlerTooltips());
         MinecraftForge.EVENT_BUS.register(EffectHandler.getInstance());
         final RenderEventHandler renderHandler = new RenderEventHandler();
         MinecraftForge.EVENT_BUS.register(renderHandler);

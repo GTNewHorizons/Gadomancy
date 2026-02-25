@@ -17,7 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
@@ -270,31 +269,5 @@ public class EventHandlerWorld {
     private boolean isStickyJar(ItemStack stack) {
         return RegisteredItems.isStickyableJar(stack) && stack.hasTagCompound()
                 && stack.stackTagCompound.getBoolean("isStickyJar");
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void on(ItemTooltipEvent e) {
-        if (!e.toolTip.isEmpty() && e.itemStack.hasTagCompound()) {
-            if (e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
-                e.toolTip.add(1, EnumChatFormatting.GREEN + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
-            }
-        }
-
-        if (!e.toolTip.isEmpty() && NBTHelper.hasPersistentData(e.itemStack)) {
-            NBTTagCompound compound = NBTHelper.getPersistentData(e.itemStack);
-            if (compound.hasKey("disguise")) {
-                NBTBase base = compound.getTag("disguise");
-                String lore;
-                if (base instanceof NBTTagCompound) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
-                    lore = String.format(
-                            StatCollector.translateToLocal("gadomancy.lore.disguise.item"),
-                            EnumChatFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
-                } else {
-                    lore = StatCollector.translateToLocal("gadomancy.lore.disguise.none");
-                }
-                e.toolTip.add(EnumChatFormatting.GREEN + lore);
-            }
-        }
     }
 }

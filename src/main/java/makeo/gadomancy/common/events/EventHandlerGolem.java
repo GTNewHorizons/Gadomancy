@@ -9,7 +9,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,7 +16,6 @@ import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -45,7 +43,7 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 13.03.2015 13:56
  */
 public class EventHandlerGolem {
@@ -54,19 +52,15 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
-        if (e.entity instanceof EntityGolemBase) {
-            EntityGolemBase golem = (EntityGolemBase) e.entity;
-
+        if (e.entity instanceof EntityGolemBase golem) {
             golem.registerExtendedProperties(Gadomancy.MODID, new ExtendedGolemProperties(golem));
-
             golem.getDataWatcher().addObject(ModConfig.golemDatawatcherId, "");
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void on(EntityEvent.EnteringChunk event) {
-        if (event.entity instanceof EntityGolemBase) {
-            EntityGolemBase golem = (EntityGolemBase) event.entity;
+        if (event.entity instanceof EntityGolemBase golem) {
             if (GadomancyApi.isAdditionalGolemType(golem.getGolemType())) {
                 ExtendedGolemProperties props = (ExtendedGolemProperties) event.entity
                         .getExtendedProperties(Gadomancy.MODID);
@@ -80,18 +74,15 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void on(EntityJoinWorldEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase) {
-            EntityGolemBase golem = (EntityGolemBase) event.entity;
+        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase golem) {
             ExtendedGolemProperties props = (ExtendedGolemProperties) golem.getExtendedProperties(Gadomancy.MODID);
             if (props != null) {
                 props.setWrapperIfNeeded();
             }
         }
 
-        if (event.entity instanceof EntityItem) {
-            EntityItem item = (EntityItem) event.entity;
+        if (event.entity instanceof EntityItem item) {
             ItemStack stack = item.getEntityItem();
-
             if (stack.getItem() == ConfigItems.itemGolemPlacer) {
                 AdditionalGolemType type = GadomancyApi
                         .getAdditionalGolemType(EnumGolemType.getType(stack.getItemDamage()));
@@ -124,8 +115,7 @@ public class EventHandlerGolem {
                         .onItemUseFirst(itemInHand, e.entityPlayer, e.world, e.x, e.y, e.z, e.face, 0, 0, 0)) {
                     e.setCanceled(true);
                     Entity entity = e.world.getEntityByID(entityId);
-                    if (entity != null && entity instanceof EntityGolemBase) {
-                        EntityGolemBase golem = (EntityGolemBase) entity;
+                    if (entity instanceof EntityGolemBase golem) {
 
                         // move persistent data to entity
                         golem.getEntityData().setTag(Gadomancy.MODID, NBTHelper.getPersistentData(itemInHand).copy());
@@ -151,11 +141,10 @@ public class EventHandlerGolem {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void on(PlaySoundAtEntityEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase
+        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase golem
                 && event.name.equals("thaumcraft:zap")
                 && event.volume == 0.5F
                 && event.pitch == 1.0F) {
-            EntityGolemBase golem = (EntityGolemBase) event.entity;
             if (this.markedGolems.containsKey(golem)) {
                 EntityPlayer player = this.markedGolems.get(golem);
                 this.markedGolems.remove(golem);
@@ -210,8 +199,7 @@ public class EventHandlerGolem {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(LivingHurtEvent event) {
         if (!event.entity.worldObj.isRemote) {
-            if (event.entity instanceof EntityGolemBase) {
-                EntityGolemBase golem = (EntityGolemBase) event.entity;
+            if (event.entity instanceof EntityGolemBase golem) {
                 if (event.ammount > 0 && RegisteredGolemStuff.upgradeRunicShield.hasUpgrade(golem)) {
                     event.ammount = RegisteredGolemStuff.upgradeRunicShield.absorb(golem, event.ammount, event.source);
                 }
@@ -229,8 +217,7 @@ public class EventHandlerGolem {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityInteractEvent event) {
         ItemStack heldItem = event.entityPlayer.getHeldItem();
-        if (event.target instanceof EntityGolemBase) {
-            EntityGolemBase golem = (EntityGolemBase) event.target;
+        if (event.target instanceof EntityGolemBase golem) {
 
             if (golem.getCore() < 0) {
                 if (heldItem != null) {
@@ -270,38 +257,6 @@ public class EventHandlerGolem {
                     AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
                     if (core != null && !core.hasMarkers()) {
                         event.setCanceled(true);
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(ItemTooltipEvent event) {
-        if (event.itemStack != null) {
-            if (event.itemStack.getItem() instanceof ItemGolemPlacer
-                    || event.itemStack.getItem() instanceof ItemAdditionalGolemPlacer) {
-                if (RegisteredGolemStuff.upgradeRunicShield.hasUpgrade(event.itemStack)) {
-                    event.toolTip.add(
-                            "\u00a76" + StatCollector.translateToLocal("item.runic.charge")
-                                    + " +"
-                                    + RegisteredGolemStuff.upgradeRunicShield.getChargeLimit(event.itemStack));
-                }
-
-                AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(event.itemStack);
-                if (core != null) {
-                    String searchStr = StatCollector.translateToLocal("item.ItemGolemCore.name");
-                    for (int i = 0; i < event.toolTip.size(); i++) {
-                        String line = event.toolTip.get(i);
-                        if (line.contains(searchStr)) {
-                            int index = line.indexOf('\u00a7', searchStr.length()) + 2;
-                            event.toolTip.remove(i);
-                            event.toolTip.add(
-                                    i,
-                                    line.substring(0, index)
-                                            + StatCollector.translateToLocal(core.getUnlocalizedName()));
-                            break;
-                        }
                     }
                 }
             }
