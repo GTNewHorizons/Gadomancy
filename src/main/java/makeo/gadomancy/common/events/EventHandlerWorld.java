@@ -189,7 +189,7 @@ public class EventHandlerWorld {
         SyncDataHolder.doNecessaryUpdates();
         this.serverTick++;
         if ((this.serverTick & 15) == 0) {
-            Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.clear();
+            Gadomancy.proxy.handlerEntityServer.registeredLuxPylons.clear();
         }
     }
 
@@ -198,7 +198,7 @@ public class EventHandlerWorld {
         if (e.isCanceled()) {
             if (this.interacts != null) this.interacts.remove(e.player);
         } else {
-            if (!e.world.isRemote && this.isStickyJar(e.itemInHand)) {
+            if (!e.world.isRemote && isStickyJar(e.itemInHand)) {
                 TileEntity parent = e.world.getTileEntity(e.x, e.y, e.z);
                 if (parent instanceof TileJarFillable) {
                     int metadata = e.world.getBlockMetadata(e.x, e.y, e.z);
@@ -251,7 +251,7 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(PlayerInteractEvent e) {
         if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
-                && this.isStickyJar(e.entityPlayer.getHeldItem())) {
+                && isStickyJar(e.entityPlayer.getHeldItem())) {
             if (this.interacts == null) {
                 this.interacts = new HashMap<EntityPlayer, Integer>();
             }
@@ -266,7 +266,7 @@ public class EventHandlerWorld {
         }
     }
 
-    private boolean isStickyJar(ItemStack stack) {
+    private static boolean isStickyJar(ItemStack stack) {
         return RegisteredItems.isStickyableJar(stack) && stack.hasTagCompound()
                 && stack.stackTagCompound.getBoolean("isStickyJar");
     }

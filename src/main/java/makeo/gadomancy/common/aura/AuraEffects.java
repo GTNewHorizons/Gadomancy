@@ -201,8 +201,8 @@ public class AuraEffects {
 
         @Override
         public void doEntityEffect(ChunkCoordinates originTile, Entity e) {
-            if (!Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.contains(originTile)) {
-                Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.add(originTile);
+            if (!Gadomancy.proxy.handlerEntityServer.registeredLuxPylons.contains(originTile)) {
+                Gadomancy.proxy.handlerEntityServer.registeredLuxPylons.add(originTile);
             }
         }
 

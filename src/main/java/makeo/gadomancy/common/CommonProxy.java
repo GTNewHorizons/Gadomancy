@@ -22,7 +22,7 @@ import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.events.EventHandlerEntityServer;
 import makeo.gadomancy.common.events.EventHandlerGolem;
 import makeo.gadomancy.common.events.EventHandlerGolemServer;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
@@ -131,7 +131,7 @@ public class CommonProxy implements IGuiHandler {
 
     public EventHandlerGolemServer handlerGolemServer;
     private EventHandlerWorld EVENT_HANDLER_WORLD;
-    public EventHandlerEntity EVENT_HANDLER_ENTITY;
+    public EventHandlerEntityServer handlerEntityServer;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         handlerGolemServer = new EventHandlerGolemServer();
@@ -139,8 +139,8 @@ public class CommonProxy implements IGuiHandler {
         EVENT_HANDLER_WORLD = new EventHandlerWorld();
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
-        EVENT_HANDLER_ENTITY = new EventHandlerEntity();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_ENTITY);
+        handlerEntityServer = new EventHandlerEntityServer();
+        MinecraftForge.EVENT_BUS.register(handlerEntityServer);
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
@@ -149,7 +149,7 @@ public class CommonProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
         EVENT_HANDLER_WORLD = null;
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_ENTITY);
-        EVENT_HANDLER_ENTITY = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerEntityServer);
+        handlerEntityServer = null;
     }
 }
