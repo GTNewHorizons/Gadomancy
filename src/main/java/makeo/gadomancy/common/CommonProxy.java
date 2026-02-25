@@ -24,6 +24,7 @@ import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.events.EventHandlerEntity;
 import makeo.gadomancy.common.events.EventHandlerGolem;
+import makeo.gadomancy.common.events.EventHandlerGolemServer;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -73,6 +74,7 @@ public class CommonProxy implements IGuiHandler {
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
         FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerGolem());
     }
 
     public void postInitalize() {
@@ -127,13 +129,13 @@ public class CommonProxy implements IGuiHandler {
         return Side.SERVER;
     }
 
-    public EventHandlerGolem EVENT_HANDLER_GOLEM;
-    public EventHandlerWorld EVENT_HANDLER_WORLD;
+    public EventHandlerGolemServer handlerGolemServer;
+    private EventHandlerWorld EVENT_HANDLER_WORLD;
     public EventHandlerEntity EVENT_HANDLER_ENTITY;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
+        handlerGolemServer = new EventHandlerGolemServer();
+        MinecraftForge.EVENT_BUS.register(handlerGolemServer);
         EVENT_HANDLER_WORLD = new EventHandlerWorld();
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
@@ -142,8 +144,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_GOLEM);
-        EVENT_HANDLER_GOLEM = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerGolemServer);
+        handlerGolemServer = null;
         MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
         EVENT_HANDLER_WORLD = null;

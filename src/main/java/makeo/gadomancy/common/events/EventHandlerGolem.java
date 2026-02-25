@@ -1,20 +1,13 @@
 package makeo.gadomancy.common.events;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -23,7 +16,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.api.golems.cores.AdditionalGolemCore;
-import makeo.gadomancy.api.golems.events.GolemDropPlacerEvent;
 import makeo.gadomancy.api.golems.events.PlacerCreateGolemEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.data.DataAchromatic;
@@ -47,8 +39,6 @@ import thaumcraft.common.items.wands.ItemWandCasting;
  * Created by makeo @ 13.03.2015 13:56
  */
 public class EventHandlerGolem {
-
-    private final Map<EntityGolemBase, EntityPlayer> markedGolems = new HashMap<>();
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(EntityEvent.EntityConstructing e) {
@@ -139,63 +129,6 @@ public class EventHandlerGolem {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public void on(PlaySoundAtEntityEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityGolemBase golem
-                && event.name.equals("thaumcraft:zap")
-                && event.volume == 0.5F
-                && event.pitch == 1.0F) {
-            if (this.markedGolems.containsKey(golem)) {
-                EntityPlayer player = this.markedGolems.get(golem);
-                this.markedGolems.remove(golem);
-
-                AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
-
-                boolean movedPlacer = false;
-                boolean movedCore = core == null || !player.isSneaking();
-
-                for (EntityItem entityItem : golem.capturedDrops) {
-                    ItemStack item = entityItem.getEntityItem();
-
-                    if (!movedCore && item.getItem() == ConfigItems.itemGolemCore) {
-                        entityItem.setEntityItemStack(core.getItem());
-                    }
-
-                    if (!movedPlacer && item.getItem() instanceof ItemGolemPlacer
-                            || item.getItem() instanceof ItemAdditionalGolemPlacer) {
-                        // move persistent data to item
-                        NBTTagCompound persistent = (NBTTagCompound) NBTHelper.getPersistentData(golem).copy();
-                        if (player.isSneaking()) {
-                            persistent.removeTag("Core");
-                        }
-                        NBTHelper.getData(item).setTag(Gadomancy.MODID, persistent);
-                        event.entity.setDead();
-                        entityItem.setEntityItemStack(item);
-
-                        MinecraftForge.EVENT_BUS.post(new GolemDropPlacerEvent(player, entityItem, golem));
-
-                        movedPlacer = true;
-                    }
-                    event.entity.worldObj.spawnEntityInWorld(entityItem);
-                }
-                golem.capturedDrops.clear();
-                golem.captureDrops = false;
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void on(AttackEntityEvent event) {
-        ItemStack heldItem = event.entityPlayer.getHeldItem();
-        if (heldItem != null && heldItem.getItem() == ConfigItems.itemGolemBell
-                && event.target instanceof EntityGolemBase
-                && !event.target.worldObj.isRemote
-                && !event.target.isDead) {
-            event.target.captureDrops = true;
-            this.markedGolems.put((EntityGolemBase) event.target, event.entityPlayer);
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(LivingHurtEvent event) {
         if (!event.entity.worldObj.isRemote) {
@@ -204,7 +137,6 @@ public class EventHandlerGolem {
                     event.ammount = RegisteredGolemStuff.upgradeRunicShield.absorb(golem, event.ammount, event.source);
                 }
             }
-
             /*
              * if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityGolemBase &&
              * ((EntityGolemBase) event.source.getEntity()).getGolemType() ==
