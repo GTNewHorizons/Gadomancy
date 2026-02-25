@@ -72,6 +72,7 @@ public class CommonProxy implements IGuiHandler {
         RegisteredEntities.init();
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
+        FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
     }
 
     public void postInitalize() {
@@ -127,15 +128,12 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public EventHandlerGolem EVENT_HANDLER_GOLEM;
-    public EventHandlerNetwork EVENT_HANDLER_NETWORK;
     public EventHandlerWorld EVENT_HANDLER_WORLD;
     public EventHandlerEntity EVENT_HANDLER_ENTITY;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         EVENT_HANDLER_GOLEM = new EventHandlerGolem();
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
-        EVENT_HANDLER_NETWORK = new EventHandlerNetwork();
-        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_NETWORK);
         EVENT_HANDLER_WORLD = new EventHandlerWorld();
         MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
@@ -146,8 +144,6 @@ public class CommonProxy implements IGuiHandler {
     public void onServerStopped(FMLServerStoppedEvent event) {
         MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_GOLEM);
         EVENT_HANDLER_GOLEM = null;
-        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_NETWORK);
-        EVENT_HANDLER_NETWORK = null;
         MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
         FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
         EVENT_HANDLER_WORLD = null;
