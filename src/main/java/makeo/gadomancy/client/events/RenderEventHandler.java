@@ -1,6 +1,5 @@
 package makeo.gadomancy.client.events;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
@@ -60,21 +59,39 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 13.10.2015 16:11
  */
-public class RenderEventHandler {
+public final class RenderEventHandler {
 
-    private static final REHWandHandler WAND_HANDLER = new REHWandHandler();
-    private static final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
+    private static final IModelCustom obj;
+    private static final ResourceLocation texture = new ResourceLocation("gadomancy:textures/misc/texW.png");
 
+    static {
+        ResourceLocation resourceLocation = new ResourceLocation("gadomancy:textures/models/modelAssec.obj");
+        IModelCustom buf;
+        try {
+            buf = new WavefrontObject(
+                    "gadomancy:wRender",
+                    new GZIPInputStream(
+                            Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation)
+                                    .getInputStream()));
+        } catch (Exception exc) {
+            // shush.
+            buf = null;
+        }
+        obj = buf;
+    }
+
+    private final REHWandHandler WAND_HANDLER = new REHWandHandler();
+    private final FakeArchitectItem ARCHITECT_ITEM = new FakeArchitectItem();
     private Object oldGolemblurb;
     private int blurbId;
+    private int dList = -1;
 
     @SubscribeEvent
     public void on(GuiScreenEvent.DrawScreenEvent.Pre e) {
-        if (e.gui instanceof GuiGolem) {
-            GuiGolem gui = (GuiGolem) e.gui;
+        if (e.gui instanceof GuiGolem gui) {
             EntityGolemBase golem = new Injector(gui, GuiGolem.class).getField("golem");
             if (golem != null) {
                 AdditionalGolemCore core = GadomancyApi.getAdditionalGolemCore(golem);
@@ -103,13 +120,13 @@ public class RenderEventHandler {
         if (e.currentItem == null) return;
         if (e.currentItem.getItem() instanceof ItemWandCasting) {
             ItemFocusBasic focus = ((ItemWandCasting) e.currentItem.getItem()).getFocus(e.currentItem);
-            if (focus == null || !(focus instanceof IArchitect)) {
+            if (!(focus instanceof IArchitect)) {
                 Block block = e.player.worldObj.getBlock(e.target.blockX, e.target.blockY, e.target.blockZ);
                 if (block != null && block == RegisteredBlocks.blockArcaneDropper) {
                     ForgeDirection dir = ForgeDirection.getOrientation(
                             e.player.worldObj.getBlockMetadata(e.target.blockX, e.target.blockY, e.target.blockZ) & 7);
 
-                    ArrayList<BlockCoordinates> coords = new ArrayList<BlockCoordinates>();
+                    ArrayList<BlockCoordinates> coords = new ArrayList<>();
                     for (int x = -1; x < 2; x++) {
                         for (int y = -1; y < 2; y++) {
                             for (int z = -1; z < 2; z++) {
@@ -127,11 +144,11 @@ public class RenderEventHandler {
                                     e.target.blockY + dir.offsetY,
                                     e.target.blockZ + dir.offsetZ));
 
-                    RenderEventHandler.ARCHITECT_ITEM.setCoords(coords);
+                    this.ARCHITECT_ITEM.setCoords(coords);
 
                     GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-                    RenderEventHandler.WAND_HANDLER.handleArchitectOverlay(
-                            new ItemStack(RenderEventHandler.ARCHITECT_ITEM),
+                    this.WAND_HANDLER.handleArchitectOverlay(
+                            new ItemStack(this.ARCHITECT_ITEM),
                             e,
                             e.player.ticksExisted,
                             e.target);
@@ -145,13 +162,11 @@ public class RenderEventHandler {
             int blockZ = e.target.blockZ;
             if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
                 TileEntity tile = e.player.worldObj.getTileEntity(blockX, blockY, blockZ);
-                if (tile instanceof TileExtendedNode) {
-                    TileExtendedNode node = (TileExtendedNode) tile;
+                if (tile instanceof TileExtendedNode node) {
                     if (node.getExtendedNodeType() == null) return;
                     ExtendedTypeDisplayManager
                             .notifyDisplayTick(node.getId(), node.getNodeType(), node.getExtendedNodeType());
-                } else if (tile instanceof TileExtendedNodeJar) {
-                    TileExtendedNodeJar nodeJar = (TileExtendedNodeJar) tile;
+                } else if (tile instanceof TileExtendedNodeJar nodeJar) {
                     if (nodeJar.getExtendedNodeType() == null) return;
                     ExtendedTypeDisplayManager
                             .notifyDisplayTick(nodeJar.getId(), nodeJar.getNodeType(), nodeJar.getExtendedNodeType());
@@ -162,8 +177,7 @@ public class RenderEventHandler {
 
     @SubscribeEvent
     public void guiOpen(GuiOpenEvent event) {
-        if (event.gui != null && event.gui instanceof GuiResearchRecipe) {
-            GuiResearchRecipe gui = (GuiResearchRecipe) event.gui;
+        if (event.gui instanceof GuiResearchRecipe gui) {
             ResearchItem research = new Injector(gui, GuiResearchRecipe.class).getField("research");
             if (research.key.equals(Gadomancy.MODID.toUpperCase() + ".AURA_EFFECTS")
                     && !(gui instanceof GuiResearchRecipeAuraEffects)) {
@@ -183,10 +197,8 @@ public class RenderEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderEntityPre(RenderLivingEvent.Pre event) {
-        if (event.entity instanceof EntityPlayer) {
-            EntityPlayer p = (EntityPlayer) event.entity;
-            if (((DataAchromatic) SyncDataHolder.getDataClient("AchromaticData"))
-                    .isAchromatic((EntityPlayer) event.entity)) {
+        if (event.entity instanceof EntityPlayer p) {
+            if (((DataAchromatic) SyncDataHolder.getDataClient("AchromaticData")).isAchromatic(p)) {
                 this.current = p;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
                 GL11.glDepthMask(false);
@@ -224,8 +236,7 @@ public class RenderEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void renderPost(RenderLivingEvent.Post event) {
-        if (event.entity instanceof EntityPlayer) {
-            EntityPlayer p = (EntityPlayer) event.entity;
+        if (event.entity instanceof EntityPlayer p) {
             if (this.armor != null) {
                 p.inventory.armorInventory = this.armor;
             }
@@ -241,33 +252,6 @@ public class RenderEventHandler {
         }
     }
 
-    static {
-        ResourceLocation mod = new ResourceLocation(
-                Gadomancy.MODID.toLowerCase() + new String(
-                        new byte[] { 58, 116, 101, 120, 116, 117, 114, 101, 115, 47, 109, 111, 100, 101, 108, 115, 47,
-                                109, 111, 100, 101, 108, 65, 115, 115, 101, 99, 46, 111, 98, 106 },
-                        StandardCharsets.UTF_8));
-        IModelCustom buf;
-        try {
-            buf = new WavefrontObject(
-                    "gadomancy:wRender",
-                    new GZIPInputStream(
-                            Minecraft.getMinecraft().getResourceManager().getResource(mod).getInputStream()));
-        } catch (Exception exc) {
-            // shush.
-            buf = null;
-        }
-        obj = buf;
-    }
-
-    private static final IModelCustom obj;
-    private static final ResourceLocation tex = new ResourceLocation(
-            new String(
-                    new byte[] { 103, 97, 100, 111, 109, 97, 110, 99, 121, 58, 116, 101, 120, 116, 117, 114, 101, 115,
-                            47, 109, 105, 115, 99, 47, 116, 101, 120, 87, 46, 112, 110, 103 },
-                    StandardCharsets.UTF_8));
-    private static int dList = -1;
-
     @SubscribeEvent
     public void onRender(RenderPlayerEvent.Specials.Post event) {
         if (event.entityPlayer == null) return;
@@ -278,7 +262,7 @@ public class RenderEventHandler {
         GL11.glColor4f(1f, 1f, 1f, 1f);
 
         GL11.glPushMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(RenderEventHandler.tex);
+        Minecraft.getMinecraft().renderEngine.bindTexture(RenderEventHandler.texture);
         boolean f = event.entityPlayer.capabilities.isFlying;
         double ma = f ? 15 : 5;
         double r = (ma * (Math.abs((ClientHandler.ticks % 80) - 40) / 40D)) + ((65 - ma) * Math
@@ -286,22 +270,22 @@ public class RenderEventHandler {
         GL11.glScaled(0.07, 0.07, 0.07);
         GL11.glRotatef(180, 0, 0, 1);
         GL11.glTranslated(0, -12.7, 0.7 - (((float) (r / ma)) * (f ? 0.5D : 0.2D)));
-        if (RenderEventHandler.dList == -1) {
-            RenderEventHandler.dList = GLAllocation.generateDisplayLists(2);
-            GL11.glNewList(RenderEventHandler.dList, GL11.GL_COMPILE);
+        if (this.dList == -1) {
+            this.dList = GLAllocation.generateDisplayLists(2);
+            GL11.glNewList(this.dList, GL11.GL_COMPILE);
             RenderEventHandler.obj.renderOnly("wR");
             GL11.glEndList();
-            GL11.glNewList(RenderEventHandler.dList + 1, GL11.GL_COMPILE);
+            GL11.glNewList(this.dList + 1, GL11.GL_COMPILE);
             RenderEventHandler.obj.renderOnly("wL");
             GL11.glEndList();
         }
         GL11.glPushMatrix();
         GL11.glRotated(20D + r, 0, -1, 0);
-        GL11.glCallList(RenderEventHandler.dList);
+        GL11.glCallList(this.dList);
         GL11.glPopMatrix();
         GL11.glPushMatrix();
         GL11.glRotated(20D + r, 0, 1, 0);
-        GL11.glCallList(RenderEventHandler.dList + 1);
+        GL11.glCallList(this.dList + 1);
         GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
