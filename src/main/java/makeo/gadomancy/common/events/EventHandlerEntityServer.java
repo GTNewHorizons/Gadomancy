@@ -36,7 +36,7 @@ import thaumcraft.common.items.armor.Hover;
  * <p/>
  * Created by HellFirePvP @ 31.10.2015 15:28
  */
-public class EventHandlerEntity {
+public class EventHandlerEntityServer {
 
     public final List<ChunkCoordinates> registeredLuxPylons = new ArrayList<>();
 
@@ -91,8 +91,7 @@ public class EventHandlerEntity {
     @SubscribeEvent
     public void on(EntityItemPickupEvent event) {
         if (!event.entityPlayer.worldObj.isRemote) {
-            if (event.item instanceof EntityPermNoClipItem) {
-                EntityPermNoClipItem item = (EntityPermNoClipItem) event.item;
+            if (event.item instanceof EntityPermNoClipItem item) {
                 ChunkCoordinates master = (ChunkCoordinates) item.getDataWatcher()
                         .getWatchedObject(ModConfig.entityNoClipItemDatawatcherMasterId).getObject();
                 TileEntity te = event.entityPlayer.worldObj.getTileEntity(master.posX, master.posY, master.posZ);

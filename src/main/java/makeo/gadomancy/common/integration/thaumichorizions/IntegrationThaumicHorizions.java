@@ -86,7 +86,7 @@ public class IntegrationThaumicHorizions extends IntegrationMod {
 
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null && stack.getItem().onLeftClickEntity(stack, player, e.target) && e.target.isDead) {
-                Gadomancy.proxy.EVENT_HANDLER_GOLEM
+                Gadomancy.proxy.handlerGolemServer
                         .on(new PlaySoundAtEntityEvent(e.target, "thaumcraft:zap", 0.5f, 1.0f));
             }
         }

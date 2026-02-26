@@ -22,8 +22,9 @@ import makeo.gadomancy.common.containers.ContainerArcanePackager;
 import makeo.gadomancy.common.containers.ContainerInfusionClaw;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.events.EventHandlerEntity;
+import makeo.gadomancy.common.events.EventHandlerEntityServer;
 import makeo.gadomancy.common.events.EventHandlerGolem;
+import makeo.gadomancy.common.events.EventHandlerGolemServer;
 import makeo.gadomancy.common.events.EventHandlerNetwork;
 import makeo.gadomancy.common.events.EventHandlerWorld;
 import makeo.gadomancy.common.network.PacketHandler;
@@ -72,6 +73,8 @@ public class CommonProxy implements IGuiHandler {
         RegisteredEntities.init();
         DimensionManager.registerProviderType(ModConfig.dimOuterId, WorldProviderTCEldrich.class, true);
         DimensionManager.registerDimension(ModConfig.dimOuterId, ModConfig.dimOuterId);
+        FMLCommonHandler.instance().bus().register(new EventHandlerNetwork());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerGolem());
     }
 
     public void postInitalize() {
@@ -126,32 +129,27 @@ public class CommonProxy implements IGuiHandler {
         return Side.SERVER;
     }
 
-    public EventHandlerGolem EVENT_HANDLER_GOLEM;
-    public EventHandlerNetwork EVENT_HANDLER_NETWORK;
-    public EventHandlerWorld EVENT_HANDLER_WORLD;
-    public EventHandlerEntity EVENT_HANDLER_ENTITY;
+    public EventHandlerGolemServer handlerGolemServer;
+    private EventHandlerWorld handlerWorld;
+    public EventHandlerEntityServer handlerEntityServer;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-        EVENT_HANDLER_GOLEM = new EventHandlerGolem();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_GOLEM);
-        EVENT_HANDLER_NETWORK = new EventHandlerNetwork();
-        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_NETWORK);
-        EVENT_HANDLER_WORLD = new EventHandlerWorld();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_WORLD);
-        FMLCommonHandler.instance().bus().register(EVENT_HANDLER_WORLD);
-        EVENT_HANDLER_ENTITY = new EventHandlerEntity();
-        MinecraftForge.EVENT_BUS.register(EVENT_HANDLER_ENTITY);
+        handlerGolemServer = new EventHandlerGolemServer();
+        MinecraftForge.EVENT_BUS.register(handlerGolemServer);
+        handlerWorld = new EventHandlerWorld();
+        MinecraftForge.EVENT_BUS.register(handlerWorld);
+        FMLCommonHandler.instance().bus().register(handlerWorld);
+        handlerEntityServer = new EventHandlerEntityServer();
+        MinecraftForge.EVENT_BUS.register(handlerEntityServer);
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_GOLEM);
-        EVENT_HANDLER_GOLEM = null;
-        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_NETWORK);
-        EVENT_HANDLER_NETWORK = null;
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_WORLD);
-        FMLCommonHandler.instance().bus().unregister(EVENT_HANDLER_WORLD);
-        EVENT_HANDLER_WORLD = null;
-        MinecraftForge.EVENT_BUS.unregister(EVENT_HANDLER_ENTITY);
-        EVENT_HANDLER_ENTITY = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerGolemServer);
+        handlerGolemServer = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerWorld);
+        FMLCommonHandler.instance().bus().unregister(handlerWorld);
+        handlerWorld = null;
+        MinecraftForge.EVENT_BUS.unregister(handlerEntityServer);
+        handlerEntityServer = null;
     }
 }

@@ -17,7 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
@@ -62,7 +61,7 @@ public class EventHandlerWorld {
     public void on(EntityJoinWorldEvent event) {
         if (!event.world.isRemote && event.entity instanceof EntityItem) {
             ItemStack stack = ((EntityItem) event.entity).getEntityItem();
-            if (this.isDisguised(stack)) {
+            if (isDisguised(stack)) {
                 long time = event.world.getTotalWorldTime() + event.world.rand.nextInt(60) + 40;
                 this.trackedItems.put((EntityItem) event.entity, time);
             }
@@ -94,7 +93,7 @@ public class EventHandlerWorld {
                 EntityItem entity = entry.getKey();
 
                 if (event.world == entity.worldObj) {
-                    if (entity.isDead || !this.isDisguised(entity.getEntityItem())) {
+                    if (entity.isDead || !isDisguised(entity.getEntityItem())) {
                         iterator.remove();
                         continue;
                     }
@@ -142,7 +141,7 @@ public class EventHandlerWorld {
         }
     }
 
-    private boolean isDisguised(ItemStack stack) {
+    private static boolean isDisguised(ItemStack stack) {
         return NBTHelper.hasPersistentData(stack) && NBTHelper.getPersistentData(stack).hasKey("disguise");
     }
 
@@ -190,7 +189,7 @@ public class EventHandlerWorld {
         SyncDataHolder.doNecessaryUpdates();
         this.serverTick++;
         if ((this.serverTick & 15) == 0) {
-            Gadomancy.proxy.EVENT_HANDLER_ENTITY.registeredLuxPylons.clear();
+            Gadomancy.proxy.handlerEntityServer.registeredLuxPylons.clear();
         }
     }
 
@@ -199,7 +198,7 @@ public class EventHandlerWorld {
         if (e.isCanceled()) {
             if (this.interacts != null) this.interacts.remove(e.player);
         } else {
-            if (!e.world.isRemote && this.isStickyJar(e.itemInHand)) {
+            if (!e.world.isRemote && isStickyJar(e.itemInHand)) {
                 TileEntity parent = e.world.getTileEntity(e.x, e.y, e.z);
                 if (parent instanceof TileJarFillable) {
                     int metadata = e.world.getBlockMetadata(e.x, e.y, e.z);
@@ -252,7 +251,7 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void on(PlayerInteractEvent e) {
         if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
-                && this.isStickyJar(e.entityPlayer.getHeldItem())) {
+                && isStickyJar(e.entityPlayer.getHeldItem())) {
             if (this.interacts == null) {
                 this.interacts = new HashMap<EntityPlayer, Integer>();
             }
@@ -267,34 +266,8 @@ public class EventHandlerWorld {
         }
     }
 
-    private boolean isStickyJar(ItemStack stack) {
+    private static boolean isStickyJar(ItemStack stack) {
         return RegisteredItems.isStickyableJar(stack) && stack.hasTagCompound()
                 && stack.stackTagCompound.getBoolean("isStickyJar");
-    }
-
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void on(ItemTooltipEvent e) {
-        if (!e.toolTip.isEmpty() && e.itemStack.hasTagCompound()) {
-            if (e.itemStack.stackTagCompound.getBoolean("isStickyJar")) {
-                e.toolTip.add(1, EnumChatFormatting.GREEN + StatCollector.translateToLocal("gadomancy.lore.stickyjar"));
-            }
-        }
-
-        if (!e.toolTip.isEmpty() && NBTHelper.hasPersistentData(e.itemStack)) {
-            NBTTagCompound compound = NBTHelper.getPersistentData(e.itemStack);
-            if (compound.hasKey("disguise")) {
-                NBTBase base = compound.getTag("disguise");
-                String lore;
-                if (base instanceof NBTTagCompound) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT((NBTTagCompound) base);
-                    lore = String.format(
-                            StatCollector.translateToLocal("gadomancy.lore.disguise.item"),
-                            EnumChatFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
-                } else {
-                    lore = StatCollector.translateToLocal("gadomancy.lore.disguise.none");
-                }
-                e.toolTip.add(EnumChatFormatting.GREEN + lore);
-            }
-        }
     }
 }
