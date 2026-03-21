@@ -105,7 +105,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                     this.doAspectChecks(
                             TileNodeManipulator.NODE_MANIPULATION_WORK_ASPECT_CAP,
                             TileNodeManipulator.NODE_MANIPULATION_POSSIBLE_WORK_START);
-                } else {
+                } else if (this.hasNode()) {
                     this.manipulationTick();
                 }
                 break;
@@ -125,10 +125,16 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
                         }
                         return;
                     }
-                    this.eldritchPortalCreationTick();
+                    if (this.hasNode()) {
+                        this.eldritchPortalCreationTick();
+                    }
                 }
                 break;
         }
+    }
+
+    private boolean hasNode() {
+        return (this.worldObj.getBlock(this.xCoord, this.yCoord + 2, this.zCoord) == RegisteredBlocks.blockNode);
     }
 
     private boolean checkEldritchEyes(boolean checkForEyes) {
