@@ -31,7 +31,7 @@ public class TileAdditionalEldritchPortal extends TileEldritchPortal {
     @Override
     public void updateEntity() {
         this.count += 1;
-        if ((this.worldObj.isRemote) && ((this.count % 250 == 0) || (this.count == 0))) {
+        if ((this.worldObj.isRemote) && ((this.count % 250 == 0) || (this.count == 1))) {
             this.worldObj.playSound(
                     this.xCoord + 0.5D,
                     this.yCoord + 0.5D,
