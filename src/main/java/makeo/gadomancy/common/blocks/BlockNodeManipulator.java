@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,27 +68,29 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
             float subY, float subZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (!(te instanceof TileNodeManipulator)) {
+        if (world.isRemote) {
             return false;
         }
-        TileNodeManipulator tile = (TileNodeManipulator) te;
 
-        if (tile.isInMultiblock()) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof TileNodeManipulator nodeManipulatorTE)) {
+            return false;
+        }
+
+        if (nodeManipulatorTE.isInMultiblock()) {
             return super.onBlockActivated(world, x, y, z, player, side, subX, subY, subZ);
         }
 
+        if (nodeManipulatorTE.detectMultiblockType() == null) {
+            return false;
+        }
+
         ItemStack heldItem = player.getHeldItem();
-        if (world.isRemote || heldItem == null || !(heldItem.getItem() instanceof ItemWandCasting)) {
+        if (heldItem == null || !(heldItem.getItem() instanceof ItemWandCasting)) {
             return false;
         }
 
-        tile.checkMultiblock();
-        if (!tile.isMultiblockStructurePresent()) {
-            return false;
-        }
-
-        MultiblockType type = tile.getMultiblockType();
+        MultiblockType type = nodeManipulatorTE.getMultiblockType();
         if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), type.getResearchNeeded())) {
             return false;
         }
@@ -97,7 +100,18 @@ public class BlockNodeManipulator extends BlockStoneDevice {
             return false;
         }
 
-        tile.formMultiblock();
+        nodeManipulatorTE.formMultiblock();
         return true;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (!world.isRemote) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileNodeManipulator nodeManipulatorTE) {
+                if (nodeManipulatorTE.isInMultiblock()) nodeManipulatorTE.breakMultiblock();
+            }
+        }
+        super.breakBlock(world, x, y, z, block, meta);
     }
 }
