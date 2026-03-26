@@ -51,8 +51,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     private static final int NODE_MANIPULATION_TICKS = 300;
 
     // There is no change for having more than the required aspects to form a portal
-    private static final int ELDRITCH_PORTAL_WORK_START = 150;
-    private static final int ELDRITCH_PORTAL_ASPECT_CAP = 150;
+    private static final int ELDRITCH_PORTAL_WORK_START = 120;
+    private static final int ELDRITCH_PORTAL_ASPECT_CAP = 120;
     private static final int ELDRITCH_PORTAL_TICKS = 400;
 
     private static final int REQUIRED_ELDRITCH_PEDESTALS = 4;
