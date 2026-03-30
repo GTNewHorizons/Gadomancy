@@ -103,18 +103,24 @@ public class TCMazeHandler {
     }
 
     public static void handleBossFinish(TCMazeSession session) {
-        CellLoc spawnChunk = session.portalCell;
-        WorldServer world = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
-        int lX = (spawnChunk.x << 4) + 8;
-        int lZ = (spawnChunk.z << 4) + 8;
-        world.setBlock(lX, 52, lZ, ConfigBlocks.blockEldritch, 3, 3);
-        world.setBlock(lX, 53, lZ, RegisteredBlocks.blockAdditionalEldrichPortal);
-        GenCommon.genObelisk(world, lX, 54, lZ);
+        TCMazeHandler.spawnPortal(session.spawnPortalCoordinates, true);
+        if (session.bossSpawnCoordinates != null) {
+            spawnPortal(session.bossSpawnCoordinates, false);
+        }
         session.player.addChatMessage(
                 new ChatComponentText(
                         EnumChatFormatting.ITALIC + ""
                                 + EnumChatFormatting.GRAY
                                 + StatCollector.translateToLocal("gadomancy.eldritch.portalSpawned")));
+    }
+
+    private static void spawnPortal(ChunkCoordinates coords, boolean obelisk) {
+        WorldServer world = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
+        world.setBlock(coords.posX, coords.posY, coords.posZ, RegisteredBlocks.blockAdditionalEldrichPortal);
+        if (obelisk) {
+            world.setBlock(coords.posX, coords.posY - 1, coords.posZ, ConfigBlocks.blockEldritch, 3, 3);
+            GenCommon.genObelisk(world, coords.posX, coords.posY + 1, coords.posZ);
+        }
     }
 
     /*
