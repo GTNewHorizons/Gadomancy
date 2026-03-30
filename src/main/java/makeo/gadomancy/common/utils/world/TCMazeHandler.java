@@ -44,9 +44,15 @@ public class TCMazeHandler {
     // If a chunk is not listed in there, it's considered empty.
     // level saving itself is disabled. Players without active session will get teleported out.
 
+    // Adjust these to make the dungeon shorter or longer
+    public static final int MIN_LABYRINTH_SIZE = 8;
+    public static final int MAX_LABYRINTH_SIZE = MIN_LABYRINTH_SIZE + 4;
+
+    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
+
     // Our map to work with.
-    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<CellLoc, Short>();
     public static final int TELEPORT_LAYER_Y = 55;
+    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<CellLoc, Short>();
     private static int tickCounter;
 
     public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
@@ -139,12 +145,13 @@ public class TCMazeHandler {
         ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<CellLoc, Short>(
                 TCMazeHandler.labyrinthCopy);
         MazeHandler.labyrinth = TCMazeHandler.labyrinthCopy;
-        int chX = TCMazeHandler.getHighestPossibleRandWH(); // To ensure we're always +x and +z
-        int chZ = TCMazeHandler.getHighestPossibleRandWH();
-        int w = TCMazeHandler.randWH(world.rand);
-        int h = TCMazeHandler.randWH(world.rand);
+        Random rand = world.rand;
+        int chX = LABYRINTH_BUFFER_SIZE; // To ensure we're always +x and +z
+        int chZ = LABYRINTH_BUFFER_SIZE;
+        int w = MIN_LABYRINTH_SIZE + rand.nextInt(MAX_LABYRINTH_SIZE - MIN_LABYRINTH_SIZE + 1);
+        int h = MIN_LABYRINTH_SIZE + rand.nextInt(MAX_LABYRINTH_SIZE - MIN_LABYRINTH_SIZE + 1);
         while (MazeHandler.mazesInRange(chX, chZ, w, h)) {
-            chX++; // We grow the mazes in +x direction!
+            chX += LABYRINTH_BUFFER_SIZE; // We grow the mazes in +x direction!
         }
         MazeThread mt = new MazeThread(chX, chZ, w, h, world.rand.nextLong());
         mt.run();
@@ -168,18 +175,6 @@ public class TCMazeHandler {
 
     private static boolean hasFreeSessionSpace() {
         return ModConfig.maxMazeCount == -1 || TCMazeHandler.runningSessions.size() < ModConfig.maxMazeCount;
-    }
-
-    /*
-     * Change getHighestPossibleRandWH accordingly if modifying this.
-     */
-    private static int randWH(Random random) {
-        return 17 + random.nextInt(2) * 2;
-    }
-
-    private static int getHighestPossibleRandWH() {
-        // Add something to ensure 100% we never get in minus coordinates!
-        return 29; // 21 + ensured 8
     }
 
     public static void init() {
