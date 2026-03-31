@@ -24,7 +24,7 @@ import thaumcraft.common.lib.world.dim.CellLoc;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p/>
  * Created by HellFirePvP @ 05.11.2015 14:12
  */
 public class TCMazeSession {

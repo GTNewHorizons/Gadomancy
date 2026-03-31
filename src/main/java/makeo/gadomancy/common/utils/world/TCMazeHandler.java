@@ -54,15 +54,15 @@ public class TCMazeHandler {
     // Our map to work with.
     public static final int TELEPORT_LAYER_Y = 55;
     public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
-    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<CellLoc, Short>();
+    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<>();
     private static int tickCounter;
 
     public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
 
-    private static final List<TCMazeSession> flaggedSessions = new ArrayList<TCMazeSession>();
+    private static final List<TCMazeSession> flaggedSessions = new ArrayList<>();
 
-    private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
-    private static final Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<TCMazeSession, Entity[]>();
+    private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<>();
+    private static final Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<>();
 
     public static void closeAllSessionsAndCleanup() {
         for (EntityPlayer pl : TCMazeHandler.runningSessions.keySet()) {
@@ -79,9 +79,8 @@ public class TCMazeHandler {
             if (!w.levelSaving) w.levelSaving = true;
 
             WorldServer out = MinecraftServer.getServer().worldServerForDimension(0);
-            List playerObjects = w.playerEntities;
-            for (int i = 0; i < playerObjects.size(); i++) {
-                EntityPlayer player = (EntityPlayer) playerObjects.get(i);
+            List<EntityPlayer> players = w.playerEntities;
+            for (EntityPlayer player : players) {
                 if (!TCMazeHandler.hasOpenSession(player)) {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
@@ -199,7 +198,7 @@ public class TCMazeHandler {
 
     private static Map<CellLoc, Short> calculateCellLocs(WorldServer world) {
         ConcurrentHashMap<CellLoc, Short> oldDat = MazeHandler.labyrinth;
-        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<CellLoc, Short>(
+        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<>(
                 TCMazeHandler.labyrinthCopy);
         MazeHandler.labyrinth = TCMazeHandler.labyrinthCopy;
         Random rand = world.rand;
@@ -221,7 +220,7 @@ public class TCMazeHandler {
     private static Map<CellLoc, Short> calculateDifferences(ConcurrentHashMap<CellLoc, Short> bufferOld) {
         ConcurrentHashMap<CellLoc, Short> newDat = MazeHandler.labyrinth; // Only the new data has data, the old one
                                                                           // doesn't have.
-        Map<CellLoc, Short> newlyEvaluatedMaze = new HashMap<CellLoc, Short>();
+        Map<CellLoc, Short> newlyEvaluatedMaze = new HashMap<>();
         for (CellLoc loc : newDat.keySet()) {
             if (!bufferOld.containsKey(loc)) {
                 newlyEvaluatedMaze.put(loc, newDat.get(loc));
@@ -235,7 +234,7 @@ public class TCMazeHandler {
     }
 
     public static void init() {
-        TCMazeHandler.runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
+        TCMazeHandler.runningSessions = new HashMap<>();
     }
 
     public static boolean hasOpenSession(EntityPlayer player) {
