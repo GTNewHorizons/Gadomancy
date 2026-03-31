@@ -48,6 +48,11 @@ public class TCMazeHandler {
     // level saving itself is disabled. Players without active session will get teleported out.
 
     // Adjust these to make the dungeon shorter or longer
+    // For reference: A 8x8 dungeon takes approximately 2 minutes to complete on average.
+    // Testing was done with Boots of the Traveler and Speed II
+    // The scaling is quadratic; double the size, quadruple the time.
+    // Width and Height are randomized separately, making a normal distribution for the size.
+    // A size of 12-16 makes runs about 6 minutes on average
     public static final int MIN_LABYRINTH_SIZE = 12;
     public static final int MAX_LABYRINTH_SIZE = MIN_LABYRINTH_SIZE + 4;
 
