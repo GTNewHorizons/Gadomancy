@@ -51,8 +51,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     private static final int NODE_MANIPULATION_TICKS = 300;
 
     // There is no change for having more than the required aspects to form a portal
-    private static final int ELDRITCH_PORTAL_WORK_START = 120;
-    private static final int ELDRITCH_PORTAL_ASPECT_CAP = 120;
+    private static final int ELDRITCH_PORTAL_ASPECT_REQUIREMENT = 120;
     private static final int ELDRITCH_PORTAL_TICKS = 400;
 
     private static final int REQUIRED_ELDRITCH_PEDESTALS = 4;
@@ -103,7 +102,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
 
             case E_PORTAL_CREATOR:
                 if (!this.isWorking) {
-                    this.doAspectChecks(ELDRITCH_PORTAL_ASPECT_CAP, ELDRITCH_PORTAL_WORK_START);
+                    this.doAspectChecks(ELDRITCH_PORTAL_ASPECT_REQUIREMENT, ELDRITCH_PORTAL_ASPECT_REQUIREMENT);
                 } else if (this.workTick > 0 || (this.hasNode() && this.checkPedestalsAndEyes())) {
                     this.eldritchPortalCreatorTick();
                 }
@@ -300,6 +299,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             for (ChunkCoordinates cc : this.bufferedCCPedestals) {
                 TileEntity te = this.worldObj.getTileEntity(cc.posX, cc.posY, cc.posZ);
                 if (!(te instanceof TilePedestal) || !pedestalHasEldritchEye((TilePedestal) te)) {
+                    this.bufferedCCPedestals.clear();
                     return false;
                 }
             }
