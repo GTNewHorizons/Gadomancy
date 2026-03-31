@@ -48,19 +48,18 @@ public class TCMazeHandler {
     // level saving itself is disabled. Players without active session will get teleported out.
 
     // Adjust these to make the dungeon shorter or longer
-    public static final int MIN_LABYRINTH_SIZE = 8;
+    public static final int MIN_LABYRINTH_SIZE = 12;
     public static final int MAX_LABYRINTH_SIZE = MIN_LABYRINTH_SIZE + 4;
+
+    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
 
     // Our map to work with.
     public static final int TELEPORT_LAYER_Y = 55;
-    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
     public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<>();
     private static int tickCounter;
-
     public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
 
     private static final List<TCMazeSession> flaggedSessions = new ArrayList<>();
-
     private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<>();
     private static final Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<>();
 
