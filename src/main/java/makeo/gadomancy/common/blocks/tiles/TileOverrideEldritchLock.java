@@ -70,10 +70,7 @@ public class TileOverrideEldritchLock extends TileEldritchLock {
 
             centerx = centerx * 16 + 16;
             centerz = centerz * 16 + 16;
-            session.bossSpawnCoordinates = new ChunkCoordinates(
-                    centerx,
-                    TCMazeHandler.TELEPORT_LAYER_Y,
-                    centerz);
+            session.bossSpawnCoordinates = new ChunkCoordinates(centerx, TCMazeHandler.TELEPORT_LAYER_Y - 2, centerz);
             break;
         }
     }

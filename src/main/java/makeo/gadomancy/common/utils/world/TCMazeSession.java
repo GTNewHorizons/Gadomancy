@@ -64,7 +64,7 @@ public class TCMazeSession {
             if (cell.feature == 1) {
                 int x = (chunk.x * 16) + 8;
                 int z = (chunk.z * 16) + 8;
-                return new ChunkCoordinates(x, TCMazeHandler.TELEPORT_LAYER_Y, z);
+                return new ChunkCoordinates(x, TCMazeHandler.TELEPORT_LAYER_Y - 2, z);
             }
         }
         return null;
