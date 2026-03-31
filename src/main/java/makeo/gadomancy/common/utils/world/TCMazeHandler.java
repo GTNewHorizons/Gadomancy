@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.utils.world;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -48,19 +51,18 @@ public class TCMazeHandler {
     public static final int MIN_LABYRINTH_SIZE = 8;
     public static final int MAX_LABYRINTH_SIZE = MIN_LABYRINTH_SIZE + 4;
 
-    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
-
     // Our map to work with.
     public static final int TELEPORT_LAYER_Y = 55;
+    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
     public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<CellLoc, Short>();
     private static int tickCounter;
 
     public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
 
-    private static List<TCMazeSession> flaggedSessions = new ArrayList<TCMazeSession>();
+    private static final List<TCMazeSession> flaggedSessions = new ArrayList<TCMazeSession>();
 
     private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
-    private static Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<TCMazeSession, Entity[]>();
+    private static final Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<TCMazeSession, Entity[]>();
 
     public static void closeAllSessionsAndCleanup() {
         for (EntityPlayer pl : TCMazeHandler.runningSessions.keySet()) {
@@ -103,24 +105,73 @@ public class TCMazeHandler {
     }
 
     public static void handleBossFinish(TCMazeSession session) {
-        TCMazeHandler.spawnPortal(session.spawnPortalCoordinates, true);
+        WorldServer world = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
+        TCMazeHandler.spawnPortal(world, session.spawnPortalCoordinates, true);
         if (session.bossSpawnCoordinates != null) {
-            spawnPortal(session.bossSpawnCoordinates, false);
+            spawnPortal(world, session.bossSpawnCoordinates, false);
         }
         session.player.addChatMessage(
                 new ChatComponentText(
                         EnumChatFormatting.ITALIC + ""
                                 + EnumChatFormatting.GRAY
-                                + StatCollector.translateToLocal("gadomancy.eldritch.portalSpawned")));
+                                + StatCollector.translateToLocal("gadomancy.eldritch.maze.portalSpawned")));
+        TCMazeHandler.checkHighScores(session);
     }
 
-    private static void spawnPortal(ChunkCoordinates coords, boolean obelisk) {
-        WorldServer world = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
+    private static void spawnPortal(WorldServer world, ChunkCoordinates coords, boolean obelisk) {
         world.setBlock(coords.posX, coords.posY, coords.posZ, RegisteredBlocks.blockAdditionalEldrichPortal);
         if (obelisk) {
             world.setBlock(coords.posX, coords.posY - 1, coords.posZ, ConfigBlocks.blockEldritch, 3, 3);
             GenCommon.genObelisk(world, coords.posX, coords.posY + 1, coords.posZ);
         }
+    }
+
+    private static void checkHighScores(TCMazeSession session) {
+        Duration mazeTime = Duration.between(session.sessionStartTime, Instant.now());
+        int thisTime = (int) mazeTime.getSeconds();
+
+        NBTTagCompound playerData = session.player.getEntityData();
+
+        if (!playerData.hasKey("Gadomancy:MazeTime")) {
+            playerData.setInteger("Gadomancy:MazeTime", thisTime);
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GRAY + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.first",
+                                            formatTime(thisTime))));
+            return;
+        }
+
+        int previousTime = playerData.getInteger("Gadomancy:MazeTime");
+
+        if (thisTime < previousTime) {
+            playerData.setInteger("Gadomancy:MazeTime", thisTime);
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GOLD + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.newBest",
+                                            formatTime(thisTime),
+                                            formatTime(previousTime))));
+        } else {
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GRAY + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.default",
+                                            formatTime(thisTime),
+                                            formatTime(previousTime))));
+        }
+    }
+
+    private static String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     /*
