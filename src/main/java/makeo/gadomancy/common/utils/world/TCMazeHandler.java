@@ -79,16 +79,15 @@ public class TCMazeHandler {
     }
 
     public static void tick() {
-        WorldServer w = DimensionManager.getWorld(ModConfig.dimOuterId);
-        if (w != null) {
-            if (!w.levelSaving) w.levelSaving = true;
+        WorldServer world = DimensionManager.getWorld(ModConfig.dimOuterId);
+        if (world != null) {
+            if (!world.levelSaving) world.levelSaving = true;
 
             WorldServer out = MinecraftServer.getServer().worldServerForDimension(0);
             // Raw list and regular for loop to not cause ConcurrentModificationException when relogging with an active
             // session. I don't know enough java to know why.
-            List<EntityPlayer> playerObjects = w.playerEntities;
-            for (int i = 0; i < playerObjects.size(); i++) {
-                EntityPlayer player = playerObjects.get(i);
+            List<EntityPlayer> playerObjects = new ArrayList<>(world.playerEntities);
+            for (EntityPlayer player : playerObjects) {
                 if (!TCMazeHandler.hasOpenSession(player)) {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
