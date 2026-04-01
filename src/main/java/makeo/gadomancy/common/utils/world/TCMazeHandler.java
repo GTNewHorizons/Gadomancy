@@ -86,9 +86,9 @@ public class TCMazeHandler {
             WorldServer out = MinecraftServer.getServer().worldServerForDimension(0);
             // Raw list and regular for loop to not cause ConcurrentModificationException when relogging with an active
             // session. I don't know enough java to know why.
-            List playerObjects = w.playerEntities;
+            List<EntityPlayer> playerObjects = w.playerEntities;
             for (int i = 0; i < playerObjects.size(); i++) {
-                EntityPlayer player = (EntityPlayer) playerObjects.get(i);
+                EntityPlayer player = playerObjects.get(i);
                 if (!TCMazeHandler.hasOpenSession(player)) {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
