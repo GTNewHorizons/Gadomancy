@@ -53,6 +53,7 @@ public class TCMazeHandler {
     // The scaling is quadratic; double the size, quadruple the time.
     // Width and Height are randomized separately, making a normal distribution for the size.
     // Vanilla Thaumcraft sizes: 11-23 and 15-31
+    // Original Gadomancy size: 17-21
     public static final int MIN_LABYRINTH_SIZE = 12;
     public static final int MAX_LABYRINTH_SIZE = 16;
 
