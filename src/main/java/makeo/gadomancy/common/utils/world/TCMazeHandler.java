@@ -48,13 +48,13 @@ public class TCMazeHandler {
     // level saving itself is disabled. Players without active session will get teleported out.
 
     // Adjust these to make the dungeon shorter or longer
-    // For reference: A 8x8 dungeon takes approximately 2 minutes to complete on average.
+    // For reference: A 8x8 dungeon takes approximately 1.5 minutes to complete on average.
     // Testing was done with Boots of the Traveler and Speed II
     // The scaling is quadratic; double the size, quadruple the time.
     // Width and Height are randomized separately, making a normal distribution for the size.
-    // A size of 12-16 makes runs about 6 minutes on average
+    // Vanilla Thaumcraft sizes: 11-23 and 15-31
     public static final int MIN_LABYRINTH_SIZE = 12;
-    public static final int MAX_LABYRINTH_SIZE = MIN_LABYRINTH_SIZE + 4;
+    public static final int MAX_LABYRINTH_SIZE = 16;
 
     public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
 
@@ -202,8 +202,7 @@ public class TCMazeHandler {
 
     private static Map<CellLoc, Short> calculateCellLocs(WorldServer world) {
         ConcurrentHashMap<CellLoc, Short> oldDat = MazeHandler.labyrinth;
-        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<>(
-                TCMazeHandler.labyrinthCopy);
+        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<>(TCMazeHandler.labyrinthCopy);
         MazeHandler.labyrinth = TCMazeHandler.labyrinthCopy;
         Random rand = world.rand;
         int chX = LABYRINTH_BUFFER_SIZE; // To ensure we're always +x and +z

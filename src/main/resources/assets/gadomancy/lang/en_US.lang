@@ -202,7 +202,7 @@ gadomancy.eldritch.portalPlacerCreative=Creative portal placer
 gadomancy.eldritch.noflyCreative=(even in creative)
 gadomancy.eldritch.nobreakPortalNothing=This portal cannot be broken
 
-gadomancy.eldritch.maze.portalSpawned=You sense portals open in the Eldritch Labyrinth.
+gadomancy.eldritch.maze.portalSpawned=You sense portals open across the Labyrinth.
 gadomancy.eldritch.maze.first=You completed the Eldritch Labyrinth in %s.
 gadomancy.eldritch.maze.newBest=New fastest Eldritch Labyrinth completion: %s. Previous best time: %s.
 gadomancy.eldritch.maze.default=You completed the Eldritch Labyrinth in %s. Best time: %s.
