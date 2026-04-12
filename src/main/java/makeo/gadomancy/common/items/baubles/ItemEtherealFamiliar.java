@@ -46,9 +46,9 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack stack = new ItemStack(item);
-        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.MAGIC);
+        ItemEtherealFamiliar.setFamiliarAspect(stack, Aspect.EARTH);
         list.add(stack);
 
         stack = new ItemStack(item);
@@ -77,7 +77,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List lore, boolean flag) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> lore, boolean flag) {
         List<String> newLore = new ArrayList<String>();
 
         if (ItemEtherealFamiliar.hasFamiliarAspect(stack)) {
@@ -87,9 +87,9 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
         List<FamiliarAugment.FamiliarAugmentPair> augments = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
             newLore.add(
-                    EnumChatFormatting.GRAY + pair.augment.getLocalizedName()
+                    EnumChatFormatting.GRAY + pair.augment().getLocalizedName()
                             + " "
-                            + MiscUtils.toRomanNumeral(pair.level));
+                            + MiscUtils.toRomanNumeral(pair.level()));
         }
 
         if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)) {
@@ -131,7 +131,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
     public static boolean hasAugment(ItemStack stack, FamiliarAugment augment) {
         List<FamiliarAugment.FamiliarAugmentPair> pairs = ItemEtherealFamiliar.getAugments(stack);
         for (FamiliarAugment.FamiliarAugmentPair pair : pairs) {
-            if (pair.augment.equals(augment)) return true;
+            if (pair.augment().equals(augment)) return true;
         }
         return false;
     }
@@ -191,7 +191,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if (a != null) {
-                familiarData.equipTick(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+                familiarData.equipTick(entity.worldObj, (EntityPlayer) entity, a);
             }
         }
     }
@@ -203,7 +203,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if (a != null) {
-                familiarData.handleEquip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+                familiarData.handleEquip(entity.worldObj, (EntityPlayer) entity, a);
             }
         }
     }
@@ -215,7 +215,7 @@ public class ItemEtherealFamiliar extends Item implements IBauble {
             DataFamiliar familiarData = SyncDataHolder.getDataServer("FamiliarData");
             Aspect a = ItemEtherealFamiliar.getFamiliarAspect(itemStack);
             if (a != null) {
-                familiarData.handleUnequip(((EntityPlayer) entity).worldObj, (EntityPlayer) entity, a);
+                familiarData.handleUnequip(entity.worldObj, (EntityPlayer) entity, a);
             }
         }
     }
