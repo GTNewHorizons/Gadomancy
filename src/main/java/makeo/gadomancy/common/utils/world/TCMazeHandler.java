@@ -84,8 +84,7 @@ public class TCMazeHandler {
             if (!world.levelSaving) world.levelSaving = true;
 
             WorldServer out = MinecraftServer.getServer().worldServerForDimension(0);
-            // Raw list and regular for loop to not cause ConcurrentModificationException when relogging with an active
-            // session. I don't know enough java to know why.
+            // Copy to avoid CME when teleporting modifies the player list.
             List<EntityPlayer> playerObjects = new ArrayList<>(world.playerEntities);
             for (EntityPlayer player : playerObjects) {
                 if (!TCMazeHandler.hasOpenSession(player)) {

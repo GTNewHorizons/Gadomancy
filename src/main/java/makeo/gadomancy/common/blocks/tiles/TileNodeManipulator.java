@@ -111,6 +111,8 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
     }
 
     private boolean isMultiblockPresent() {
+        if (multiblockType == null) return false;
+
         switch (this.multiblockType) {
             case NODE_MANIPULATOR:
                 if (MultiblockHelper.isMultiblockPresent(
@@ -432,7 +434,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             MultiblockHelper.IntVec3 v = entry.getKey();
             MultiblockHelper.BlockInfo info = entry.getValue();
 
-            if (this.shouldSkipOnForm(info)) continue;
+            if (this.shouldSkip(info)) continue;
 
             int absX = v.x + this.xCoord;
             int absY = v.y + this.yCoord;
@@ -485,7 +487,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
             MultiblockHelper.BlockInfo info = entry.getValue();
             MultiblockHelper.BlockInfo restoreInfo = incomplete.get(v);
 
-            if (this.shouldSkipOnBreak(info)) continue;
+            if (this.shouldSkip(info)) continue;
 
             int absX = v.x + this.xCoord;
             int absY = v.y + this.yCoord;
@@ -504,14 +506,7 @@ public class TileNodeManipulator extends TileWandPedestal implements IWandable {
         this.dropWand();
     }
 
-    private boolean shouldSkipOnForm(MultiblockHelper.BlockInfo info) {
-        return info.block == RegisteredBlocks.blockNode || info.block == Blocks.air
-                || info.block == RegisteredBlocks.blockNodeManipulator
-                || (info.block == RegisteredBlocks.blockStoneMachine
-                        && (info.meta == 0 || info.meta == 1 || info.meta == 3));
-    }
-
-    private boolean shouldSkipOnBreak(MultiblockHelper.BlockInfo info) {
+    private boolean shouldSkip(MultiblockHelper.BlockInfo info) {
         return info.block == RegisteredBlocks.blockNode || info.block == Blocks.air
                 || info.block == RegisteredBlocks.blockNodeManipulator
                 || (info.block == RegisteredBlocks.blockStoneMachine
