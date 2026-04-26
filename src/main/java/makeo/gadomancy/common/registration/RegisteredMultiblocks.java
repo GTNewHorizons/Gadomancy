@@ -13,7 +13,9 @@ public class RegisteredMultiblocks {
 
     public static final MultiblockHelper.MultiblockPattern incompleteNodeManipulatorMultiblock = new MultiblockHelper.MultiblockPattern(
             RegisteredBlocks.blockNodeManipulator,
-            5).addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 0)
+            5)
+                    // .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+                    .addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 0)
                     .addBlock(1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15)
                     .addBlock(-1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15)
                     .addBlock(-1, 0, -1, ConfigBlocks.blockCosmeticSolid, 15)
@@ -25,7 +27,9 @@ public class RegisteredMultiblocks {
 
     public static final MultiblockHelper.MultiblockPattern completeNodeManipulatorMultiblock = new MultiblockHelper.MultiblockPattern(
             RegisteredBlocks.blockNodeManipulator,
-            5).addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 0)
+            5)
+                    // .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+                    .addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 0)
                     .addBlock(1, 0, 1, RegisteredBlocks.blockStoneMachine, 15)
                     .addBlock(-1, 0, 1, RegisteredBlocks.blockStoneMachine, 15)
                     .addBlock(-1, 0, -1, RegisteredBlocks.blockStoneMachine, 15)
@@ -37,11 +41,9 @@ public class RegisteredMultiblocks {
 
     public static final MultiblockHelper.MultiblockPattern incompleteEldritchPortalCreator = new MultiblockHelper.MultiblockPattern(
             RegisteredBlocks.blockNodeManipulator,
-            5).addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
-                    // .addBlock(3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, 3,
-                    // RegisteredBlocks.blockStoneMachine, 1)
-                    // .addBlock(-3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, -3,
-                    // RegisteredBlocks.blockStoneMachine, 1)
+            5)
+                    // .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+                    .addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
                     .addBlock(1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15)
                     .addBlock(-1, 0, 1, ConfigBlocks.blockCosmeticSolid, 15)
                     .addBlock(-1, 0, -1, ConfigBlocks.blockCosmeticSolid, 15)
@@ -53,11 +55,9 @@ public class RegisteredMultiblocks {
 
     public static final MultiblockHelper.MultiblockPattern completeEldritchPortalCreator = new MultiblockHelper.MultiblockPattern(
             RegisteredBlocks.blockNodeManipulator,
-            5).addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0).addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
-                    // .addBlock(3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, 3,
-                    // RegisteredBlocks.blockStoneMachine, 1)
-                    // .addBlock(-3, 0, 0, RegisteredBlocks.blockStoneMachine, 1).addBlock(0, 0, -3,
-                    // RegisteredBlocks.blockStoneMachine, 1)
+            5)
+                    // .addBlock(0, 2, 0, RegisteredBlocks.blockNode, 0)
+                    .addBlock(0, 1, 0, RegisteredBlocks.blockStoneMachine, 3)
                     .addBlock(1, 0, 1, RegisteredBlocks.blockStoneMachine, 15)
                     .addBlock(-1, 0, 1, RegisteredBlocks.blockStoneMachine, 15)
                     .addBlock(-1, 0, -1, RegisteredBlocks.blockStoneMachine, 15)

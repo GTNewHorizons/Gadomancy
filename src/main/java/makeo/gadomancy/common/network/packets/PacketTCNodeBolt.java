@@ -1,6 +1,7 @@
 package makeo.gadomancy.common.network.packets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -81,21 +82,27 @@ public class PacketTCNodeBolt implements IMessage, IMessageHandler<PacketTCNodeB
     @Override
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketTCNodeBolt p, MessageContext ctx) {
+        WorldClient world = Minecraft.getMinecraft().theWorld;
         FXLightningBolt bolt = new FXLightningBolt(
-                Minecraft.getMinecraft().theWorld,
+                world,
                 p.x,
                 p.y,
                 p.z,
                 p.targetX,
                 p.targetY,
                 p.targetZ,
-                Minecraft.getMinecraft().theWorld.rand.nextLong(),
+                world.rand.nextLong(),
                 10,
                 4.0F,
                 5);
         bolt.defaultFractal();
         bolt.setType(p.type);
         bolt.finalizeBolt();
+        if (world.rand.nextBoolean()) {
+            float pitch = 0.9F + world.rand.nextFloat() * 0.2F;
+            float volume = 0.1F + world.rand.nextFloat() * 0.1F;
+            world.playSound(p.x, p.y, p.z, "thaumcraft:zap", volume, pitch, false);
+        }
         return null;
     }
 }

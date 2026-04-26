@@ -28,7 +28,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileAIShutdown;
 import makeo.gadomancy.common.blocks.tiles.TileBlockProtector;
-import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
 import makeo.gadomancy.common.blocks.tiles.TileStickyJar;
 import makeo.gadomancy.common.data.SyncDataHolder;
 import makeo.gadomancy.common.data.config.ModConfig;
@@ -222,12 +221,6 @@ public class EventHandlerWorld {
     @SubscribeEvent
     public void onBreak(BlockEvent.BreakEvent event) {
         if (!event.world.isRemote) {
-            if (event.block == RegisteredBlocks.blockNodeManipulator) {
-                TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
-                if (te instanceof TileNodeManipulator) {
-                    if (((TileNodeManipulator) te).isInMultiblock()) ((TileNodeManipulator) te).breakMultiblock();
-                }
-            }
             if (event.block == RegisteredBlocks.blockStoneMachine && event.blockMetadata == 5) {
                 TileAIShutdown.removeTrackedEntities(event.world, event.x, event.y, event.z);
             }
