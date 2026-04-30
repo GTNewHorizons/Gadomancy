@@ -40,7 +40,9 @@ import makeo.gadomancy.common.registration.RegisteredPotions;
 import makeo.gadomancy.common.registration.RegisteredRecipes;
 import makeo.gadomancy.common.registration.RegisteredResearches;
 import makeo.gadomancy.common.utils.Injector;
+import makeo.gadomancy.common.utils.world.TCMazeHandler;
 import makeo.gadomancy.common.utils.world.WorldProviderTCEldrich;
+import makeo.gadomancy.common.utils.world.fake.FakeWorldTCGeneration;
 import thaumcraft.api.wands.WandTriggerRegistry;
 import thaumcraft.common.entities.golems.ContainerGolem;
 import thaumcraft.common.entities.golems.EntityGolemBase;
@@ -134,6 +136,7 @@ public class CommonProxy implements IGuiHandler {
     public EventHandlerEntityServer handlerEntityServer;
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        TCMazeHandler.GEN = new FakeWorldTCGeneration();
         handlerGolemServer = new EventHandlerGolemServer();
         MinecraftForge.EVENT_BUS.register(handlerGolemServer);
         handlerWorld = new EventHandlerWorld();
@@ -151,5 +154,6 @@ public class CommonProxy implements IGuiHandler {
         handlerWorld = null;
         MinecraftForge.EVENT_BUS.unregister(handlerEntityServer);
         handlerEntityServer = null;
+        TCMazeHandler.GEN = null;
     }
 }

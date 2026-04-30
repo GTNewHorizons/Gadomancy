@@ -1,5 +1,6 @@
 package makeo.gadomancy.common.utils.world;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,7 +43,24 @@ public class ChunkProviderTCOuter implements IChunkProvider {
     private static final byte[] metaArr;
     private static final byte[] biomeArr;
 
-    private World worldObj;
+    static {
+        final int LENGTH = 32768;
+        blockArr = new Block[LENGTH];
+        metaArr = new byte[LENGTH];
+        biomeArr = new byte[16 * 16];
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                for (int y = 127; y >= 0; y--) {
+                    int index = (x << 4 | z) << 7 | y;
+                    ChunkProviderTCOuter.blockArr[index] = null;
+                    ChunkProviderTCOuter.metaArr[index] = 0;
+                }
+            }
+        }
+        Arrays.fill(ChunkProviderTCOuter.biomeArr, (byte) ThaumcraftWorldGenerator.biomeEldritchLands.biomeID);
+    }
+
+    private final World worldObj;
 
     public ChunkProviderTCOuter(World p_i2006_1_, long p_i2006_2_, boolean p_i2006_4_) {
         this.worldObj = p_i2006_1_;
@@ -320,23 +338,5 @@ public class ChunkProviderTCOuter implements IChunkProvider {
 
     public static int getKey(int x, int y, int z) {
         return (x << 4 | z) << 7 | y;
-    }
-
-    static {
-        blockArr = new Block[32768];
-        metaArr = new byte[ChunkProviderTCOuter.blockArr.length];
-        biomeArr = new byte[16 * 16];
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                for (int y = 127; y >= 0; y--) {
-                    int index = (x << 4 | z) << 7 | y;
-                    ChunkProviderTCOuter.blockArr[index] = null;
-                    ChunkProviderTCOuter.metaArr[index] = 0;
-                }
-            }
-        }
-        for (int i = 0; i < ChunkProviderTCOuter.biomeArr.length; i++) {
-            ChunkProviderTCOuter.biomeArr[i] = (byte) ThaumcraftWorldGenerator.biomeEldritchLands.biomeID;
-        }
     }
 }

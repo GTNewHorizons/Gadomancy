@@ -25,18 +25,18 @@ import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by HellFirePvP @ 08.11.2015 21:57
  */
 public class FakeWorldTCGeneration extends FakeWorld {
 
     public FakeWorldTCGeneration() {
-        super(TCFakeWorldProvider.instance);
+        super(new TCFakeWorldProvider());
     }
 
-    public ChunkMap chunks = new ChunkMap();
-    public List<Object> bufferedEntities = new ArrayList<Object>();
-    public Map<ChunkCoordinates, TileEntity> gettedTE = new HashMap<ChunkCoordinates, TileEntity>();
+    public final ChunkMap chunks = new ChunkMap();
+    public final List<Object> bufferedEntities = new ArrayList<>();
+    public final Map<ChunkCoordinates, TileEntity> gettedTE = new HashMap<>();
     public int blockCount, blockOverwriteCount;
 
     @Override
@@ -122,7 +122,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     private static class FakeChunk extends Chunk {
 
-        private ChunkBuffer buf;
+        private final ChunkBuffer buf;
 
         public FakeChunk(World world, int x, int z, ChunkBuffer buf) {
             super(world, x, z);
@@ -250,7 +250,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     public static class ChunkBuffer {
 
-        private long key;
+        private final long key;
         public Block[] blockData = new Block[32768];
         public byte[] metaBuffer = new byte[32768];
         public List<Integer[]> tiles = new ArrayList<Integer[]>();
@@ -270,7 +270,7 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
         @Override
         public int hashCode() {
-            return (int) (this.key ^ (this.key >>> 32));
+            return Long.hashCode(this.key);
         }
     }
 
@@ -287,12 +287,9 @@ public class FakeWorldTCGeneration extends FakeWorld {
 
     public static class TCFakeWorldProvider extends WorldProvider {
 
-        private static TCFakeWorldProvider instance;
-
-        static {
-            TCFakeWorldProvider.instance = new TCFakeWorldProvider();
-            TCFakeWorldProvider.instance.dimensionId = ModConfig.dimOuterId;
-            TCFakeWorldProvider.instance.hasNoSky = true;
+        public TCFakeWorldProvider() {
+            this.dimensionId = ModConfig.dimOuterId;
+            this.hasNoSky = true;
         }
 
         @Override

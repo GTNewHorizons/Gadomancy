@@ -63,7 +63,7 @@ public class TCMazeHandler {
     public static final int TELEPORT_LAYER_Y = 55;
     public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<>();
     private static int tickCounter;
-    public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
+    public static FakeWorldTCGeneration GEN;
 
     private static final List<TCMazeSession> flaggedSessions = new ArrayList<>();
     private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<>();
