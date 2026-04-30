@@ -1,6 +1,7 @@
 package makeo.gadomancy.client.renderers.item;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import makeo.gadomancy.common.utils.MiscUtils;
-import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;
@@ -32,8 +32,8 @@ import thaumcraft.common.entities.monster.EntityWisp;
  */
 public class ItemRenderFamiliar implements IItemRenderer {
 
-    private static EntityWisp ENTITY_WISP;
-    private float[] renderInfo = new float[5];
+    private final EntityWisp entityWisp = new EntityWisp(null);
+    private final float[] renderInfo = new float[5];
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -61,11 +61,9 @@ public class ItemRenderFamiliar implements IItemRenderer {
             this.cleanActiveRenderInfo(type);
             GL11.glScalef(1.3F, 1.3F, 1.3F);
             if (ItemEtherealFamiliar.hasFamiliarAspect(item)) {
-                if (ItemRenderFamiliar.ENTITY_WISP == null)
-                    ItemRenderFamiliar.ENTITY_WISP = new EntityWisp(new FakeWorld());
-                ItemRenderFamiliar.ENTITY_WISP.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
-                ItemRenderFamiliar.ENTITY_WISP.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
-                ItemRenderFamiliar.renderEntityWispFor(null, ItemRenderFamiliar.ENTITY_WISP, 0, 0, 0, 0, 0);
+                this.entityWisp.ticksExisted = FamiliarHandlerClient.PartialEntityFamiliar.DUMMY_FAMILIAR.ticksExisted;
+                this.entityWisp.setType(ItemEtherealFamiliar.getFamiliarAspect(item).getTag());
+                ItemRenderFamiliar.renderEntityWispFor(null, this.entityWisp, 0, 0, 0, 0, 0);
             }
         } finally {
             this.restoreActiveRenderInfo();
@@ -80,7 +78,7 @@ public class ItemRenderFamiliar implements IItemRenderer {
         this.renderInfo[3] = ActiveRenderInfo.rotationYZ;
         this.renderInfo[4] = ActiveRenderInfo.rotationXY;
         switch (renderType) {
-            case ENTITY:
+            case ENTITY, FIRST_PERSON_MAP:
                 break;
             case EQUIPPED:
                 ActiveRenderInfo.rotationX = 0.85535365F;
@@ -103,8 +101,6 @@ public class ItemRenderFamiliar implements IItemRenderer {
                 ActiveRenderInfo.rotationYZ = -0.20220716F;
                 ActiveRenderInfo.rotationXY = -0.20647818F;
                 break;
-            case FIRST_PERSON_MAP:
-                break;
         }
     }
 
@@ -114,9 +110,7 @@ public class ItemRenderFamiliar implements IItemRenderer {
         if (this.renderInfo[2] != -1) ActiveRenderInfo.rotationZ = this.renderInfo[2];
         if (this.renderInfo[3] != -1) ActiveRenderInfo.rotationYZ = this.renderInfo[3];
         if (this.renderInfo[4] != -1) ActiveRenderInfo.rotationXY = this.renderInfo[4];
-        for (int i = 0; i < this.renderInfo.length; i++) {
-            this.renderInfo[i] = -1;
-        }
+        Arrays.fill(this.renderInfo, -1);
     }
 
     private static int size1;
