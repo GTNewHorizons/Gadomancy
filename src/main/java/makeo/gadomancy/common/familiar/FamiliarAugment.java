@@ -7,6 +7,8 @@ import java.util.Map;
 
 import net.minecraft.util.StatCollector;
 
+import com.github.bsideup.jabel.Desugar;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -65,12 +67,12 @@ public class FamiliarAugment {
                                     FamiliarAugment.WEAKNESS));
 
     private final String unlocalizedName;
-    private List<FamiliarAugmentPrecondition> preconditions = new ArrayList<FamiliarAugmentPrecondition>();
+    private final List<FamiliarAugmentPrecondition> preconditions = new ArrayList<FamiliarAugmentPrecondition>();
     private boolean requiresPrevLevel = true;
-    private AspectList costsPerLevel;
-    private List<FamiliarAugment> conflicts = new ArrayList<FamiliarAugment>();
+    private final AspectList costsPerLevel;
+    private final List<FamiliarAugment> conflicts = new ArrayList<FamiliarAugment>();
 
-    private static Map<String, FamiliarAugment> BY_NAME = new HashMap<String, FamiliarAugment>();
+    private static final Map<String, FamiliarAugment> BY_NAME = new HashMap<String, FamiliarAugment>();
 
     private FamiliarAugment(String unlocalizedName, AspectList costs) {
         this.unlocalizedName = unlocalizedName;
@@ -167,7 +169,7 @@ public class FamiliarAugment {
 
     public static class PreconditionAny extends FamiliarAugmentPrecondition {
 
-        private FamiliarAugment[] anyPrevAugment;
+        private final FamiliarAugment[] anyPrevAugment;
 
         private PreconditionAny(FamiliarAugment... any) {
             this.anyPrevAugment = any;
@@ -186,7 +188,7 @@ public class FamiliarAugment {
 
     public static class PreconditionAll extends FamiliarAugmentPrecondition {
 
-        private FamiliarAugment[] prevAugments;
+        private final FamiliarAugment[] prevAugments;
 
         private PreconditionAll(FamiliarAugment... previous) {
             this.prevAugments = previous;
@@ -222,32 +224,6 @@ public class FamiliarAugment {
         }
     }
 
-    public static class FamiliarAugmentPair {
-
-        public final FamiliarAugment augment;
-        public final int level;
-
-        public FamiliarAugmentPair(FamiliarAugment augment, int level) {
-            this.augment = augment;
-            this.level = level;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || this.getClass() != o.getClass()) return false;
-
-            FamiliarAugmentPair that = (FamiliarAugmentPair) o;
-
-            return this.level == that.level
-                    && (this.augment != null ? this.augment.equals(that.augment) : that.augment == null);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = this.augment != null ? this.augment.hashCode() : 0;
-            result = 31 * result + this.level;
-            return result;
-        }
-    }
+    @Desugar
+    public record FamiliarAugmentPair(FamiliarAugment augment, int level) {}
 }

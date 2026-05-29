@@ -13,6 +13,7 @@ import net.minecraft.item.crafting.IRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
+import makeo.gadomancy.common.crafting.EtherealFamiliarCreationRecipe;
 import makeo.gadomancy.common.crafting.EtherealFamiliarUpgradeRecipe;
 import makeo.gadomancy.common.crafting.FamiliarUndoRecipe;
 import makeo.gadomancy.common.crafting.InfusionDisguiseArmor;
@@ -35,13 +36,12 @@ import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemWispEssence;
 import thaumcraft.common.items.wands.ItemWandCasting;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by makeo @ 16.06.2015 01:17
  */
 public class RegisteredRecipes {
@@ -73,14 +73,14 @@ public class RegisteredRecipes {
     public static InfusionRecipe recipeInfusionClaw;
     public static InfusionRecipe recipeNodeManipulator;
     public static InfusionRecipe recipeRandomizationFocus;
-    public static InfusionRecipe[] recipesFamiliar;
+    public static InfusionRecipe recipeFamiliar;
     public static InfusionRecipe recipeGolemCoreBodyguard;
     public static InfusionRecipe recipePortalFocus;
     public static InfusionRecipe recipeElementVoid;
     public static InfusionRecipe recipeAiShutdown;
 
     // For indexing, look below...
-    public static InfusionRecipe[][] recipesFamiliarAugmentation;
+    public static InfusionRecipe[] recipesFamiliarAugmentation;
 
     public static IArcaneRecipe recipeStickyJar;
     public static IArcaneRecipe recipeArcaneDropper;
@@ -109,6 +109,7 @@ public class RegisteredRecipes {
 
     public static InfusionEnchantmentRecipe recipeRevealer;
 
+    @SuppressWarnings("unchecked")
     public static void init() {
         AdditionalGolemType typeSilverwood = RegisteredGolemStuff.typeSilverwood;
         RegisteredRecipes.recipeGolemSilverwood = ThaumcraftApi.addInfusionCraftingRecipe(
@@ -447,7 +448,18 @@ public class RegisteredRecipes {
                 'P',
                 new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 15));
 
-        RegisteredRecipes.recipesFamiliar = RegisteredRecipes.createFamiliarRecipes();
+        RegisteredRecipes.recipeFamiliar = new EtherealFamiliarCreationRecipe(
+                Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR",
+                4,
+                new ItemStack(ConfigItems.itemAmuletRunic, 1, 0),
+                new ItemStack(ConfigItems.itemWispEssence),
+                new ItemStack(ConfigItems.itemResource, 1, 14),
+                new ItemStack(ConfigItems.itemResource, 1, 1),
+                new ItemStack(ConfigItems.itemWispEssence),
+                new ItemStack(ConfigItems.itemResource, 1, 14),
+                new ItemStack(ConfigItems.itemResource, 1, 1));
+        ThaumcraftApi.getCraftingRecipes().add(recipeFamiliar);
+
         RegisteredRecipes.recipesFamiliarAugmentation = RegisteredRecipes.createEtherealFamiliarUpgradeRecipes();
 
         RegisteredRecipes.recipeBlockProtector = new IArcaneRecipe[4];
@@ -554,7 +566,7 @@ public class RegisteredRecipes {
 
         ItemAuraCore.AuraCoreType[] auraCoreTypes = ItemAuraCore.AuraCoreType.values();
         RegisteredRecipes.recipesWashAuraCore = new CrucibleRecipe[auraCoreTypes.length - 1];
-        List<IRecipe> recipesUndoAuraCore = new ArrayList<IRecipe>();
+        List<IRecipe> recipesUndoAuraCore = new ArrayList<>();
 
         for (int i = 1; i < auraCoreTypes.length; i++) {
             RegisteredRecipes.recipesWashAuraCore[i - 1] = ThaumcraftApi.addCrucibleRecipe(
@@ -562,7 +574,7 @@ public class RegisteredRecipes {
                     new ItemStack(RegisteredItems.itemAuraCore),
                     new ItemStack(RegisteredItems.itemAuraCore, 1, i),
                     new AspectList().add(Aspect.MAGIC, 12).add(Aspect.WATER, 12).add(Aspect.HEAL, 18)); // damn those
-                                                                                                        // heal potions
+            // heal potions
 
             if (auraCoreTypes[i].isUnused()) {
                 GameRegistry.addShapelessRecipe(
@@ -811,606 +823,587 @@ public class RegisteredRecipes {
     }
 
     /*
-     * Indexing: 0 = Shock 0 -> 1; 3 = Fire 0 -> 1; 6 = Poison 0 -> 1 1 = Shock 1 -> 2; 4 = Fire 1 -> 2; 7 = Poison 1 ->
-     * 2 2 = Shock 2 -> 3; 5 = Fire 2 -> 3; 8 = Poison 2 -> 3 9 = Enervation 0 -> 1; 12 = Damage 0 -> 1 10 = Enervation
-     * 1 -> 2; 13 = Damage 1 -> 2 11 = Enervation 2 -> 3; 14 = Damage 2 -> 3 15 = Range 0 -> 1; 17 = Speed 0 -> 1 16 =
-     * Range 1 -> 2; 18 = Speed 1 -> 2
+     * Shock: 0 = Shock 0 -> 1 1 = Shock 1 -> 2 2 = Shock 2 -> 3; Fire: 3 = Fire 0 -> 1 4 = Fire 1 -> 2 5 = Fire 2 -> 3;
+     * Poison: 6 = Poison 0 -> 1 7 = Poison 1 -> 2 8 = Poison 2 -> 3; Enervation: 9 = Enervation 0 -> 1 10 = Enervation
+     * 1 -> 2 11 = Enervation 2 -> 3; Damage: 12 = Damage 0 -> 1 13 = Damage 1 -> 2 14 = Damage 2 -> 3; Range: 15 =
+     * Range 0 -> 1 16 = Range 1 -> 2; Speed: 17 = Speed 0 -> 1 18 = Speed 1 -> 2
      */
-    private static InfusionRecipe[][] createEtherealFamiliarUpgradeRecipes() {
-        List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
-        InfusionRecipe[][] recipes = new InfusionRecipe[19][aspects.size()]; // Ugh.. 19xAspectSize array... nice...
-        ItemWispEssence wispEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
+    @SuppressWarnings("unchecked")
+    private static InfusionRecipe[] createEtherealFamiliarUpgradeRecipes() {
+        InfusionRecipe[] recipes = new InfusionRecipe[19];
         ItemEtherealFamiliar etherealFamiliar = RegisteredItems.itemEtherealFamiliar;
-
-        for (int i = 0; i < recipes.length; i++) {
-            recipes[i] = new InfusionRecipe[aspects.size()];
-        }
 
         ItemStack famIn;
         EtherealFamiliarUpgradeRecipe infusion;
         String modid = Gadomancy.MODID.toUpperCase();
-        for (int i = 0; i < aspects.size(); i++) {
-            Aspect a = aspects.get(i);
-            ItemStack wispyEssence = new ItemStack(wispEssence, 1, 0);
-            wispEssence.setAspects(wispyEssence, new AspectList().add(a, 2));
+        ItemStack wispyEssence = new ItemStack(ConfigItems.itemWispEssence, 1, 0);
 
-            ItemStack alumentum = new ItemStack(ConfigItems.itemResource, 1, 0);
-            ItemStack amber = new ItemStack(ConfigItems.itemResource, 1, 6);
+        ItemStack alumentum = new ItemStack(ConfigItems.itemResource, 1, 0);
+        ItemStack amber = new ItemStack(ConfigItems.itemResource, 1, 6);
 
-            // Shock 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_SHOCK",
-                    3,
-                    new AspectList().add(Aspect.MOTION, 14).add(a, 16).add(Aspect.AIR, 20),
-                    famIn,
-                    FamiliarAugment.SHOCK,
-                    0,
-                    wispyEssence,
-                    alumentum,
-                    wispyEssence,
-                    amber,
-                    wispyEssence,
-                    alumentum,
-                    wispyEssence,
-                    amber);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[0])[i] = infusion;
+        // Shock 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_SHOCK",
+                3,
+                new AspectList().add(Aspect.MOTION, 14).add(Aspect.AIR, 20),
+                16,
+                famIn,
+                FamiliarAugment.SHOCK,
+                0,
+                wispyEssence,
+                alumentum,
+                wispyEssence,
+                amber,
+                wispyEssence,
+                alumentum,
+                wispyEssence,
+                amber);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[0] = infusion;
 
-            ItemStack glowstone = new ItemStack(Items.glowstone_dust);
-            ItemStack ghastTear = new ItemStack(Items.ghast_tear);
+        ItemStack glowstone = new ItemStack(Items.glowstone_dust);
+        ItemStack ghastTear = new ItemStack(Items.ghast_tear);
 
-            // Shock 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_SHOCK",
-                    5,
-                    new AspectList().add(Aspect.MOTION, 22).add(a, 28).add(Aspect.AURA, 20).add(Aspect.WEAPON, 18)
-                            .add(Aspect.AIR, 38),
-                    famIn,
-                    FamiliarAugment.SHOCK,
-                    1,
-                    wispyEssence,
-                    alumentum,
-                    glowstone,
-                    wispyEssence,
-                    alumentum,
-                    ghastTear,
-                    wispyEssence,
-                    alumentum,
-                    glowstone,
-                    wispyEssence,
-                    alumentum,
-                    ghastTear);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[1])[i] = infusion;
+        // Shock 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_SHOCK",
+                5,
+                new AspectList().add(Aspect.MOTION, 22).add(Aspect.AURA, 20).add(Aspect.WEAPON, 18).add(Aspect.AIR, 38),
+                28,
+                famIn,
+                FamiliarAugment.SHOCK,
+                1,
+                wispyEssence,
+                alumentum,
+                glowstone,
+                wispyEssence,
+                alumentum,
+                ghastTear,
+                wispyEssence,
+                alumentum,
+                glowstone,
+                wispyEssence,
+                alumentum,
+                ghastTear);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[1] = infusion;
 
-            ItemStack netherStar = new ItemStack(Items.nether_star);
-            ItemStack airShard = new ItemStack(ConfigItems.itemShard, 1, 0);
-            ItemStack quicksilver = new ItemStack(ConfigItems.itemResource, 1, 3);
+        ItemStack netherStar = new ItemStack(Items.nether_star);
+        ItemStack airShard = new ItemStack(ConfigItems.itemShard, 1, 0);
+        ItemStack quicksilver = new ItemStack(ConfigItems.itemResource, 1, 3);
 
-            // Shock 2 -> 3
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_SHOCK",
-                    8,
-                    new AspectList().add(Aspect.MOTION, 40).add(Aspect.AURA, 28).add(a, 38).add(Aspect.WEAPON, 20)
-                            .add(Aspect.AIR, 36),
-                    famIn,
-                    FamiliarAugment.SHOCK,
-                    2,
-                    wispyEssence,
-                    alumentum,
-                    airShard,
-                    alumentum,
-                    quicksilver,
-                    alumentum,
-                    netherStar,
-                    alumentum,
-                    wispyEssence,
-                    alumentum,
-                    airShard,
-                    alumentum,
-                    quicksilver,
-                    alumentum,
-                    netherStar,
-                    alumentum);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[2])[i] = infusion;
+        // Shock 2 -> 3
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.SHOCK, 2);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_SHOCK",
+                8,
+                new AspectList().add(Aspect.MOTION, 40).add(Aspect.AURA, 28).add(Aspect.WEAPON, 20).add(Aspect.AIR, 36),
+                38,
+                famIn,
+                FamiliarAugment.SHOCK,
+                2,
+                wispyEssence,
+                alumentum,
+                airShard,
+                alumentum,
+                quicksilver,
+                alumentum,
+                netherStar,
+                alumentum,
+                wispyEssence,
+                alumentum,
+                airShard,
+                alumentum,
+                quicksilver,
+                alumentum,
+                netherStar,
+                alumentum);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[2] = infusion;
 
-            ItemStack blazePowder = new ItemStack(Items.blaze_powder);
+        ItemStack blazePowder = new ItemStack(Items.blaze_powder);
 
-            // Fire 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_FIRE",
-                    4,
-                    new AspectList().add(Aspect.FIRE, 12).add(a, 14).add(Aspect.WEAPON, 8),
-                    famIn,
-                    FamiliarAugment.FIRE,
-                    0,
-                    wispyEssence,
-                    blazePowder,
-                    wispyEssence,
-                    blazePowder,
-                    wispyEssence,
-                    blazePowder,
-                    wispyEssence,
-                    blazePowder);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[3])[i] = infusion;
+        // Fire 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_FIRE",
+                4,
+                new AspectList().add(Aspect.FIRE, 12).add(Aspect.WEAPON, 8),
+                14,
+                famIn,
+                FamiliarAugment.FIRE,
+                0,
+                wispyEssence,
+                blazePowder,
+                wispyEssence,
+                blazePowder,
+                wispyEssence,
+                blazePowder,
+                wispyEssence,
+                blazePowder);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[3] = infusion;
 
-            ItemStack redstone = new ItemStack(Items.redstone);
-            ItemStack magmaCream = new ItemStack(Items.magma_cream);
-            ItemStack coalBlock = new ItemStack(Blocks.coal_block);
+        ItemStack redstone = new ItemStack(Items.redstone);
+        ItemStack magmaCream = new ItemStack(Items.magma_cream);
+        ItemStack coalBlock = new ItemStack(Blocks.coal_block);
 
-            // Fire 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_FIRE",
-                    6,
-                    new AspectList().add(Aspect.FIRE, 38).add(a, 24).add(Aspect.ENERGY, 32).add(Aspect.WEAPON, 18),
-                    famIn,
-                    FamiliarAugment.FIRE,
-                    1,
-                    wispyEssence,
-                    redstone,
-                    coalBlock,
-                    wispyEssence,
-                    magmaCream,
-                    blazePowder,
-                    wispyEssence,
-                    redstone,
-                    coalBlock,
-                    wispyEssence,
-                    magmaCream,
-                    blazePowder);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[4])[i] = infusion;
+        // Fire 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_FIRE",
+                6,
+                new AspectList().add(Aspect.FIRE, 38).add(Aspect.ENERGY, 32).add(Aspect.WEAPON, 18),
+                24,
+                famIn,
+                FamiliarAugment.FIRE,
+                1,
+                wispyEssence,
+                redstone,
+                coalBlock,
+                wispyEssence,
+                magmaCream,
+                blazePowder,
+                wispyEssence,
+                redstone,
+                coalBlock,
+                wispyEssence,
+                magmaCream,
+                blazePowder);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[4] = infusion;
 
-            ItemStack nitor = new ItemStack(ConfigItems.itemResource, 1, 1);
-            ItemStack fireShard = new ItemStack(ConfigItems.itemShard, 1, 1);
+        ItemStack nitor = new ItemStack(ConfigItems.itemResource, 1, 1);
+        ItemStack fireShard = new ItemStack(ConfigItems.itemShard, 1, 1);
 
-            // Fire 2 -> 3
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_FIRE",
-                    9,
-                    new AspectList().add(Aspect.FIRE, 48).add(a, 32).add(Aspect.ENERGY, 42).add(Aspect.WEAPON, 32)
-                            .add(Aspect.AURA, 30),
-                    famIn,
-                    FamiliarAugment.FIRE,
-                    2,
-                    wispyEssence,
-                    blazePowder,
-                    fireShard,
-                    blazePowder,
-                    netherStar,
-                    blazePowder,
-                    nitor,
-                    blazePowder,
-                    wispyEssence,
-                    blazePowder,
-                    fireShard,
-                    blazePowder,
-                    netherStar,
-                    blazePowder,
-                    nitor,
-                    blazePowder);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[5])[i] = infusion;
+        // Fire 2 -> 3
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.FIRE, 2);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_FIRE",
+                9,
+                new AspectList().add(Aspect.FIRE, 48).add(Aspect.ENERGY, 42).add(Aspect.WEAPON, 32)
+                        .add(Aspect.AURA, 30),
+                32,
+                famIn,
+                FamiliarAugment.FIRE,
+                2,
+                wispyEssence,
+                blazePowder,
+                fireShard,
+                blazePowder,
+                netherStar,
+                blazePowder,
+                nitor,
+                blazePowder,
+                wispyEssence,
+                blazePowder,
+                fireShard,
+                blazePowder,
+                netherStar,
+                blazePowder,
+                nitor,
+                blazePowder);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[5] = infusion;
 
-            ItemStack spiderEye = new ItemStack(Items.spider_eye);
-            ItemStack rottenFlesh = new ItemStack(Items.rotten_flesh);
+        ItemStack spiderEye = new ItemStack(Items.spider_eye);
+        ItemStack rottenFlesh = new ItemStack(Items.rotten_flesh);
 
-            // Poison 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_POISON",
-                    5,
-                    new AspectList().add(Aspect.WATER, 16).add(a, 14).add(Aspect.POISON, 8).add(Aspect.ELDRITCH, 4),
-                    famIn,
-                    FamiliarAugment.POISON,
-                    0,
-                    wispyEssence,
-                    spiderEye,
-                    wispyEssence,
-                    rottenFlesh,
-                    wispyEssence,
-                    spiderEye,
-                    wispyEssence,
-                    rottenFlesh);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[6])[i] = infusion;
+        // Poison 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_POISON",
+                5,
+                new AspectList().add(Aspect.WATER, 16).add(Aspect.POISON, 8).add(Aspect.ELDRITCH, 4),
+                14,
+                famIn,
+                FamiliarAugment.POISON,
+                0,
+                wispyEssence,
+                spiderEye,
+                wispyEssence,
+                rottenFlesh,
+                wispyEssence,
+                spiderEye,
+                wispyEssence,
+                rottenFlesh);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[6] = infusion;
 
-            ItemStack fermentedSpiderEye = new ItemStack(Items.fermented_spider_eye);
-            ItemStack enderPearl = new ItemStack(Items.ender_pearl);
-            ItemStack sugarCane = new ItemStack(Items.reeds);
-            ItemStack pumpkinSeeds = new ItemStack(Items.pumpkin_seeds);
+        ItemStack fermentedSpiderEye = new ItemStack(Items.fermented_spider_eye);
+        ItemStack enderPearl = new ItemStack(Items.ender_pearl);
+        ItemStack sugarCane = new ItemStack(Items.reeds);
+        ItemStack pumpkinSeeds = new ItemStack(Items.pumpkin_seeds);
 
-            // Poison 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_POISON",
-                    7,
-                    new AspectList().add(a, 26).add(Aspect.POISON, 28).add(Aspect.ELDRITCH, 12).add(Aspect.WATER, 22)
-                            .add(Aspect.AURA, 8),
-                    famIn,
-                    FamiliarAugment.POISON,
-                    1,
-                    wispyEssence,
-                    fermentedSpiderEye,
-                    enderPearl,
-                    wispyEssence,
-                    sugarCane,
-                    pumpkinSeeds,
-                    wispyEssence,
-                    fermentedSpiderEye,
-                    enderPearl,
-                    wispyEssence,
-                    sugarCane,
-                    pumpkinSeeds);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[7])[i] = infusion;
+        // Poison 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_POISON",
+                7,
+                new AspectList().add(Aspect.POISON, 28).add(Aspect.ELDRITCH, 12).add(Aspect.WATER, 22)
+                        .add(Aspect.AURA, 8),
+                26,
+                famIn,
+                FamiliarAugment.POISON,
+                1,
+                wispyEssence,
+                fermentedSpiderEye,
+                enderPearl,
+                wispyEssence,
+                sugarCane,
+                pumpkinSeeds,
+                wispyEssence,
+                fermentedSpiderEye,
+                enderPearl,
+                wispyEssence,
+                sugarCane,
+                pumpkinSeeds);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[7] = infusion;
 
-            ItemStack netherWarts = new ItemStack(Items.nether_wart);
+        ItemStack netherWarts = new ItemStack(Items.nether_wart);
 
-            // Poison 2 -> 3
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_POISON",
-                    9,
-                    new AspectList().add(a, 36).add(Aspect.POISON, 38).add(Aspect.ELDRITCH, 22).add(Aspect.WATER, 48)
-                            .add(Aspect.AURA, 36),
-                    famIn,
-                    FamiliarAugment.POISON,
-                    2,
-                    wispyEssence,
-                    netherWarts,
-                    rottenFlesh,
-                    netherWarts,
-                    spiderEye,
-                    netherWarts,
-                    netherStar,
-                    netherWarts,
-                    wispyEssence,
-                    netherWarts,
-                    rottenFlesh,
-                    netherWarts,
-                    spiderEye,
-                    netherWarts,
-                    netherStar,
-                    netherWarts);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[8])[i] = infusion;
+        // Poison 2 -> 3
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.POISON, 2);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_POISON",
+                9,
+                new AspectList().add(Aspect.POISON, 38).add(Aspect.ELDRITCH, 22).add(Aspect.WATER, 48)
+                        .add(Aspect.AURA, 36),
+                36,
+                famIn,
+                FamiliarAugment.POISON,
+                2,
+                wispyEssence,
+                netherWarts,
+                rottenFlesh,
+                netherWarts,
+                spiderEye,
+                netherWarts,
+                netherStar,
+                netherWarts,
+                wispyEssence,
+                netherWarts,
+                rottenFlesh,
+                netherWarts,
+                spiderEye,
+                netherWarts,
+                netherStar,
+                netherWarts);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[8] = infusion;
 
-            ItemStack deadBush = new ItemStack(Blocks.deadbush);
-            ItemStack string = new ItemStack(Items.string);
+        ItemStack deadBush = new ItemStack(Blocks.deadbush);
+        ItemStack string = new ItemStack(Items.string);
 
-            // Enervation 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_WEAKNESS",
-                    6,
-                    new AspectList().add(a, 12).add(Aspect.DEATH, 18).add(Aspect.AURA, 6).add(Aspect.ELDRITCH, 18)
-                            .add(Aspect.ENTROPY, 8),
-                    famIn,
-                    FamiliarAugment.WEAKNESS,
-                    0,
-                    wispyEssence,
-                    deadBush,
-                    wispyEssence,
-                    string,
-                    wispyEssence,
-                    deadBush,
-                    wispyEssence,
-                    string);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[9])[i] = infusion;
+        // Enervation 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_WEAKNESS",
+                6,
+                new AspectList().add(Aspect.DEATH, 18).add(Aspect.AURA, 6).add(Aspect.ELDRITCH, 18)
+                        .add(Aspect.ENTROPY, 8),
+                12,
+                famIn,
+                FamiliarAugment.WEAKNESS,
+                0,
+                wispyEssence,
+                deadBush,
+                wispyEssence,
+                string,
+                wispyEssence,
+                deadBush,
+                wispyEssence,
+                string);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[9] = infusion;
 
-            ItemStack witherSkull = new ItemStack(Items.skull, 1, 1);
+        ItemStack witherSkull = new ItemStack(Items.skull, 1, 1);
 
-            // Enervation 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_WEAKNESS",
-                    8,
-                    new AspectList().add(a, 30).add(Aspect.DEATH, 28).add(Aspect.AURA, 26).add(Aspect.ELDRITCH, 28)
-                            .add(Aspect.ENTROPY, 48).add(Aspect.TRAP, 14),
-                    famIn,
-                    FamiliarAugment.WEAKNESS,
-                    1,
-                    wispyEssence,
-                    rottenFlesh,
-                    witherSkull,
-                    rottenFlesh,
-                    wispyEssence,
-                    rottenFlesh,
-                    witherSkull,
-                    rottenFlesh);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[10])[i] = infusion;
+        // Enervation 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_WEAKNESS",
+                8,
+                new AspectList().add(Aspect.DEATH, 28).add(Aspect.AURA, 26).add(Aspect.ELDRITCH, 28)
+                        .add(Aspect.ENTROPY, 48).add(Aspect.TRAP, 14),
+                30,
+                famIn,
+                FamiliarAugment.WEAKNESS,
+                1,
+                wispyEssence,
+                rottenFlesh,
+                witherSkull,
+                rottenFlesh,
+                wispyEssence,
+                rottenFlesh,
+                witherSkull,
+                rottenFlesh);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[10] = infusion;
 
-            ItemStack entropyShard = new ItemStack(ConfigItems.itemShard, 1, 5);
-            ItemStack enderEye = new ItemStack(Items.ender_eye);
+        ItemStack entropyShard = new ItemStack(ConfigItems.itemShard, 1, 5);
+        ItemStack enderEye = new ItemStack(Items.ender_eye);
 
-            // Enervation 2 -> 3
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_WEAKNESS",
-                    10,
-                    new AspectList().add(a, 46).add(Aspect.DEATH, 42).add(Aspect.AURA, 38).add(Aspect.ELDRITCH, 20)
-                            .add(Aspect.ENTROPY, 56).add(Aspect.TRAP, 32),
-                    famIn,
-                    FamiliarAugment.WEAKNESS,
-                    2,
-                    wispyEssence,
-                    enderEye,
-                    entropyShard,
-                    entropyShard,
-                    wispyEssence,
-                    enderEye,
-                    netherStar,
-                    entropyShard,
-                    wispyEssence,
-                    enderEye,
-                    entropyShard,
-                    entropyShard,
-                    wispyEssence,
-                    enderEye,
-                    netherStar,
-                    entropyShard);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[11])[i] = infusion;
+        // Enervation 2 -> 3
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.WEAKNESS, 2);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_WEAKNESS",
+                10,
+                new AspectList().add(Aspect.DEATH, 42).add(Aspect.AURA, 38).add(Aspect.ELDRITCH, 20)
+                        .add(Aspect.ENTROPY, 56).add(Aspect.TRAP, 32),
+                46,
+                famIn,
+                FamiliarAugment.WEAKNESS,
+                2,
+                wispyEssence,
+                enderEye,
+                entropyShard,
+                entropyShard,
+                wispyEssence,
+                enderEye,
+                netherStar,
+                entropyShard,
+                wispyEssence,
+                enderEye,
+                entropyShard,
+                entropyShard,
+                wispyEssence,
+                enderEye,
+                netherStar,
+                entropyShard);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[11] = infusion;
 
-            ItemStack balancedShard = new ItemStack(ConfigItems.itemResource, 1, 6);
-            ItemStack gunpowder = new ItemStack(Items.gunpowder);
+        ItemStack balancedShard = new ItemStack(ConfigItems.itemResource, 1, 6);
+        ItemStack gunpowder = new ItemStack(Items.gunpowder);
 
-            // Damage 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_DAMAGE",
-                    6,
-                    new AspectList().add(a, 14).add(Aspect.WEAPON, 10).add(Aspect.ENERGY, 12).add(Aspect.FIRE, 16),
-                    famIn,
-                    FamiliarAugment.DAMAGE_INCREASE,
-                    0,
-                    wispyEssence,
-                    balancedShard,
-                    wispyEssence,
-                    gunpowder,
-                    wispyEssence,
-                    balancedShard,
-                    wispyEssence,
-                    gunpowder);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[12])[i] = infusion;
+        // Damage 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_DAMAGE",
+                6,
+                new AspectList().add(Aspect.WEAPON, 10).add(Aspect.ENERGY, 12).add(Aspect.FIRE, 16),
+                14,
+                famIn,
+                FamiliarAugment.DAMAGE_INCREASE,
+                0,
+                wispyEssence,
+                balancedShard,
+                wispyEssence,
+                gunpowder,
+                wispyEssence,
+                balancedShard,
+                wispyEssence,
+                gunpowder);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[12] = infusion;
 
-            ItemStack primalCharm = new ItemStack(ConfigItems.itemResource, 1, 15);
-            ItemStack voidSeed = new ItemStack(ConfigItems.itemResource, 1, 17);
-            ItemStack amberBlock = new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0);
+        ItemStack primalCharm = new ItemStack(ConfigItems.itemResource, 1, 15);
+        ItemStack voidSeed = new ItemStack(ConfigItems.itemResource, 1, 17);
+        ItemStack amberBlock = new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 0);
 
-            // Damage 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_DAMAGE",
-                    10,
-                    new AspectList().add(a, 22).add(Aspect.WEAPON, 28).add(Aspect.ENERGY, 34).add(Aspect.FIRE, 30)
-                            .add(Aspect.AURA, 14),
-                    famIn,
-                    FamiliarAugment.DAMAGE_INCREASE,
-                    1,
-                    wispyEssence,
-                    balancedShard,
-                    primalCharm,
-                    wispyEssence,
-                    voidSeed,
-                    amberBlock,
-                    wispyEssence,
-                    balancedShard,
-                    primalCharm,
-                    wispyEssence,
-                    voidSeed,
-                    amberBlock);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[13])[i] = infusion;
+        // Damage 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_DAMAGE",
+                10,
+                new AspectList().add(Aspect.WEAPON, 28).add(Aspect.ENERGY, 34).add(Aspect.FIRE, 30)
+                        .add(Aspect.AURA, 14),
+                22,
+                famIn,
+                FamiliarAugment.DAMAGE_INCREASE,
+                1,
+                wispyEssence,
+                balancedShard,
+                primalCharm,
+                wispyEssence,
+                voidSeed,
+                amberBlock,
+                wispyEssence,
+                balancedShard,
+                primalCharm,
+                wispyEssence,
+                voidSeed,
+                amberBlock);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[13] = infusion;
 
-            ItemStack voidSword = new ItemStack(ConfigItems.itemSwordVoid);
+        ItemStack voidSword = new ItemStack(ConfigItems.itemSwordVoid);
 
-            // Damage 2 -> 3
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 2);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_DAMAGE",
-                    10,
-                    new AspectList().add(a, 34).add(Aspect.WEAPON, 38).add(Aspect.ENERGY, 46).add(Aspect.FIRE, 58)
-                            .add(Aspect.AURA, 38),
-                    famIn,
-                    FamiliarAugment.DAMAGE_INCREASE,
-                    2,
-                    wispyEssence,
-                    blazePowder,
-                    voidSword,
-                    blazePowder,
-                    netherStar,
-                    blazePowder,
-                    alumentum,
-                    blazePowder,
-                    wispyEssence,
-                    blazePowder,
-                    voidSword,
-                    blazePowder,
-                    netherStar,
-                    blazePowder,
-                    alumentum,
-                    blazePowder);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[14])[i] = infusion;
+        // Damage 2 -> 3
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.DAMAGE_INCREASE, 2);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_DAMAGE",
+                10,
+                new AspectList().add(Aspect.WEAPON, 38).add(Aspect.ENERGY, 46).add(Aspect.FIRE, 58)
+                        .add(Aspect.AURA, 38),
+                34,
+                famIn,
+                FamiliarAugment.DAMAGE_INCREASE,
+                2,
+                wispyEssence,
+                blazePowder,
+                voidSword,
+                blazePowder,
+                netherStar,
+                blazePowder,
+                alumentum,
+                blazePowder,
+                wispyEssence,
+                blazePowder,
+                voidSword,
+                blazePowder,
+                netherStar,
+                blazePowder,
+                alumentum,
+                blazePowder);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[14] = infusion;
 
-            ItemStack ordoShard = new ItemStack(ConfigItems.itemShard, 1, 4);
+        ItemStack ordoShard = new ItemStack(ConfigItems.itemShard, 1, 4);
 
-            // Range 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_RANGE",
-                    6,
-                    new AspectList().add(a, 24).add(Aspect.AURA, 30).add(Aspect.ELDRITCH, 22).add(Aspect.WEAPON, 12),
-                    famIn,
-                    FamiliarAugment.RANGE_INCREASE,
-                    0,
-                    wispyEssence,
-                    ordoShard,
-                    wispyEssence,
-                    primalCharm,
-                    wispyEssence,
-                    ordoShard,
-                    wispyEssence,
-                    primalCharm);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[15])[i] = infusion;
+        // Range 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_RANGE",
+                6,
+                new AspectList().add(Aspect.AURA, 30).add(Aspect.ELDRITCH, 22).add(Aspect.WEAPON, 12),
+                24,
+                famIn,
+                FamiliarAugment.RANGE_INCREASE,
+                0,
+                wispyEssence,
+                ordoShard,
+                wispyEssence,
+                primalCharm,
+                wispyEssence,
+                ordoShard,
+                wispyEssence,
+                primalCharm);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[15] = infusion;
 
-            // Range 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.RANGE_INCREASE, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_RANGE",
-                    9,
-                    new AspectList().add(a, 42).add(Aspect.AURA, 36).add(Aspect.ELDRITCH, 34).add(Aspect.WEAPON, 28)
-                            .add(Aspect.AIR, 40),
-                    famIn,
-                    FamiliarAugment.RANGE_INCREASE,
-                    1,
-                    wispyEssence,
-                    nitor,
-                    balancedShard,
-                    quicksilver,
-                    netherStar,
-                    alumentum,
-                    balancedShard,
-                    quicksilver,
-                    wispyEssence,
-                    nitor,
-                    balancedShard,
-                    quicksilver,
-                    netherStar,
-                    alumentum,
-                    balancedShard,
-                    quicksilver);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[16])[i] = infusion;
+        // Range 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.RANGE_INCREASE, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_RANGE",
+                9,
+                new AspectList().add(Aspect.AURA, 36).add(Aspect.ELDRITCH, 34).add(Aspect.WEAPON, 28)
+                        .add(Aspect.AIR, 40),
+                42,
+                famIn,
+                FamiliarAugment.RANGE_INCREASE,
+                1,
+                wispyEssence,
+                nitor,
+                balancedShard,
+                quicksilver,
+                netherStar,
+                alumentum,
+                balancedShard,
+                quicksilver,
+                wispyEssence,
+                nitor,
+                balancedShard,
+                quicksilver,
+                netherStar,
+                alumentum,
+                balancedShard,
+                quicksilver);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[16] = infusion;
 
-            ItemStack elementalSword = new ItemStack(ConfigItems.itemSwordElemental);
+        ItemStack elementalSword = new ItemStack(ConfigItems.itemSwordElemental);
 
-            // Speed 0 -> 1
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_SPEED",
-                    6,
-                    new AspectList().add(a, 30).add(Aspect.AURA, 28).add(Aspect.MOTION, 38).add(Aspect.ELDRITCH, 20)
-                            .add(Aspect.AIR, 36),
-                    famIn,
-                    FamiliarAugment.ATTACK_SPEED,
-                    0,
-                    elementalSword,
-                    balancedShard,
-                    wispyEssence,
-                    balancedShard,
-                    wispyEssence,
-                    balancedShard,
-                    wispyEssence,
-                    balancedShard);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[17])[i] = infusion;
+        // Speed 0 -> 1
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_SPEED",
+                6,
+                new AspectList().add(Aspect.AURA, 28).add(Aspect.MOTION, 38).add(Aspect.ELDRITCH, 20)
+                        .add(Aspect.AIR, 36),
+                30,
+                famIn,
+                FamiliarAugment.ATTACK_SPEED,
+                0,
+                elementalSword,
+                balancedShard,
+                wispyEssence,
+                balancedShard,
+                wispyEssence,
+                balancedShard,
+                wispyEssence,
+                balancedShard);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[17] = infusion;
 
-            ItemStack primordialPearl = new ItemStack(ConfigItems.itemEldritchObject, 1, 3);
-            ItemStack salisMundis = new ItemStack(ConfigItems.itemResource, 1, 14);
+        ItemStack primordialPearl = new ItemStack(ConfigItems.itemEldritchObject, 1, 3);
+        ItemStack salisMundis = new ItemStack(ConfigItems.itemResource, 1, 14);
 
-            // Speed 1 -> 2
-            famIn = new ItemStack(etherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(famIn, a);
-            ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.ATTACK_SPEED, 1);
-            infusion = new EtherealFamiliarUpgradeRecipe(
-                    modid + ".FAMILIAR_SPEED",
-                    9,
-                    new AspectList().add(a, 46).add(Aspect.AURA, 38).add(Aspect.MOTION, 52).add(Aspect.ELDRITCH, 38)
-                            .add(Aspect.AIR, 48).add(Aspect.WEAPON, 28),
-                    famIn,
-                    FamiliarAugment.ATTACK_SPEED,
-                    1,
-                    wispyEssence,
-                    primalCharm,
-                    netherStar,
-                    salisMundis,
-                    wispyEssence,
-                    primalCharm,
-                    primordialPearl,
-                    salisMundis,
-                    wispyEssence,
-                    primalCharm,
-                    netherStar,
-                    salisMundis,
-                    wispyEssence,
-                    primalCharm,
-                    primordialPearl,
-                    salisMundis);
-            ThaumcraftApi.getCraftingRecipes().add(infusion);
-            (recipes[18])[i] = infusion;
-        }
+        // Speed 1 -> 2
+        famIn = new ItemStack(etherealFamiliar);
+        ItemEtherealFamiliar.setFamiliarAspect(famIn, Aspect.EARTH);
+        ItemEtherealFamiliar.addAugmentUnsafe(famIn, FamiliarAugment.ATTACK_SPEED, 1);
+        infusion = new EtherealFamiliarUpgradeRecipe(
+                modid + ".FAMILIAR_SPEED",
+                9,
+                new AspectList().add(Aspect.AURA, 38).add(Aspect.MOTION, 52).add(Aspect.ELDRITCH, 38)
+                        .add(Aspect.AIR, 48).add(Aspect.WEAPON, 28),
+                46,
+                famIn,
+                FamiliarAugment.ATTACK_SPEED,
+                1,
+                wispyEssence,
+                primalCharm,
+                netherStar,
+                salisMundis,
+                wispyEssence,
+                primalCharm,
+                primordialPearl,
+                salisMundis,
+                wispyEssence,
+                primalCharm,
+                netherStar,
+                salisMundis,
+                wispyEssence,
+                primalCharm,
+                primordialPearl,
+                salisMundis);
+        ThaumcraftApi.getCraftingRecipes().add(infusion);
+        recipes[18] = infusion;
         return recipes;
     }
 
-    public static InfusionRecipe[] createFamiliarRecipes() {
-        List<Aspect> aspects = new ArrayList<Aspect>(Aspect.aspects.values());
-        InfusionRecipe[] recipes = new InfusionRecipe[aspects.size()];
-
-        ItemWispEssence itemEssence = (ItemWispEssence) ConfigItems.itemWispEssence;
-        ItemStack result;
-        for (int i = 0; i < aspects.size(); i++) {
-            Aspect aspect = aspects.get(i);
-            ItemStack wispyEssence = new ItemStack(itemEssence, 1, 0);
-            itemEssence.setAspects(wispyEssence, new AspectList().add(aspect, 2));
-
-            result = new ItemStack(RegisteredItems.itemEtherealFamiliar);
-            ItemEtherealFamiliar.setFamiliarAspect(result, aspect);
-
-            recipes[i] = ThaumcraftApi.addInfusionCraftingRecipe(
-                    Gadomancy.MODID.toUpperCase() + ".ETHEREAL_FAMILIAR",
-                    result,
-                    4,
-                    new AspectList().add(aspect, 10).add(Aspect.AURA, 12).add(Aspect.MAGIC, 18),
-                    new ItemStack(ConfigItems.itemAmuletRunic, 1, 0),
-                    new ItemStack[] { wispyEssence, new ItemStack(ConfigItems.itemResource, 1, 14),
-                            new ItemStack(ConfigItems.itemResource, 1, 1), wispyEssence,
-                            new ItemStack(ConfigItems.itemResource, 1, 14),
-                            new ItemStack(ConfigItems.itemResource, 1, 1) });
-        }
-        return recipes;
-    }
 }
