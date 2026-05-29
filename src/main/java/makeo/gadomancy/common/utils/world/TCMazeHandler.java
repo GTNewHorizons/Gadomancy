@@ -1,5 +1,7 @@
 package makeo.gadomancy.common.utils.world;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -44,17 +47,27 @@ public class TCMazeHandler {
     // If a chunk is not listed in there, it's considered empty.
     // level saving itself is disabled. Players without active session will get teleported out.
 
+    // Adjust these to make the dungeon shorter or longer
+    // For reference: A 8x8 dungeon takes approximately 1.5 minutes to complete on average.
+    // Testing was done with Boots of the Traveler and Speed II
+    // The scaling is quadratic; double the size, quadruple the time.
+    // Width and Height are randomized separately, making a normal distribution for the size.
+    // Vanilla Thaumcraft sizes: 11-23 and 15-31
+    // Original Gadomancy size: 17-21
+    public static final int MIN_LABYRINTH_SIZE = 12;
+    public static final int MAX_LABYRINTH_SIZE = 16;
+
+    public static final int LABYRINTH_BUFFER_SIZE = MAX_LABYRINTH_SIZE * 2 + 1;
+
     // Our map to work with.
-    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<CellLoc, Short>();
     public static final int TELEPORT_LAYER_Y = 55;
+    public static ConcurrentHashMap<CellLoc, Short> labyrinthCopy = new ConcurrentHashMap<>();
     private static int tickCounter;
+    public static FakeWorldTCGeneration GEN;
 
-    public static final FakeWorldTCGeneration GEN = new FakeWorldTCGeneration();
-
-    private static List<TCMazeSession> flaggedSessions = new ArrayList<TCMazeSession>();
-
-    private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
-    private static Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<TCMazeSession, Entity[]>();
+    private static final List<TCMazeSession> flaggedSessions = new ArrayList<>();
+    private static Map<EntityPlayer, TCMazeSession> runningSessions = new HashMap<>();
+    private static final Map<TCMazeSession, Entity[]> watchedBosses = new HashMap<>();
 
     public static void closeAllSessionsAndCleanup() {
         for (EntityPlayer pl : TCMazeHandler.runningSessions.keySet()) {
@@ -66,14 +79,14 @@ public class TCMazeHandler {
     }
 
     public static void tick() {
-        WorldServer w = DimensionManager.getWorld(ModConfig.dimOuterId);
-        if (w != null) {
-            if (!w.levelSaving) w.levelSaving = true;
+        WorldServer world = DimensionManager.getWorld(ModConfig.dimOuterId);
+        if (world != null) {
+            if (!world.levelSaving) world.levelSaving = true;
 
             WorldServer out = MinecraftServer.getServer().worldServerForDimension(0);
-            List playerObjects = w.playerEntities;
-            for (int i = 0; i < playerObjects.size(); i++) {
-                EntityPlayer player = (EntityPlayer) playerObjects.get(i);
+            // Copy to avoid CME when teleporting modifies the player list.
+            List<EntityPlayer> playerObjects = new ArrayList<>(world.playerEntities);
+            for (EntityPlayer player : playerObjects) {
                 if (!TCMazeHandler.hasOpenSession(player)) {
                     WorldUtil.tryTeleportBack((EntityPlayerMP) player, 0);
                     ChunkCoordinates cc = out.getSpawnPoint();
@@ -97,18 +110,73 @@ public class TCMazeHandler {
     }
 
     public static void handleBossFinish(TCMazeSession session) {
-        CellLoc spawnChunk = session.portalCell;
         WorldServer world = MinecraftServer.getServer().worldServerForDimension(ModConfig.dimOuterId);
-        int lX = (spawnChunk.x << 4) + 8;
-        int lZ = (spawnChunk.z << 4) + 8;
-        world.setBlock(lX, 52, lZ, ConfigBlocks.blockEldritch, 3, 3);
-        world.setBlock(lX, 53, lZ, RegisteredBlocks.blockAdditionalEldrichPortal);
-        GenCommon.genObelisk(world, lX, 54, lZ);
+        TCMazeHandler.spawnPortal(world, session.spawnPortalCoordinates, true);
+        if (session.bossSpawnCoordinates != null) {
+            spawnPortal(world, session.bossSpawnCoordinates, false);
+        }
         session.player.addChatMessage(
                 new ChatComponentText(
                         EnumChatFormatting.ITALIC + ""
                                 + EnumChatFormatting.GRAY
-                                + StatCollector.translateToLocal("gadomancy.eldritch.portalSpawned")));
+                                + StatCollector.translateToLocal("gadomancy.eldritch.maze.portalSpawned")));
+        TCMazeHandler.checkHighScores(session);
+    }
+
+    private static void spawnPortal(WorldServer world, ChunkCoordinates coords, boolean obelisk) {
+        world.setBlock(coords.posX, coords.posY, coords.posZ, RegisteredBlocks.blockAdditionalEldrichPortal);
+        if (obelisk) {
+            world.setBlock(coords.posX, coords.posY - 1, coords.posZ, ConfigBlocks.blockEldritch, 3, 3);
+            GenCommon.genObelisk(world, coords.posX, coords.posY + 1, coords.posZ);
+        }
+    }
+
+    private static void checkHighScores(TCMazeSession session) {
+        Duration mazeTime = Duration.between(session.sessionStartTime, Instant.now());
+        int thisTime = (int) mazeTime.getSeconds();
+
+        NBTTagCompound playerData = session.player.getEntityData();
+
+        if (!playerData.hasKey("Gadomancy:MazeTime")) {
+            playerData.setInteger("Gadomancy:MazeTime", thisTime);
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GRAY + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.first",
+                                            formatTime(thisTime))));
+            return;
+        }
+
+        int previousTime = playerData.getInteger("Gadomancy:MazeTime");
+
+        if (thisTime < previousTime) {
+            playerData.setInteger("Gadomancy:MazeTime", thisTime);
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GOLD + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.newBest",
+                                            formatTime(thisTime),
+                                            formatTime(previousTime))));
+        } else {
+            session.player.addChatMessage(
+                    new ChatComponentText(
+                            EnumChatFormatting.GRAY + ""
+                                    + EnumChatFormatting.ITALIC
+                                    + StatCollector.translateToLocalFormatted(
+                                            "gadomancy.eldritch.maze.default",
+                                            formatTime(thisTime),
+                                            formatTime(previousTime))));
+        }
+    }
+
+    private static String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     /*
@@ -136,15 +204,15 @@ public class TCMazeHandler {
 
     private static Map<CellLoc, Short> calculateCellLocs(WorldServer world) {
         ConcurrentHashMap<CellLoc, Short> oldDat = MazeHandler.labyrinth;
-        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<CellLoc, Short>(
-                TCMazeHandler.labyrinthCopy);
+        ConcurrentHashMap<CellLoc, Short> bufferOld = new ConcurrentHashMap<>(TCMazeHandler.labyrinthCopy);
         MazeHandler.labyrinth = TCMazeHandler.labyrinthCopy;
-        int chX = TCMazeHandler.getHighestPossibleRandWH(); // To ensure we're always +x and +z
-        int chZ = TCMazeHandler.getHighestPossibleRandWH();
-        int w = TCMazeHandler.randWH(world.rand);
-        int h = TCMazeHandler.randWH(world.rand);
+        Random rand = world.rand;
+        int chX = LABYRINTH_BUFFER_SIZE; // To ensure we're always +x and +z
+        int chZ = LABYRINTH_BUFFER_SIZE;
+        int w = MIN_LABYRINTH_SIZE + rand.nextInt(MAX_LABYRINTH_SIZE - MIN_LABYRINTH_SIZE + 1);
+        int h = MIN_LABYRINTH_SIZE + rand.nextInt(MAX_LABYRINTH_SIZE - MIN_LABYRINTH_SIZE + 1);
         while (MazeHandler.mazesInRange(chX, chZ, w, h)) {
-            chX++; // We grow the mazes in +x direction!
+            chX += LABYRINTH_BUFFER_SIZE; // We grow the mazes in +x direction!
         }
         MazeThread mt = new MazeThread(chX, chZ, w, h, world.rand.nextLong());
         mt.run();
@@ -157,7 +225,7 @@ public class TCMazeHandler {
     private static Map<CellLoc, Short> calculateDifferences(ConcurrentHashMap<CellLoc, Short> bufferOld) {
         ConcurrentHashMap<CellLoc, Short> newDat = MazeHandler.labyrinth; // Only the new data has data, the old one
                                                                           // doesn't have.
-        Map<CellLoc, Short> newlyEvaluatedMaze = new HashMap<CellLoc, Short>();
+        Map<CellLoc, Short> newlyEvaluatedMaze = new HashMap<>();
         for (CellLoc loc : newDat.keySet()) {
             if (!bufferOld.containsKey(loc)) {
                 newlyEvaluatedMaze.put(loc, newDat.get(loc));
@@ -170,20 +238,8 @@ public class TCMazeHandler {
         return ModConfig.maxMazeCount == -1 || TCMazeHandler.runningSessions.size() < ModConfig.maxMazeCount;
     }
 
-    /*
-     * Change getHighestPossibleRandWH accordingly if modifying this.
-     */
-    private static int randWH(Random random) {
-        return 17 + random.nextInt(2) * 2;
-    }
-
-    private static int getHighestPossibleRandWH() {
-        // Add something to ensure 100% we never get in minus coordinates!
-        return 29; // 21 + ensured 8
-    }
-
     public static void init() {
-        TCMazeHandler.runningSessions = new HashMap<EntityPlayer, TCMazeSession>();
+        TCMazeHandler.runningSessions = new HashMap<>();
     }
 
     public static boolean hasOpenSession(EntityPlayer player) {

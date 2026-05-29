@@ -69,12 +69,12 @@ public class FakeWorld extends World {
 
     private static class FakeWorldInfo extends WorldInfo {
 
-        private static FakeWorldInfo instance = new FakeWorldInfo();
+        private static final FakeWorldInfo instance = new FakeWorldInfo();
     }
 
     private static class FakeWorldProvider extends WorldProvider {
 
-        private static FakeWorldProvider instance = new FakeWorldProvider();
+        private static final FakeWorldProvider instance = new FakeWorldProvider();
 
         @Override
         public String getDimensionName() {
@@ -84,7 +84,7 @@ public class FakeWorld extends World {
 
     private static class FakeSaveHandler implements ISaveHandler {
 
-        private static FakeSaveHandler instance = new FakeSaveHandler();
+        private static final FakeSaveHandler instance = new FakeSaveHandler();
 
         @Override
         public WorldInfo loadWorldInfo() {

@@ -1,11 +1,13 @@
 package makeo.gadomancy.common.utils.world;
 
+import java.time.Instant;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -22,40 +24,47 @@ import thaumcraft.common.lib.world.dim.CellLoc;
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p/>
  * Created by HellFirePvP @ 05.11.2015 14:12
  */
 public class TCMazeSession {
 
     public final EntityPlayerMP player;
     public final Map<CellLoc, Short> chunksAffected;
-    public final CellLoc portalCell;
-
     public final int originDimId;
     public final Vec3 originLocation;
+    public final Instant sessionStartTime;
+    public final ChunkCoordinates spawnPortalCoordinates;
+    public ChunkCoordinates bossSpawnCoordinates;
 
     TCMazeSession(EntityPlayer owner, Map<CellLoc, Short> locations, int dim, Vec3 origin) {
         this.player = (EntityPlayerMP) owner;
         this.chunksAffected = locations;
         this.originDimId = dim;
         this.originLocation = origin;
-        this.portalCell = this.findPortal();
+        this.sessionStartTime = Instant.now();
+        this.spawnPortalCoordinates = this.findPortal();
+        this.bossSpawnCoordinates = null;
     }
 
     TCMazeSession() {
         this.player = null;
         this.chunksAffected = null;
-        this.portalCell = null;
         this.originDimId = 0;
         this.originLocation = null;
+        this.sessionStartTime = null;
+        this.spawnPortalCoordinates = null;
+        this.bossSpawnCoordinates = null;
     }
 
-    private CellLoc findPortal() {
-        for (CellLoc loc : this.chunksAffected.keySet()) {
-            Short s = this.chunksAffected.get(loc);
-            Cell c = new Cell(s);
-            if (c.feature == 1) {
-                return loc;
+    private ChunkCoordinates findPortal() {
+        for (CellLoc chunk : this.chunksAffected.keySet()) {
+            Short s = this.chunksAffected.get(chunk);
+            Cell cell = new Cell(s);
+            if (cell.feature == 1) {
+                int x = (chunk.x * 16) + 8;
+                int z = (chunk.z * 16) + 8;
+                return new ChunkCoordinates(x, TCMazeHandler.TELEPORT_LAYER_Y - 2, z);
             }
         }
         return null;
@@ -84,7 +93,7 @@ public class TCMazeSession {
             }
         }
 
-        if (this.portalCell == null) {
+        if (this.spawnPortalCoordinates == null) {
             LogManager.getLogger().error(
                     "Thaumcraft didn't generate a portal! Stopping instance! PLEASE REPORT THIS ERROR!",
                     new IllegalStateException());
@@ -95,9 +104,10 @@ public class TCMazeSession {
                                     + "Thaumcraft didn't generate a portal in the Eldritch dimension. Sorry, we can't teleport you.."));
         } else {
             WorldUtil.teleportToFakeOuter(this.player);
-            int x = this.portalCell.x * 16 + 8;
-            int z = this.portalCell.z * 16 + 8;
-            this.player.setPositionAndUpdate(x + 0.5, TCMazeHandler.TELEPORT_LAYER_Y, z + 0.5);
+            this.player.setPositionAndUpdate(
+                    this.spawnPortalCoordinates.posX + 0.5,
+                    TCMazeHandler.TELEPORT_LAYER_Y,
+                    this.spawnPortalCoordinates.posZ + 0.5);
             Thaumcraft.proxy.getResearchManager().completeResearch(this.player, "ENTEROUTER"); // badumm tss
         }
     }

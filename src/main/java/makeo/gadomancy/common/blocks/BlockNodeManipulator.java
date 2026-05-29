@@ -2,6 +2,7 @@ package makeo.gadomancy.common.blocks;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator;
+import makeo.gadomancy.common.blocks.tiles.TileNodeManipulator.MultiblockType;
 import makeo.gadomancy.common.registration.RegisteredItems;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.common.blocks.BlockStoneDevice;
@@ -25,6 +27,8 @@ import thaumcraft.common.lib.research.ResearchManager;
  * Created by HellFirePvP @ 26.10.2015 19:23
  */
 public class BlockNodeManipulator extends BlockStoneDevice {
+
+    private static final int METADATA = 5;
 
     public BlockNodeManipulator() {
         this.setBlockName("blockNodeManipulator");
@@ -45,53 +49,69 @@ public class BlockNodeManipulator extends BlockStoneDevice {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return null;
-    }
-
-    // TC stuff...
-    @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if (metadata == 5) return new TileNodeManipulator();
-        return null;
+        return (metadata == METADATA) ? new TileNodeManipulator() : null;
     }
 
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
-        int ret = super.getComparatorInputOverride(world, x, y, z, rs);
-
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileNodeManipulator) return 0;
-        return ret;
+        return super.getComparatorInputOverride(world, x, y, z, rs);
     }
 
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 5));
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, METADATA));
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7,
-            float par8, float par9) {
-        TileNodeManipulator tile = (TileNodeManipulator) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
+            float subY, float subZ) {
+        if (world.isRemote) {
+            return false;
+        }
+
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof TileNodeManipulator nodeManipulatorTE)) {
+            return false;
+        }
+
+        if (nodeManipulatorTE.isInMultiblock()) {
+            return super.onBlockActivated(world, x, y, z, player, side, subX, subY, subZ);
+        }
+
+        if (nodeManipulatorTE.detectMultiblockType() == null) {
+            return false;
+        }
+
         ItemStack heldItem = player.getHeldItem();
-        if (tile.isInMultiblock()) {
-            super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
-        } else if (!world.isRemote && heldItem != null && heldItem.getItem() instanceof ItemWandCasting) {
-            tile.checkMultiblock();
-            if (tile.isMultiblockStructurePresent()) {
-                String research = tile.getMultiblockType().getResearchNeeded();
-                if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), research)) return false;
-                if (ThaumcraftApiHelper.consumeVisFromWandCrafting(
-                        player.getCurrentEquippedItem(),
-                        player,
-                        tile.getMultiblockType().getMultiblockCosts(),
-                        true)) {
-                    tile.formMultiblock();
-                    return true;
-                }
+        if (heldItem == null || !(heldItem.getItem() instanceof ItemWandCasting)) {
+            return false;
+        }
+
+        MultiblockType type = nodeManipulatorTE.getMultiblockType();
+        if (!ResearchManager.isResearchComplete(player.getCommandSenderName(), type.getResearchNeeded())) {
+            return false;
+        }
+
+        if (!ThaumcraftApiHelper
+                .consumeVisFromWandCrafting(player.getCurrentEquippedItem(), player, type.getMultiblockCosts(), true)) {
+            return false;
+        }
+
+        nodeManipulatorTE.formMultiblock();
+        return true;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (!world.isRemote) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileNodeManipulator nodeManipulatorTE) {
+                if (nodeManipulatorTE.isInMultiblock()) nodeManipulatorTE.breakMultiblock();
             }
         }
-        return false;
+        super.breakBlock(world, x, y, z, block, meta);
     }
 }

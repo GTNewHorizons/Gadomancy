@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,25 +19,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 import makeo.gadomancy.client.renderers.item.ItemRenderFamiliar;
 import makeo.gadomancy.common.data.DataFamiliar;
 import makeo.gadomancy.common.network.packets.PacketFamiliarBolt;
-import makeo.gadomancy.common.utils.world.fake.FakeWorld;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import thaumcraft.client.renderers.entity.RenderWisp;
 import thaumcraft.common.entities.monster.EntityWisp;
 
 /**
  * This class is part of the Gadomancy Mod Gadomancy is Open Source and distributed under the GNU LESSER GENERAL PUBLIC
  * LICENSE for more read the LICENSE file
- *
+ * <p>
  * Created by HellFirePvP @ 31.10.2015 12:13
  */
 public class FamiliarHandlerClient {
 
-    private static EntityWisp ENTITY_WISP;
-
-    private static RenderWisp fallbackRenderer;
-
-    private static Map<String, ExFamiliarData> clientFamiliars = new HashMap<String, ExFamiliarData>();
+    private static final EntityWisp ENTITY_WISP = new EntityWisp(null);
+    private static final Map<String, ExFamiliarData> clientFamiliars = new HashMap<>();
 
     @SideOnly(Side.CLIENT)
     public static void processBoltPacket(PacketFamiliarBolt pkt) {
@@ -78,13 +72,11 @@ public class FamiliarHandlerClient {
 
         Aspect aspect = Aspect.getAspect(data.data.aspectTag);
 
-        if (FamiliarHandlerClient.ENTITY_WISP == null)
-            FamiliarHandlerClient.ENTITY_WISP = new EntityWisp(new FakeWorld());
         FamiliarHandlerClient.ENTITY_WISP.setType(aspect.getTag());
         FamiliarHandlerClient.ENTITY_WISP.ticksExisted = fam.dummyEntity.ticksExisted;
         GL11.glPushMatrix();
         if (fam.owner == null || fam.owner.get() == null) {
-            fam.owner = new WeakReference<EntityPlayer>(player);
+            fam.owner = new WeakReference<>(player);
         }
         EntityPlayer current = Minecraft.getMinecraft().thePlayer;
         double diffX = fam.renderX - current.posX + player.posX;
@@ -121,11 +113,6 @@ public class FamiliarHandlerClient {
             data.familiar.tick();
         }
         PartialEntityFamiliar.DUMMY_FAMILIAR.tick();
-    }
-
-    static {
-        FamiliarHandlerClient.fallbackRenderer = new RenderWisp();
-        FamiliarHandlerClient.fallbackRenderer.setRenderManager(RenderManager.instance);
     }
 
     public static void handleAdditions(List<DataFamiliar.FamiliarData> toAdd) {
@@ -206,7 +193,7 @@ public class FamiliarHandlerClient {
         public int ticksExisted;
 
         public PartialEntityFamiliar(EntityPlayer owner, String ownerNameToSearch) {
-            this.owner = new WeakReference<EntityPlayer>(owner);
+            this.owner = new WeakReference<>(owner);
             this.potentialOwnerName = ownerNameToSearch;
         }
 
@@ -219,7 +206,7 @@ public class FamiliarHandlerClient {
                     EntityPlayer player = Minecraft.getMinecraft().theWorld
                             .getPlayerEntityByName(this.potentialOwnerName);
                     if (player != null) {
-                        this.owner = new WeakReference<EntityPlayer>(player);
+                        this.owner = new WeakReference<>(player);
                     } else {
                         return;
                     }
@@ -229,7 +216,7 @@ public class FamiliarHandlerClient {
             } else {
                 if (this.owner.get().worldObj.provider.dimensionId
                         != Minecraft.getMinecraft().renderViewEntity.worldObj.provider.dimensionId) {
-                    this.owner = new WeakReference<EntityPlayer>(null);
+                    this.owner = new WeakReference<>(null);
                     return;
                 }
             }
