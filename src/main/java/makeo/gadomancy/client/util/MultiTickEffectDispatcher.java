@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
+import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.client.lib.UtilsFX;
@@ -87,6 +89,7 @@ public class MultiTickEffectDispatcher {
                 info.randomOffset = currentRenderWorld.rand.nextInt(20);
             }
 
+            GL11.glPushMatrix();
             float ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted + info.randomOffset + partialTicks;
             UtilsFX.drawFloatyLine(
                     info.pedestalX,
@@ -100,6 +103,7 @@ public class MultiTickEffectDispatcher {
                     "textures/misc/wispy.png",
                     -0.02F,
                     Math.min(ticks, 10.0F) / 10.0F);
+            GL11.glPopMatrix();
         }
     }
 
