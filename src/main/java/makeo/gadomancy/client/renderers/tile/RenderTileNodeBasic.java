@@ -12,6 +12,7 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.util.NodeRenderQueue;
 import makeo.gadomancy.common.events.EventHandlerRedirect;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -234,19 +235,19 @@ public class RenderTileNodeBasic {
                         }
         }
         // Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
-        RenderTileNodeBasic.renderNode(
-                viewer,
-                viewDistance,
-                condition,
-                depthIgnore,
-                size,
-                x,
-                y,
-                z,
-                partialTicks,
-                ((INode) tile).getAspects(),
-                ((INode) tile).getNodeType(),
-                ((INode) tile).getNodeModifier());
+        NodeRenderQueue.nodeQueue.add(
+                new NodeRenderQueue.QueuedNode(
+                        x,
+                        y,
+                        z,
+                        viewDistance,
+                        condition,
+                        depthIgnore,
+                        size,
+                        ((INode) tile).getAspects(),
+                        ((INode) tile).getNodeType(),
+                        ((INode) tile).getNodeModifier()));
+
         if (((tile instanceof TileNode)) && (((TileNode) tile).drainEntity != null)
                 && (((TileNode) tile).drainCollision != null)) {
             Entity drainEntity = ((TileNode) tile).drainEntity;
@@ -282,18 +283,17 @@ public class RenderTileNodeBasic {
             double d5 = drainEntity.prevPosZ + (drainEntity.posZ - drainEntity.prevPosZ) * partialTicks + vec3.zCoord;
             double d6 = drainEntity == Minecraft.getMinecraft().thePlayer ? 0.0D : drainEntity.getEyeHeight();
 
-            UtilsFX.drawFloatyLine(
-                    d3,
-                    d4 + d6,
-                    d5,
-                    drainCollision.blockX + 0.5D,
-                    drainCollision.blockY + 0.5D,
-                    drainCollision.blockZ + 0.5D,
-                    partialTicks,
-                    ((TileNode) tile).color.getRGB(),
-                    "textures/misc/wispy.png",
-                    -0.02F,
-                    Math.min(iiud, 10) / 10.0F);
+            NodeRenderQueue.drainQueue.add(
+                    new NodeRenderQueue.QueuedDrainBeam(
+                            d3,
+                            d4 + d6,
+                            d5,
+                            drainCollision.blockX + 0.5D,
+                            drainCollision.blockY + 0.5D,
+                            drainCollision.blockZ + 0.5D,
+                            ((TileNode) tile).color.getRGB(),
+                            Math.min(iiud, 10) / 10.0F,
+                            partialTicks));
 
             GL11.glPopMatrix();
         }
