@@ -9,21 +9,25 @@ import net.minecraft.world.World;
 import makeo.gadomancy.common.familiar.FamiliarAugment;
 import makeo.gadomancy.common.items.baubles.ItemEtherealFamiliar;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.common.items.ItemWispEssence;
 
 /**
  * HellFirePvP@Admin Date: 19.04.2016 / 02:02 on Gadomancy EtherealFamiliarUpgradeRecipe
  */
 public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
+    private final int extraEssentia;
     private final FamiliarAugment toAdd;
     private final int requiredPreviousLevel;
     private final Object cachedOutput;
 
-    public EtherealFamiliarUpgradeRecipe(String research, int inst, AspectList aspects2, ItemStack familiarIn,
-            FamiliarAugment toAdd, int reqPrev, ItemStack... surroundings) {
-        super(research, null, inst, aspects2, familiarIn, surroundings);
+    public EtherealFamiliarUpgradeRecipe(String research, int inst, AspectList aspects, int extraEssentia,
+            ItemStack familiarIn, FamiliarAugment toAdd, int reqPrev, ItemStack... surroundings) {
+        super(research, null, inst, aspects, familiarIn, surroundings);
+        this.extraEssentia = extraEssentia;
         this.toAdd = toAdd;
         this.requiredPreviousLevel = reqPrev;
         this.cachedOutput = super.getRecipeOutput();
@@ -31,12 +35,13 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
     @Override
     public boolean matches(ArrayList<ItemStack> input, ItemStack in, World world, EntityPlayer player) {
-        if (in == null || !(in.getItem() instanceof ItemEtherealFamiliar)) return false; // We call it "FamiliarAugment"
-        // Recipe for a reason..
+        if (in == null || !(in.getItem() instanceof ItemEtherealFamiliar)) return false;
         if (this.getRecipeInput() == null || !(this.getRecipeInput().getItem() instanceof ItemEtherealFamiliar))
-            return false; // A bit late but still working..
+            return false;
+        Aspect aspect = ItemEtherealFamiliar.getFamiliarAspect(in);
+        if (aspect == null) return false;
 
-        if ((this.research.length() > 0)
+        if ((!this.research.isEmpty())
                 && (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research))) {
             return false;
         }
@@ -49,37 +54,43 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
         } else {
             level = 0;
         }
-        if (this.requiredPreviousLevel > level) return false; // Requires higher level to do this infusion.
+        if (this.requiredPreviousLevel > level) return false;
 
         if (!this.toAdd.checkConditions(list, level + 1)) {
-            return false; // Preconditions not met.
+            return false;
         }
 
-        // Normal infusionrecipe stuff...
+        // Normal infusion recipe stuff...
 
-        ItemStack inCopy;
-        ArrayList<ItemStack> ii = new ArrayList<>();
+        ArrayList<ItemStack> inputs = new ArrayList<>();
         for (ItemStack is : input) {
-            ii.add(is.copy());
+            inputs.add(is.copy());
         }
         for (ItemStack comp : this.getComponents()) {
-            boolean b = false;
-            for (int a = 0; a < ii.size(); a++) {
-                inCopy = ii.get(a).copy();
-                if (comp.getItemDamage() == 32767) {
-                    inCopy.setItemDamage(32767);
-                }
-                if (InfusionRecipe.areItemStacksEqual(inCopy, comp, true)) {
-                    ii.remove(a);
-                    b = true;
+            boolean matched = false;
+
+            for (int i = 0; i < inputs.size(); i++) {
+                ItemStack stack = inputs.get(i);
+
+                if (isValidComponent(stack, comp, aspect)) {
+                    inputs.remove(i);
+                    matched = true;
                     break;
                 }
             }
-            if (!b) {
-                return false;
-            }
+
+            if (!matched) return false;
         }
         return true;
+    }
+
+    private boolean isValidComponent(ItemStack input, ItemStack expected, Aspect aspect) {
+        if (input.getItem() instanceof ItemWispEssence item && input.getItem() == expected.getItem()) {
+            AspectList al = item.getAspects(input);
+            return al != null && al.getAmount(aspect) == 2;
+        }
+
+        return InfusionRecipe.areItemStacksEqual(input, expected, true);
     }
 
     @Override
@@ -92,5 +103,18 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
     @Override
     public Object getRecipeOutput() {
         return this.cachedOutput;
+    }
+
+    @Override
+    public AspectList getAspects(ItemStack input) {
+        Aspect aspect = ItemEtherealFamiliar.getFamiliarAspect(input);
+
+        AspectList list = aspects.copy();
+
+        if (aspect != null) {
+            list.add(aspect, extraEssentia);
+        }
+
+        return list;
     }
 }

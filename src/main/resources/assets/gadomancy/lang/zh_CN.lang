@@ -52,7 +52,6 @@ tc.research_name.GADOMANCY.ETHEREAL_FAMILIAR=天域使魔
 tc.research_text.GADOMANCY.ETHEREAL_FAMILIAR=奥法追随者
 gadomancy.research_page.ETHEREAL_FAMILIAR.1=那些飞舞的鬼火已经吸引你好久了。一般来说这样的永恒魔力都应该是被动存在的，但这些小精灵受到攻击时却会以惊人的速度和效率发起反击。不仅如此，甚至仅仅是快速接近小精灵都会惹怒她们。<LINE>这种行为却给了你不一样的启发。通过开发小精灵的这种天性，你也许可以将其奴役为一个随身的护卫。不幸的是，野生的小精灵行踪诡异，极难捕捉。
 gadomancy.research_page.ETHEREAL_FAMILIAR.3=向天域之华注以大量魔力以及少量魔力物质，你成功得到了人造天域精灵。天域“使魔”将会自动跟随主人的气场，并以类似浮游炮台的方式向靠近其主人的敌对生物发起攻击。很明显，人造的小精灵相比于天然的小精灵来说还是很虚弱，并且移动速度也不快，但你确信有办法可以增强她。
-gadomancy.research_page.ETHEREAL_FAMILIAR.4=使魔的攻击不会消耗任何的魔力，除非你对其进行升级。同时你应该注意使魔并不是足够强大到能够超越任何力量或是速度的界限，除非你为了这种垃圾而将魔力雕刻在她们身上。
 
 tc.research_name.GADOMANCY.AI_SHUTDOWN=无
 tc.research_text.GADOMANCY.AI_SHUTDOWN=无

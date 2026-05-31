@@ -288,8 +288,9 @@ public class RegisteredResearches {
                         .setSpecial().setParents(researchVRunicShielding.key)
                         .setPages(
                                 new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.1"),
-                                new ResearchPage(RegisteredRecipes.recipesFamiliar),
-                                new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.3"))
+                                new ResearchPage(RegisteredRecipes.recipeFamiliar),
+                                new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.3"),
+                                new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.4"))
                         .registerResearchItem();
 
         RegisteredResearches.researchFamiliarElementLightning = new SimpleResearchItem(

@@ -67,7 +67,6 @@ public class FamiliarController {
         }
 
         FamiliarAugment.FamiliarAugmentList augments = ItemEtherealFamiliar.getAugments(stack);
-        if (augments == null) return;
 
         if (augments.isEmpty()) {
             this.doDefaultAttack();
@@ -75,7 +74,7 @@ public class FamiliarController {
         } else {
             FamiliarAugment.FamiliarAugmentPair effectElement = null;
             for (FamiliarAugment.FamiliarAugmentPair pair : augments) {
-                FamiliarAugment augment = pair.augment;
+                FamiliarAugment augment = pair.augment();
                 if (augment.equals(FamiliarAugment.SHOCK) || augment.equals(FamiliarAugment.FIRE)
                         || augment.equals(FamiliarAugment.POISON)
                         || augment.equals(FamiliarAugment.WEAKNESS)) {
@@ -114,8 +113,8 @@ public class FamiliarController {
                     + (rangeLevel != -1 ? FamiliarController.RANGE_INC * rangeLevel : 0);
 
             if (effectElement != null) {
-                for (int i = 0; i < effectElement.level; i++) {
-                    costs.add(effectElement.augment.getCostsPerLevel());
+                for (int i = 0; i < effectElement.level(); i++) {
+                    costs.add(effectElement.augment().getCostsPerLevel());
                 }
             }
 
@@ -144,8 +143,8 @@ public class FamiliarController {
 
     private boolean doAttack(FamiliarAugment.FamiliarAugmentPair element, double damage, double range) {
         int toSelect = 1;
-        int effectLevel = element.level;
-        FamiliarAugment augment = element.augment;
+        int effectLevel = element.level();
+        FamiliarAugment augment = element.augment();
         int boltType = 6;
         if (augment.equals(FamiliarAugment.SHOCK)) {
             boltType = 1;
