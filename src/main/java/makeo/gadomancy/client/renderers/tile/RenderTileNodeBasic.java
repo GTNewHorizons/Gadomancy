@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import makeo.gadomancy.client.util.NodeRenderQueue;
 import makeo.gadomancy.common.events.EventHandlerRedirect;
+import makeo.gadomancy.common.registration.RegisteredIntegrations;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.nodes.INode;
@@ -24,6 +26,7 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
+import xonin.backhand.api.core.BackhandUtils;
 
 /**
  * This class is NOT part of the Gadomancy Mod This file is copied from Azanors
@@ -232,7 +235,17 @@ public class RenderTileNodeBasic {
                                 depthIgnore = true;
                                 viewDistance = 48.0D;
                             }
+                        } else
+                    if (RegisteredIntegrations.backhand.isPresent()) {
+                        ItemStack offhandItem = BackhandUtils.getOffhandItem((EntityPlayer) viewer);
+                        if ((offhandItem != null) && (offhandItem.getItem() instanceof ItemThaumometer)) {
+                            if (UtilsFX.isVisibleTo(0.44F, viewer, x, y, z)) {
+                                condition = true;
+                                depthIgnore = true;
+                                viewDistance = 48.0D;
+                            }
                         }
+                    }
         }
         // Gadomancy: Changed from tile.xCoord, ... to x, y, z to make it dependent from params
         NodeRenderQueue.nodeQueue.add(

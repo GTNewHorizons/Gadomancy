@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.fx.particles.FXBubble;
 import thaumcraft.client.lib.UtilsFX;

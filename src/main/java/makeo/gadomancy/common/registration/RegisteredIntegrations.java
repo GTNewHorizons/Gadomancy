@@ -3,6 +3,7 @@ package makeo.gadomancy.common.registration;
 import cpw.mods.fml.common.Loader;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.integration.IntegrationAutomagy;
+import makeo.gadomancy.common.integration.IntegrationBackhand;
 import makeo.gadomancy.common.integration.IntegrationMod;
 import makeo.gadomancy.common.integration.IntegrationMorph;
 import makeo.gadomancy.common.integration.IntegrationNEI;
@@ -25,6 +26,7 @@ public class RegisteredIntegrations {
     public static IntegrationNEI nei;
     public static IntegrationMystcraft mystcraft;
     public static IntegrationThaumicTinkerer thaumicTinkerer;
+    public static IntegrationBackhand backhand;
 
     private RegisteredIntegrations() {}
 
@@ -37,6 +39,7 @@ public class RegisteredIntegrations {
         RegisteredIntegrations.mystcraft = RegisteredIntegrations.registerIndependent(IntegrationMystcraft.class);
         RegisteredIntegrations.thaumicTinkerer = RegisteredIntegrations
                 .registerIndependent(IntegrationThaumicTinkerer.class);
+        RegisteredIntegrations.backhand = RegisteredIntegrations.registerIndependent(IntegrationBackhand.class);
 
         RegisteredIntegrations.registerDependent(
                 "ThaumicHorizons",
