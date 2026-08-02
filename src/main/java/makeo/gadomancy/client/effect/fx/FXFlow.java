@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.effect.CheckpointingSet;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
@@ -280,8 +281,9 @@ public class FXFlow {
         return this;
     }
 
-    public static void tickFlows(Iterable<FXFlow> fxFlows) {
-        for (FXFlow flow : fxFlows) {
+    public static void tickFlows(CheckpointingSet<FXFlow> fxFlows) {
+        for (int i = 0; i < fxFlows.size(); i++) {
+            FXFlow flow = fxFlows.get(i);
             if ((System.currentTimeMillis() - flow.lastUpdateCall) > 1000L) {
                 EffectHandler.getInstance().unregisterFlow(flow);
             }
