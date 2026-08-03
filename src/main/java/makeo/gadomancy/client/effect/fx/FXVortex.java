@@ -10,6 +10,7 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import makeo.gadomancy.client.effect.CheckpointingSet;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.client.events.ClientHandler;
 import makeo.gadomancy.common.blocks.tiles.TileEssentiaCompressor;
@@ -114,16 +115,18 @@ public class FXVortex {
         GL11.glPopMatrix();
     }
 
-    public static void sheduleRender(Iterable<FXVortex> vortexes, Tessellator tessellator, float partialTicks) {
-        for (FXVortex vortex : vortexes) {
+    public static void sheduleRender(CheckpointingSet<FXVortex> vortexes, Tessellator tessellator, float partialTicks) {
+        for (int i = 0; i < vortexes.size(); i++) {
+            FXVortex vortex = vortexes.get(i);
             GL11.glPushMatrix();
             vortex.render(tessellator, partialTicks);
             GL11.glPopMatrix();
         }
     }
 
-    public static void tickVortexes(Iterable<FXVortex> vortexes) {
-        for (FXVortex vortex : vortexes) {
+    public static void tickVortexes(CheckpointingSet<FXVortex> vortexes) {
+        for (int i = 0; i < vortexes.size(); i++) {
+            FXVortex vortex = vortexes.get(i);
             if ((System.currentTimeMillis() - vortex.lastUpdateCall) > 100L) {
                 // System.out.println("tickTimeout");
                 EffectHandler.getInstance().unregisterVortex(vortex);
