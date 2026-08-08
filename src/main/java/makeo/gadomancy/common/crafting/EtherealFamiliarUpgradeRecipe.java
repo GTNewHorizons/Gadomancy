@@ -23,6 +23,7 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
     private final FamiliarAugment toAdd;
     private final int requiredPreviousLevel;
     private final Object cachedOutput;
+    private Aspect lastMatchedAspect = null;
 
     public EtherealFamiliarUpgradeRecipe(String research, int inst, AspectList aspects, int extraEssentia,
             ItemStack familiarIn, FamiliarAugment toAdd, int reqPrev, ItemStack... surroundings) {
@@ -81,16 +82,23 @@ public class EtherealFamiliarUpgradeRecipe extends InfusionRecipe {
 
             if (!matched) return false;
         }
+        this.lastMatchedAspect = aspect;
         return true;
     }
 
     private boolean isValidComponent(ItemStack input, ItemStack expected, Aspect aspect) {
         if (input.getItem() instanceof ItemWispEssence item && input.getItem() == expected.getItem()) {
             AspectList al = item.getAspects(input);
-            return al != null && al.getAmount(aspect) == 2;
+            return al != null && al.size() == 1 && al.getAmount(aspect) == 2;
         }
 
         return InfusionRecipe.areItemStacksEqual(input, expected, true);
+    }
+
+    @Override
+    public ItemStack[] getComponents() {
+        Aspect aspect = this.lastMatchedAspect != null ? this.lastMatchedAspect : Aspect.EARTH;
+        return FamiliarComponents.resolveWispEssences(super.getComponents(), aspect);
     }
 
     @Override
