@@ -50,9 +50,9 @@ public class ItemAuraCore extends Item {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < AuraCoreType.values().length; i++) {
+        for (int i = 0; i < AuraCoreType.VALUES.length; i++) {
             ItemStack stack = new ItemStack(item);
-            this.setCoreType(stack, AuraCoreType.values()[i]);
+            this.setCoreType(stack, AuraCoreType.VALUES[i]);
             list.add(stack);
         }
     }
@@ -105,7 +105,7 @@ public class ItemAuraCore extends Item {
     }
 
     public AuraCoreType getCoreType(ItemStack itemStack) {
-        return AuraCoreType.values()[itemStack.getItemDamage()];
+        return AuraCoreType.VALUES[itemStack.getItemDamage()];
     }
 
     public boolean isBlank(ItemStack itemStack) {
@@ -124,6 +124,7 @@ public class ItemAuraCore extends Item {
         ORDER(Aspect.ORDER),
         ENTROPY(Aspect.ENTROPY, true);
 
+        public static final AuraCoreType[] VALUES = values();
         private final Aspect aspect;
         private final String unlocName;
         private final boolean unused;

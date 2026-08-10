@@ -501,7 +501,7 @@ public class RegisteredResearches {
                                 new ResearchPage(RegisteredRecipes.eldritchdecoblocks6))
                         .registerResearchItem();
 
-        ItemAuraCore.AuraCoreType[] coreTypes = ItemAuraCore.AuraCoreType.values();
+        ItemAuraCore.AuraCoreType[] coreTypes = ItemAuraCore.AuraCoreType.VALUES;
         ItemStack[] cores = new ItemStack[coreTypes.length];
         for (int i = 0; i < coreTypes.length; i++) {
             ItemStack stack = new ItemStack(RegisteredItems.itemAuraCore, 1, 0);

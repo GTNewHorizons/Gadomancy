@@ -227,7 +227,7 @@ public class EntityAuraCore extends EntityItem implements IEntityAdditionalSpawn
             }
 
             Aspect aura = ((AspectWRItem) WeightedRandom.getRandomItem(this.worldObj.rand, rand)).getAspect();
-            for (ItemAuraCore.AuraCoreType type : ItemAuraCore.AuraCoreType.values()) {
+            for (ItemAuraCore.AuraCoreType type : ItemAuraCore.AuraCoreType.VALUES) {
                 if (type.isAspect() && type.getAspect().equals(aura)) {
                     RegisteredItems.itemAuraCore.setCoreType(auraCore, type);
                     success = true;
