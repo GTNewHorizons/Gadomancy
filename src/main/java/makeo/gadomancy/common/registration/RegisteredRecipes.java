@@ -564,7 +564,7 @@ public class RegisteredRecipes {
                     new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.EXCHANGE, 8).add(Aspect.ENTROPY, 12));
         }
 
-        ItemAuraCore.AuraCoreType[] auraCoreTypes = ItemAuraCore.AuraCoreType.values();
+        ItemAuraCore.AuraCoreType[] auraCoreTypes = ItemAuraCore.AuraCoreType.VALUES;
         RegisteredRecipes.recipesWashAuraCore = new CrucibleRecipe[auraCoreTypes.length - 1];
         List<IRecipe> recipesUndoAuraCore = new ArrayList<>();
 
