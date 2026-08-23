@@ -78,10 +78,16 @@ public class EtherealFamiliarCreationRecipe extends InfusionRecipe {
     private boolean isValidComponent(ItemStack input, ItemStack expected, Aspect aspect) {
         if (input.getItem() instanceof ItemWispEssence item && input.getItem() == expected.getItem()) {
             AspectList al = item.getAspects(input);
-            return al != null && al.getAmount(aspect) == 2;
+            return al != null && al.size() == 1 && al.getAmount(aspect) == 2;
         }
 
         return InfusionRecipe.areItemStacksEqual(input, expected, true);
+    }
+
+    @Override
+    public ItemStack[] getComponents() {
+        Aspect aspect = this.lastMatchedAspect != null ? this.lastMatchedAspect : Aspect.EARTH;
+        return FamiliarComponents.resolveWispEssences(super.getComponents(), aspect);
     }
 
     @Override
