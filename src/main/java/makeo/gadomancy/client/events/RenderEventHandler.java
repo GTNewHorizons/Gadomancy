@@ -34,7 +34,6 @@ import makeo.gadomancy.client.gui.GuiResearchRecipeAuraEffects;
 import makeo.gadomancy.client.util.ExtendedTypeDisplayManager;
 import makeo.gadomancy.client.util.FamiliarHandlerClient;
 import makeo.gadomancy.client.util.MultiTickEffectDispatcher;
-import makeo.gadomancy.client.util.NodeRenderQueue;
 import makeo.gadomancy.common.CommonProxy;
 import makeo.gadomancy.common.Gadomancy;
 import makeo.gadomancy.common.blocks.tiles.TileExtendedNode;
@@ -191,7 +190,6 @@ public final class RenderEventHandler {
     public void worldRenderEvent(RenderWorldLastEvent event) {
         ExtendedTypeDisplayManager.notifyRenderTick();
         MultiTickEffectDispatcher.notifyRenderTick(Minecraft.getMinecraft().theWorld, event.partialTicks);
-        NodeRenderQueue.flush(event.partialTicks);
     }
 
     private EntityPlayer current;
