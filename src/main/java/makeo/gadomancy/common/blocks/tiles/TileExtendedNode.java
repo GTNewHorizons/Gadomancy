@@ -298,6 +298,11 @@ public class TileExtendedNode extends TileNode {
     }
 
     @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == 1;
+    }
+
+    @Override
     public void readCustomNBT(NBTTagCompound nbttagcompound) {
         super.readCustomNBT(nbttagcompound);
 
