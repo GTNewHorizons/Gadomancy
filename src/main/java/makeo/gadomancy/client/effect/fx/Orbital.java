@@ -8,6 +8,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 
+import makeo.gadomancy.client.effect.CheckpointingSet;
 import makeo.gadomancy.client.effect.EffectHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.utils.MiscUtils;
@@ -59,7 +60,8 @@ public final class Orbital {
             return;
         if (Minecraft.getMinecraft().isGamePaused()) return;
 
-        for (OrbitalRenderProperties orbitalNode : this.orbitals) {
+        for (int i = 0; i < this.orbitals.size(); i++) {
+            OrbitalRenderProperties orbitalNode = this.orbitals.get(i);
             Axis axis = orbitalNode.getAxis();
             int counterOffset = orbitalNode.getOffsetTicks() % orbitalNode.getTicksForFullCircle();
 
@@ -143,14 +145,15 @@ public final class Orbital {
         return arr;
     }
 
-    public static void sheduleRenders(Iterable<Orbital> orbitals, float partialTicks) {
-        for (Orbital orbital : orbitals) {
-            orbital.doRender(partialTicks);
+    public static void sheduleRenders(CheckpointingSet<Orbital> orbitals, float partialTicks) {
+        for (int i = 0; i < orbitals.size(); i++) {
+            orbitals.get(i).doRender(partialTicks);
         }
     }
 
-    public static void tickOrbitals(Iterable<Orbital> orbitals) {
-        for (Orbital orbital : orbitals) {
+    public static void tickOrbitals(CheckpointingSet<Orbital> orbitals) {
+        for (int i = 0; i < orbitals.size(); i++) {
+            Orbital orbital = orbitals.get(i);
             if ((System.currentTimeMillis() - orbital.lastRenderCall) > 1000L) {
                 orbital.clearOrbitals();
                 EffectHandler.getInstance().unregisterOrbital(orbital);

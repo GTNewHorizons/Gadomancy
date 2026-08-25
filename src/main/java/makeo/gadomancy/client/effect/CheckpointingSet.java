@@ -1,22 +1,25 @@
 package makeo.gadomancy.client.effect;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
-class CheckpointingSet<E> implements Iterable<E> {
+public class CheckpointingSet<E> implements Iterable<E> {
 
-    private final Set<E> main = new HashSet<>();
-    private final Set<E> toAdd = Collections.synchronizedSet(new HashSet<>());
-    private final Set<E> toRemove = Collections.synchronizedSet(new HashSet<>());
+    private final List<E> main = new ArrayList<>(64);
+    private final List<E> toAdd = new ArrayList<>();
+    private final List<E> toRemove = new ArrayList<>();
 
     public void add(E elem) {
-        toAdd.add(elem);
+        synchronized (toAdd) {
+            toAdd.add(elem);
+        }
     }
 
     public void remove(E elem) {
-        toRemove.add(elem);
+        synchronized (toRemove) {
+            toRemove.add(elem);
+        }
     }
 
     public void clear() {
@@ -31,39 +34,36 @@ class CheckpointingSet<E> implements Iterable<E> {
 
     public void update() {
         synchronized (toAdd) {
-            main.addAll(toAdd);
-            toAdd.clear();
+            if (!toAdd.isEmpty()) {
+                for (int i = 0; i < toAdd.size(); i++) {
+                    E elem = toAdd.get(i);
+                    if (!main.contains(elem)) {
+                        main.add(elem);
+                    }
+                }
+                toAdd.clear();
+            }
         }
         synchronized (toRemove) {
-            main.removeAll(toRemove);
-            toRemove.clear();
+            if (!toRemove.isEmpty()) {
+                for (int i = 0; i < toRemove.size(); i++) {
+                    main.remove(toRemove.get(i));
+                }
+                toRemove.clear();
+            }
         }
+    }
+
+    public int size() {
+        return main.size();
+    }
+
+    public E get(int index) {
+        return main.get(index);
     }
 
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<E>() {
-
-            private final Iterator<E> backing = main.iterator();
-            private boolean initialized = false;
-            private E cur = null;
-
-            @Override
-            public boolean hasNext() {
-                return backing.hasNext();
-            }
-
-            @Override
-            public E next() {
-                initialized = true;
-                return cur = backing.next();
-            }
-
-            @Override
-            public void remove() {
-                if (!initialized) throw new IllegalStateException();
-                toRemove.add(cur);
-            }
-        };
+        return main.iterator();
     }
 }
