@@ -165,15 +165,19 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
                 lblYLoop: for (int yy = -TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy
                         <= TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy++) {
+                    if (xx == 0 && yy == 0 && zz == 0) {
+                        continue;
+                    }
                     int absX = xx + this.xCoord;
                     int absY = yy + this.yCoord;
                     int absZ = zz + this.zCoord;
                     Block at = this.worldObj.getBlock(absX, absY, absZ);
                     int meta = this.worldObj.getBlockMetadata(absX, absY, absZ);
                     TileEntity te = this.worldObj.getTileEntity(absX, absY, absZ);
+
                     if (at.equals(Blocks.bookshelf)) {
                         this.surroundingKnowledge += 1;
-                    } else if (te != null && te instanceof IKnowledgeProvider) {
+                    } else if (te instanceof IKnowledgeProvider) {
                         this.surroundingKnowledge += ((IKnowledgeProvider) te)
                                 .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
                     } else if (at instanceof IKnowledgeProvider) {
