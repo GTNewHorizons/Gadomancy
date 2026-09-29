@@ -86,7 +86,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.timeSinceLastItemInfo++;
 
         if (!this.worldObj.isRemote) {
-            if (this.timeSinceLastItemInfo > 8) {
+            if ((!this.researching || !this.hasCognitio()) && this.timeSinceLastItemInfo > 32) {
                 this.informItemRemoval();
             }
 
