@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -532,11 +531,6 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             this.block = block;
             this.metadata = metadata;
         }
-    }
-
-    public interface IKnowledgeProvider {
-
-        int getProvidedKnowledge(World world, int blockX, int blockY, int blockZ);
     }
 
     public class FloatingBookAttributes {
