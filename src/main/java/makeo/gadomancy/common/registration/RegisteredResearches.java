@@ -143,12 +143,6 @@ public class RegisteredResearches {
         ResearchItem researchHarvestGather = PseudoResearchItem.create("COREHARVEST", 2, -6).registerResearchItem();
         ResearchItem researchCoreGuard = PseudoResearchItem.create("COREGUARD", 4, -5).registerResearchItem();
 
-        ResearchItem researchVEleToolAxe = new ResearchItem("ELEMENTALAXE", Gadomancy.MODID).registerResearchItem();
-        ResearchItem researchVEleToolPick = new ResearchItem("ELEMENTALPICK", Gadomancy.MODID).registerResearchItem();
-        ResearchItem researchVEleToolShovel = new ResearchItem("ELEMENTALSHOVEL", Gadomancy.MODID)
-                .registerResearchItem();
-        ResearchItem researchVEleSword = new ResearchItem("ELEMENTALSWORD", Gadomancy.MODID).registerResearchItem();
-
         RegisteredResearches.researchGolemCoreBreak = new SimpleResearchItem(
                 "GOLEMCOREBREAK",
                 3,
@@ -156,19 +150,12 @@ public class RegisteredResearches {
                 3,
                 new ItemStack(RegisteredItems.itemGolemCoreBreak),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ENTROPY, 8).add(Aspect.MECHANISM, 8))
-                        .setParents(
-                                researchHarvestGather.key,
-                                researchVEleToolAxe.key,
-                                researchVEleToolPick.key,
-                                researchVEleToolShovel.key)
+                        .setParents(researchHarvestGather.key, "ELEMENTALAXE", "ELEMENTALPICK", "ELEMENTALSHOVEL")
                         .setConcealed()
                         .setPages(
                                 new ResearchPage("gadomancy.research_page.GOLEMCOREBREAK.1"),
                                 new ResearchPage(RegisteredRecipes.recipeGolemCoreBreak))
                         .registerResearchItem();
-
-        ResearchItem researchVBootsTraveller = new ResearchItem("BOOTSTRAVELLER", Gadomancy.MODID)
-                .registerResearchItem();
 
         RegisteredResearches.researchGolemCoreBodyguard = new SimpleResearchItem(
                 "GOLEMCOREBODYGUARD",
@@ -177,21 +164,15 @@ public class RegisteredResearches {
                 2,
                 new ItemStack(RegisteredItems.itemGolemCoreBreak, 1, 1),
                 new AspectList().add(Aspect.TOOL, 8).add(Aspect.ORDER, 8).add(Aspect.MECHANISM, 10).add(Aspect.ARMOR, 8)
-                        .add(Aspect.WEAPON, 8))
-                                .setParents(researchVBootsTraveller.key, researchVEleSword.key, researchCoreGuard.key)
+                        .add(Aspect.WEAPON, 8)).setParents("BOOTSTRAVELLER", "ELEMENTALSWORD", researchCoreGuard.key)
                                 .setConcealed()
                                 .setPages(
                                         new ResearchPage("gadomancy.research_page.GOLEMCOREBODYGUARD.1"),
                                         new ResearchPage(RegisteredRecipes.recipeGolemCoreBodyguard))
                                 .registerResearchItem();
 
-        ResearchItem researchVFocusPrimal = new ResearchItem("FOCUSPRIMAL", Gadomancy.MODID).registerResearchItem();
         ResearchItem researchItemVoidMetal = PseudoResearchItem.create("VOIDMETAL", -8, -6).registerResearchItem();
         ResearchItem researchWandPedestal = PseudoResearchItem.create("WANDPED", -9, -8).registerResearchItem();
-        ResearchItem researchVWardingStone = new ResearchItem("PAVEWARD", Gadomancy.MODID).registerResearchItem();
-        ResearchItem researchVNodeStabilizer = new ResearchItem("WANDPEDFOC", Gadomancy.MODID).registerResearchItem();
-        ResearchItem researchVCoreUse = new ResearchItem("COREUSE", Gadomancy.MODID).registerResearchItem();
-        ResearchItem researchVRunicShielding = new ResearchItem("RUNICARMOR", Gadomancy.MODID).registerResearchItem();
 
         ResearchItem researchOculus = PseudoResearchItem.create("OCULUS", -11, -2).setRound().setSpecial()
                 .registerResearchItem();
@@ -205,10 +186,10 @@ public class RegisteredResearches {
                 new AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.MECHANISM, 8).add(Aspect.MAGIC, 8)
                         .add(Aspect.ORDER, 8).add(Aspect.DARKNESS, 4))
                                 .setParents(
-                                        researchVFocusPrimal.key,
+                                        "FOCUSPRIMAL",
                                         researchItemVoidMetal.key,
                                         researchWandPedestal.key,
-                                        researchVCoreUse.key)
+                                        "COREUSE")
                                 .setConcealed()
                                 .setPages(
                                         new ResearchPage("gadomancy.research_page.INFUSIONCLAW.1"),
@@ -228,8 +209,8 @@ public class RegisteredResearches {
                                 .setConcealed().setSpecial()
                                 .setParents(
                                         researchItemVoidMetal.key,
-                                        researchVNodeStabilizer.key,
-                                        researchVWardingStone.key,
+                                        "WANDPEDFOC",
+                                        "PAVEWARD",
                                         researchWandPedestal.key)
                                 .setPages(
                                         new ResearchPage("gadomancy.research_page.NODE_MANIPULATOR.1"),
@@ -285,7 +266,7 @@ public class RegisteredResearches {
                 2,
                 displayFamiliar,
                 new AspectList().add(Aspect.MAGIC, 8).add(Aspect.FIRE, 6).add(Aspect.AURA, 4)).setConcealed()
-                        .setSpecial().setParents(researchVRunicShielding.key)
+                        .setSpecial().setParents("RUNICARMOR")
                         .setPages(
                                 new ResearchPage("gadomancy.research_page.ETHEREAL_FAMILIAR.1"),
                                 new ResearchPage(RegisteredRecipes.recipeFamiliar),
