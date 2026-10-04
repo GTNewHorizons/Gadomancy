@@ -151,9 +151,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
-        for (int xx = -TileKnowledgeBook.SEARCH_RANGE_XZ; xx <= TileKnowledgeBook.SEARCH_RANGE_XZ; xx++) {
-            for (int zz = -TileKnowledgeBook.SEARCH_RANGE_XZ; zz <= TileKnowledgeBook.SEARCH_RANGE_XZ; zz++) {
-                for (int yy = -TileKnowledgeBook.SEARCH_RANGE_Y; yy <= TileKnowledgeBook.SEARCH_RANGE_Y; yy++) {
+        for (int xx = -SEARCH_RANGE_XZ; xx <= SEARCH_RANGE_XZ; xx++) {
+            for (int zz = -SEARCH_RANGE_XZ; zz <= SEARCH_RANGE_XZ; zz++) {
+                for (int yy = -SEARCH_RANGE_Y; yy <= SEARCH_RANGE_Y; yy++) {
                     if (xx == 0 && yy == 0 && zz == 0) {
                         continue;
                     }
@@ -520,17 +520,6 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     @Override
     public int containerContains(Aspect aspect) {
         return 0;
-    }
-
-    public static class BlockSnapshot {
-
-        public final Block block;
-        public final int metadata;
-
-        public BlockSnapshot(Block block, int metadata) {
-            this.block = block;
-            this.metadata = metadata;
-        }
     }
 
     public class FloatingBookAttributes {
