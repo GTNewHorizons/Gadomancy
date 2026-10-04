@@ -1,9 +1,7 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -12,10 +10,8 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,12 +46,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final int LOWEST_AMOUNT = 10;
     private static final int COGNITIO_TICKS = 150;
     private static final int MAX_NEEDED_KNOWLEDGE = 200;
-    private static final int SURROUNDINGS_SEARCH_XZ = 4;
-    private static final int SURROUNDINGS_SEARCH_Y = 3;
+    private static final int SEARCH_RANGE_XZ = 4;
+    private static final int SEARCH_RANGE_Y = 3;
     private static final double MULTIPLIER = 4;
-
-    @Deprecated
-    public static Map<BlockSnapshot, Integer> knowledgeIncreaseMap = new HashMap<BlockSnapshot, Integer>();
 
     private FloatingBookAttributes bookAttributes = new FloatingBookAttributes();
 
@@ -159,38 +152,18 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.ticksEnvironmentCheck = 200;
         this.surroundingKnowledge = 0;
-        for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
-            for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz
-                    <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
-
-                lblYLoop: for (int yy = -TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy
-                        <= TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy++) {
+        for (int xx = -TileKnowledgeBook.SEARCH_RANGE_XZ; xx <= TileKnowledgeBook.SEARCH_RANGE_XZ; xx++) {
+            for (int zz = -TileKnowledgeBook.SEARCH_RANGE_XZ; zz <= TileKnowledgeBook.SEARCH_RANGE_XZ; zz++) {
+                for (int yy = -TileKnowledgeBook.SEARCH_RANGE_Y; yy <= TileKnowledgeBook.SEARCH_RANGE_Y; yy++) {
                     if (xx == 0 && yy == 0 && zz == 0) {
                         continue;
                     }
                     int absX = xx + this.xCoord;
                     int absY = yy + this.yCoord;
                     int absZ = zz + this.zCoord;
-                    Block at = this.worldObj.getBlock(absX, absY, absZ);
-                    int meta = this.worldObj.getBlockMetadata(absX, absY, absZ);
-                    TileEntity te = this.worldObj.getTileEntity(absX, absY, absZ);
+                    Block block = this.worldObj.getBlock(absX, absY, absZ);
 
-                    if (at.equals(Blocks.bookshelf)) {
-                        this.surroundingKnowledge += 1;
-                    } else if (te instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge += ((IKnowledgeProvider) te)
-                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
-                    } else if (at instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge += ((IKnowledgeProvider) at)
-                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
-                    } else {
-                        for (BlockSnapshot sn : TileKnowledgeBook.knowledgeIncreaseMap.keySet()) {
-                            if (sn.block.equals(at) && sn.metadata == meta) {
-                                this.surroundingKnowledge += TileKnowledgeBook.knowledgeIncreaseMap.get(sn);
-                                continue lblYLoop;
-                            }
-                        }
-                    }
+                    this.surroundingKnowledge += (int) block.getEnchantPowerBonus(this.worldObj, absX, absY, absZ);
                 }
             }
         }
