@@ -52,6 +52,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final long ENVIRONMENT_UPDATE_TIMEOUT = 100;
     private static final long RESEARCH_SEARCH_TIMEOUT = 20;
     private static final long ITEM_INFO_TIMEOUT = 16;
+    private static final double MAX_PULL_SPEED = 0.5D;
 
     private FloatingBookAttributes bookAttributes = new FloatingBookAttributes();
 
@@ -454,17 +455,22 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         if (currentWorldTime == this.lastMovementTick) return;
         this.lastMovementTick = currentWorldTime;
 
-        double var3 = (this.xCoord + 0.5D - entity.posX) / 15.0D;
-        double var5 = (this.yCoord + 0.5D - entity.posY) / 15.0D;
-        double var7 = (this.zCoord + 0.5D - entity.posZ) / 15.0D;
-        double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
-        double var11 = 1.0D - var9;
-        if (var11 > 0.0D) {
-            var11 *= var11;
-            entity.motionX += var3 / var9 * var11 * 0.15D;
-            entity.motionY += var5 / var9 * var11 * 0.25D;
-            entity.motionZ += var7 / var9 * var11 * 0.15D;
-        }
+        double dx = (this.xCoord + 0.5D - entity.posX) / 15.0D;
+        double dy = (this.yCoord + 0.5D - entity.posY) / 15.0D;
+        double dz = (this.zCoord + 0.5D - entity.posZ) / 15.0D;
+        double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        double falloff = 1.0D - dist;
+
+        if (dist == 0.0D || falloff <= 0.0D) return;
+        falloff *= falloff;
+
+        entity.motionX = clampSpeed(entity.motionX + dx / dist * falloff * 0.15D);
+        entity.motionY = clampSpeed(entity.motionY + dy / dist * falloff * 0.25D);
+        entity.motionZ = clampSpeed(entity.motionZ + dz / dist * falloff * 0.15D);
+    }
+
+    private static double clampSpeed(double v) {
+        return Math.max(-MAX_PULL_SPEED, Math.min(MAX_PULL_SPEED, v));
     }
 
     private boolean shouldVortexResearchNote(ItemStack stack) {
