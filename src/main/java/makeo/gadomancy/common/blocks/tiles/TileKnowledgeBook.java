@@ -106,7 +106,6 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             this.doResearchEffects();
         }
 
-
         if (this.firstTimeThisTick && this.storedResearchNote == null) {
             this.tryVortexUnfinishedResearchNotes();
         }
