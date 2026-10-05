@@ -6,7 +6,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +27,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemResearchNotes;
 import thaumcraft.common.lib.events.EssentiaHandler;
@@ -83,6 +81,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private AspectList workResearchAspects;
     private int surroundingKnowledge;
 
+    private boolean markedForUpdate = false;
+
     @Override
     public void updateEntity() {
         this.updateWorldTime();
@@ -95,23 +95,23 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 }
 
                 if (this.updateResearchStatus()) {
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                    this.markDirty();
+                    this.markForUpdate();
                 }
             }
 
             if (this.researching) {
                 this.doResearchCycle();
             }
-        } else {
-            if (this.researching && this.hasCognitio()) {
-                this.doResearchEffects();
-            }
+        } else if (this.researching && this.hasCognitio()) {
+            this.doResearchEffects();
         }
+
 
         if (this.firstTimeThisTick && this.storedResearchNote == null) {
             this.tryVortexUnfinishedResearchNotes();
         }
+
+        this.sync();
     }
 
     private void updateWorldTime() {
@@ -119,6 +119,19 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         this.firstTimeThisTick = this.currentWorldTime != this.lastProcessedTick;
         this.lastProcessedTick = this.currentWorldTime;
         this.ticksExisted++;
+    }
+
+    private void markForUpdate() {
+        this.markedForUpdate = true;
+    }
+
+    private void sync() {
+        if (!this.markedForUpdate || this.lastSyncTick == currentWorldTime) return;
+
+        this.markedForUpdate = false;
+        this.lastSyncTick = currentWorldTime;
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
     }
 
     public boolean hasCognitio() {
@@ -137,11 +150,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.checkSurroundings();
 
-        int chance = Math.max(0, TileKnowledgeBook.MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge) + 100;
+        int chance = Math.max(0, MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge) + 100;
         if (TileKnowledgeBook.rand.nextInt(chance) == 0) {
             this.doResearchProgress();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
+            this.markForUpdate();
         }
     }
 
@@ -169,6 +181,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
         this.lastEnvironmentTick = this.currentWorldTime;
         this.surroundingKnowledge = 0;
+
         for (int xx = -SEARCH_RANGE_XZ; xx <= SEARCH_RANGE_XZ; xx++) {
             for (int zz = -SEARCH_RANGE_XZ; zz <= SEARCH_RANGE_XZ; zz++) {
                 for (int yy = -SEARCH_RANGE_Y; yy <= SEARCH_RANGE_Y; yy++) {
@@ -195,8 +208,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 this.searchForCognitio();
             }
             if (this.ticksCognitio <= 0) {
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                this.markDirty();
+                this.markForUpdate();
             }
         }
     }
@@ -208,9 +220,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             for (ForgeDirection dir : toTry) {
                 if (dir == null) continue; // LUL should not happen...
                 if (EssentiaHandler.drainEssentia(this, Aspect.MIND, dir, drainRange)) {
-                    this.ticksCognitio += TileKnowledgeBook.COGNITIO_TICKS;
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                    this.markDirty();
+                    this.ticksCognitio += COGNITIO_TICKS;
+                    this.markForUpdate();
                     break;
                 }
             }
@@ -263,8 +274,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 this.yCoord,
                 this.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        this.markDirty();
+        this.markForUpdate();
     }
 
     private NetworkRegistry.TargetPoint getTargetPoint(double radius) {
@@ -320,8 +330,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
             int value = researchTags.aspects.get(a);
-            int newVal = (int) Math
-                    .max(TileKnowledgeBook.LOWEST_AMOUNT, ((double) value) * TileKnowledgeBook.MULTIPLIER);
+            int newVal = (int) Math.max(LOWEST_AMOUNT, ((double) value) * MULTIPLIER);
             workResearchList.add(a, newVal);
         }
         this.workResearchAspects = workResearchList;
@@ -348,8 +357,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     public void informItemRemoval() {
         this.storedResearchNote = null;
         this.stopResearch();
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        this.markDirty();
+        this.markForUpdate();
     }
 
     @Override
@@ -420,8 +428,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             closestEntity.noClip = false;
             item.delayBeforeCanPickup = 60;
 
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
+            this.markForUpdate();
         } else {
             closestEntity.noClip = true;
             this.applyMovementVectors(closestEntity);
