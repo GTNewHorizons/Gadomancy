@@ -1,23 +1,17 @@
 package makeo.gadomancy.common.blocks.tiles;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -33,7 +27,6 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.common.entities.EntityPermanentItem;
 import thaumcraft.common.entities.EntitySpecialItem;
 import thaumcraft.common.items.ItemResearchNotes;
 import thaumcraft.common.lib.events.EssentiaHandler;
@@ -50,12 +43,14 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final int LOWEST_AMOUNT = 10;
     private static final int COGNITIO_TICKS = 150;
     private static final int MAX_NEEDED_KNOWLEDGE = 200;
-    private static final int SURROUNDINGS_SEARCH_XZ = 4;
-    private static final int SURROUNDINGS_SEARCH_Y = 3;
+    private static final int SEARCH_RANGE_XZ = 4;
+    private static final int SEARCH_RANGE_Y = 3;
     private static final double MULTIPLIER = 4;
 
-    @Deprecated
-    public static Map<BlockSnapshot, Integer> knowledgeIncreaseMap = new HashMap<BlockSnapshot, Integer>();
+    private static final long ENVIRONMENT_UPDATE_TIMEOUT = 100;
+    private static final long RESEARCH_SEARCH_TIMEOUT = 20;
+    private static final long ITEM_INFO_TIMEOUT = 16;
+    private static final double MAX_PULL_SPEED = 0.5D;
 
     private FloatingBookAttributes bookAttributes = new FloatingBookAttributes();
 
@@ -64,11 +59,19 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private EntityPermNoClipItem.ItemChangeTask scheduledTask;
 
     // Ticks
-    private int timeSinceLastItemInfo;
+    private long currentWorldTime;
+    private long lastProcessedTick;
+    // If it's first updateEntity call, based on world time
+    private boolean firstTimeThisTick;
+
+    private long lastEnvironmentTick;
+    private long lastResearchSearchTick;
+    private long lastMovementTick;
+    private long lastItemInfoTick;
+    private long lastSyncTick;
+
     private int ticksExisted;
     private int ticksCognitio;
-    private int ticksEnvironmentCheck;
-    private int ticksResearchSearch;
 
     // Sound effect stuff. I didn't like it when it's like changing pages 4 times in a row...
     private boolean turnedPagesLastTick;
@@ -78,35 +81,56 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private AspectList workResearchAspects;
     private int surroundingKnowledge;
 
+    private boolean markedForUpdate = false;
+
     @Override
     public void updateEntity() {
+        this.updateWorldTime();
         this.bookAttributes.updateFloatingBook();
 
-        this.ticksExisted++;
-        this.timeSinceLastItemInfo++;
-
         if (!this.worldObj.isRemote) {
-            if (this.timeSinceLastItemInfo > 8) {
-                this.informItemRemoval();
-            }
+            if (this.firstTimeThisTick) {
+                if (this.currentWorldTime - this.lastItemInfoTick > ITEM_INFO_TIMEOUT) {
+                    this.informItemRemoval();
+                }
 
-            if (this.updateResearchStatus()) {
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                this.markDirty();
+                if (this.updateResearchStatus()) {
+                    this.markForUpdate();
+                }
             }
 
             if (this.researching) {
                 this.doResearchCycle();
             }
-        } else {
-            if (this.researching && this.hasCognitio()) {
-                this.doResearchEffects();
-            }
+        } else if (this.researching && this.hasCognitio()) {
+            this.doResearchEffects();
         }
 
-        if (this.storedResearchNote == null) {
+        if (this.firstTimeThisTick && this.storedResearchNote == null) {
             this.tryVortexUnfinishedResearchNotes();
         }
+
+        this.sync();
+    }
+
+    private void updateWorldTime() {
+        this.currentWorldTime = this.worldObj.getTotalWorldTime();
+        this.firstTimeThisTick = this.currentWorldTime != this.lastProcessedTick;
+        this.lastProcessedTick = this.currentWorldTime;
+        this.ticksExisted++;
+    }
+
+    private void markForUpdate() {
+        this.markedForUpdate = true;
+    }
+
+    private void sync() {
+        if (!this.markedForUpdate || this.lastSyncTick == currentWorldTime) return;
+
+        this.markedForUpdate = false;
+        this.lastSyncTick = currentWorldTime;
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
     }
 
     public boolean hasCognitio() {
@@ -125,11 +149,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         }
         this.checkSurroundings();
 
-        int chance = Math.max(0, TileKnowledgeBook.MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge) + 100;
+        int chance = Math.max(0, MAX_NEEDED_KNOWLEDGE - this.surroundingKnowledge) + 100;
         if (TileKnowledgeBook.rand.nextInt(chance) == 0) {
             this.doResearchProgress();
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
+            this.markForUpdate();
         }
     }
 
@@ -153,40 +176,23 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void checkSurroundings() {
-        if (this.ticksEnvironmentCheck > 0) {
-            this.ticksEnvironmentCheck--;
-            return;
-        }
-        this.ticksEnvironmentCheck = 200;
-        this.surroundingKnowledge = 0;
-        for (int xx = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; xx++) {
-            for (int zz = -TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz
-                    <= TileKnowledgeBook.SURROUNDINGS_SEARCH_XZ; zz++) {
+        if (this.currentWorldTime - lastEnvironmentTick < ENVIRONMENT_UPDATE_TIMEOUT) return;
 
-                lblYLoop: for (int yy = -TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy
-                        <= TileKnowledgeBook.SURROUNDINGS_SEARCH_Y; yy++) {
+        this.lastEnvironmentTick = this.currentWorldTime;
+        this.surroundingKnowledge = 0;
+
+        for (int xx = -SEARCH_RANGE_XZ; xx <= SEARCH_RANGE_XZ; xx++) {
+            for (int zz = -SEARCH_RANGE_XZ; zz <= SEARCH_RANGE_XZ; zz++) {
+                for (int yy = -SEARCH_RANGE_Y; yy <= SEARCH_RANGE_Y; yy++) {
+                    if (xx == 0 && yy == 0 && zz == 0) {
+                        continue;
+                    }
                     int absX = xx + this.xCoord;
                     int absY = yy + this.yCoord;
                     int absZ = zz + this.zCoord;
-                    Block at = this.worldObj.getBlock(absX, absY, absZ);
-                    int meta = this.worldObj.getBlockMetadata(absX, absY, absZ);
-                    TileEntity te = this.worldObj.getTileEntity(absX, absY, absZ);
-                    if (at.equals(Blocks.bookshelf)) {
-                        this.surroundingKnowledge += 1;
-                    } else if (te != null && te instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge += ((IKnowledgeProvider) te)
-                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
-                    } else if (at instanceof IKnowledgeProvider) {
-                        this.surroundingKnowledge += ((IKnowledgeProvider) at)
-                                .getProvidedKnowledge(this.worldObj, absX, absY, absZ);
-                    } else {
-                        for (BlockSnapshot sn : TileKnowledgeBook.knowledgeIncreaseMap.keySet()) {
-                            if (sn.block.equals(at) && sn.metadata == meta) {
-                                this.surroundingKnowledge += TileKnowledgeBook.knowledgeIncreaseMap.get(sn);
-                                continue lblYLoop;
-                            }
-                        }
-                    }
+                    Block block = this.worldObj.getBlock(absX, absY, absZ);
+
+                    this.surroundingKnowledge += (int) block.getEnchantPowerBonus(this.worldObj, absX, absY, absZ);
                 }
             }
         }
@@ -201,8 +207,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 this.searchForCognitio();
             }
             if (this.ticksCognitio <= 0) {
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                this.markDirty();
+                this.markForUpdate();
             }
         }
     }
@@ -214,9 +219,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             for (ForgeDirection dir : toTry) {
                 if (dir == null) continue; // LUL should not happen...
                 if (EssentiaHandler.drainEssentia(this, Aspect.MIND, dir, drainRange)) {
-                    this.ticksCognitio += TileKnowledgeBook.COGNITIO_TICKS;
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                    this.markDirty();
+                    this.ticksCognitio += COGNITIO_TICKS;
+                    this.markForUpdate();
                     break;
                 }
             }
@@ -269,8 +273,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                 this.yCoord,
                 this.zCoord);
         PacketHandler.INSTANCE.sendToAllAround(packet, this.getTargetPoint(32));
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        this.markDirty();
+        this.markForUpdate();
     }
 
     private NetworkRegistry.TargetPoint getTargetPoint(double radius) {
@@ -326,8 +329,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
         AspectList workResearchList = new AspectList();
         for (Aspect a : researchTags.aspects.keySet()) {
             int value = researchTags.aspects.get(a);
-            int newVal = (int) Math
-                    .max(TileKnowledgeBook.LOWEST_AMOUNT, ((double) value) * TileKnowledgeBook.MULTIPLIER);
+            int newVal = (int) Math.max(LOWEST_AMOUNT, ((double) value) * MULTIPLIER);
             workResearchList.add(a, newVal);
         }
         this.workResearchAspects = workResearchList;
@@ -347,15 +349,14 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     @Override
     public void informMaster() {
-        this.timeSinceLastItemInfo = 0;
+        this.lastItemInfoTick = this.worldObj.getTotalWorldTime();
     }
 
     @Override
     public void informItemRemoval() {
         this.storedResearchNote = null;
         this.stopResearch();
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        this.markDirty();
+        this.markForUpdate();
     }
 
     @Override
@@ -374,12 +375,11 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void tryVortexUnfinishedResearchNotes() {
-        if (this.ticksResearchSearch > 0) {
-            this.ticksResearchSearch--;
-            return;
-        }
-        float centerY = this.yCoord + 0.4F;
-        List entityItems = this.worldObj.selectEntitiesWithinAABB(
+        if (this.currentWorldTime - lastResearchSearchTick < RESEARCH_SEARCH_TIMEOUT) return;
+
+        double centerY = this.yCoord + 0.4;
+
+        List<EntityItem> entityItems = this.worldObj.selectEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(
                         this.xCoord - 0.5,
@@ -388,89 +388,102 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                         this.xCoord + 0.5,
                         centerY + 0.5,
                         this.zCoord + 0.5).expand(8, 8, 8),
-                new IEntitySelector() {
+                this::isEntityCorrectResearchNote);
 
-                    @Override
-                    public boolean isEntityApplicable(Entity e) {
-                        return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem)
-                                && e instanceof EntityItem
-                                && ((EntityItem) e).getEntityItem() != null
-                                && ((EntityItem) e).getEntityItem().getItem() instanceof ItemResearchNotes
-                                && TileKnowledgeBook.this.shouldVortexResearchNote(((EntityItem) e).getEntityItem());
-                    }
-                });
+        double xx = this.xCoord + 0.5;
+        double yy = centerY + 0.5;
+        double zz = this.zCoord + 0.5;
 
-        Entity dummy = new EntityItem(this.worldObj);
-        dummy.posX = this.xCoord + 0.5;
-        dummy.posY = centerY + 0.5;
-        dummy.posZ = this.zCoord + 0.5;
+        EntityItem closestEntity = null;
+        double closestDistance = Double.MAX_VALUE;
 
-        // MC code.
-        EntityItem entity = null;
-        double d0 = Double.MAX_VALUE;
-        for (Object entityItem : entityItems) {
-            EntityItem entityIt = (EntityItem) entityItem;
-            if (entityIt != dummy) {
-                double d1 = dummy.getDistanceSqToEntity(entityIt);
-                if (d1 <= d0) {
-                    entity = entityIt;
-                    d0 = d1;
-                }
+        for (EntityItem entity : entityItems) {
+            double dist = entity.getDistanceSq(xx, yy, zz);
+
+            if (dist <= closestDistance) {
+                closestEntity = entity;
+                closestDistance = dist;
             }
         }
-        if (entity == null) {
-            this.ticksResearchSearch = 50;
+
+        if (closestEntity == null) {
+            lastResearchSearchTick = this.currentWorldTime;
             return;
         }
-        if (dummy.getDistanceToEntity(entity) < 1 && !this.worldObj.isRemote) {
-            ItemStack inter = entity.getEntityItem();
+
+        if (closestDistance < 1 && !this.worldObj.isRemote) {
+            ItemStack inter = closestEntity.getEntityItem();
             inter.stackSize--;
             this.storedResearchNote = inter.copy();
             this.storedResearchNote.stackSize = 1;
 
-            EntityPermNoClipItem item = new EntityPermNoClipItem(
-                    entity.worldObj,
-                    this.xCoord + 0.5F,
-                    centerY + 0.3F,
-                    this.zCoord + 0.5F,
-                    this.storedResearchNote,
-                    this.xCoord,
-                    this.yCoord,
-                    this.zCoord);
-            entity.worldObj.spawnEntityInWorld(item);
-            item.motionX = 0;
-            item.motionY = 0;
-            item.motionZ = 0;
-            item.hoverStart = entity.hoverStart;
-            item.age = entity.age;
-            item.noClip = true;
+            EntityPermNoClipItem item = this.createNoClipEntityItem(closestEntity);
 
-            this.timeSinceLastItemInfo = 0;
+            this.lastItemInfoTick = this.currentWorldTime;
 
-            if (inter.stackSize <= 0) entity.setDead();
-            entity.noClip = false;
+            if (inter.stackSize <= 0) {
+                closestEntity.setDead();
+            }
+            closestEntity.noClip = false;
             item.delayBeforeCanPickup = 60;
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            this.markDirty();
+
+            this.markForUpdate();
         } else {
-            entity.noClip = true;
-            this.applyMovementVectors(entity);
+            closestEntity.noClip = true;
+            this.applyMovementVectors(closestEntity);
         }
+    }
+
+    private boolean isEntityCorrectResearchNote(Entity e) {
+        return !(e instanceof EntitySpecialItem) && e instanceof EntityItem
+                && !e.isDead
+                && ((EntityItem) e).getEntityItem() != null
+                && ((EntityItem) e).getEntityItem().getItem() instanceof ItemResearchNotes
+                && this.shouldVortexResearchNote(((EntityItem) e).getEntityItem());
+    }
+
+    private EntityPermNoClipItem createNoClipEntityItem(EntityItem entity) {
+        EntityPermNoClipItem item = new EntityPermNoClipItem(
+                entity.worldObj,
+                this.xCoord + 0.5F,
+                this.yCoord + 0.7F,
+                this.zCoord + 0.5F,
+                this.storedResearchNote,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord);
+        entity.worldObj.spawnEntityInWorld(item);
+        item.motionX = 0;
+        item.motionY = 0;
+        item.motionZ = 0;
+        item.hoverStart = entity.hoverStart;
+        item.age = entity.age;
+        item.noClip = true;
+
+        return item;
     }
 
     // Special to masterTile only!
     private void applyMovementVectors(EntityItem entity) {
-        double var3 = (this.xCoord + 0.5D - entity.posX) / 15.0D;
-        double var5 = (this.yCoord + 0.5D - entity.posY) / 15.0D;
-        double var7 = (this.zCoord + 0.5D - entity.posZ) / 15.0D;
-        double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
-        double var11 = 1.0D - var9;
-        if (var11 > 0.0D) {
-            var11 *= var11;
-            entity.motionX += var3 / var9 * var11 * 0.15D;
-            entity.motionY += var5 / var9 * var11 * 0.25D;
-            entity.motionZ += var7 / var9 * var11 * 0.15D;
-        }
+        if (currentWorldTime == this.lastMovementTick) return;
+        this.lastMovementTick = currentWorldTime;
+
+        double dx = (this.xCoord + 0.5D - entity.posX) / 15.0D;
+        double dy = (this.yCoord + 0.5D - entity.posY) / 15.0D;
+        double dz = (this.zCoord + 0.5D - entity.posZ) / 15.0D;
+        double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        double falloff = 1.0D - dist;
+
+        if (dist == 0.0D || falloff <= 0.0D) return;
+        falloff *= falloff;
+
+        entity.motionX = clampSpeed(entity.motionX + dx / dist * falloff * 0.15D);
+        entity.motionY = clampSpeed(entity.motionY + dy / dist * falloff * 0.25D);
+        entity.motionZ = clampSpeed(entity.motionZ + dz / dist * falloff * 0.15D);
+    }
+
+    private static double clampSpeed(double v) {
+        return Math.max(-MAX_PULL_SPEED, Math.min(MAX_PULL_SPEED, v));
     }
 
     private boolean shouldVortexResearchNote(ItemStack stack) {
@@ -544,22 +557,6 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     @Override
     public int containerContains(Aspect aspect) {
         return 0;
-    }
-
-    public static class BlockSnapshot {
-
-        public final Block block;
-        public final int metadata;
-
-        public BlockSnapshot(Block block, int metadata) {
-            this.block = block;
-            this.metadata = metadata;
-        }
-    }
-
-    public interface IKnowledgeProvider {
-
-        int getProvidedKnowledge(World world, int blockX, int blockY, int blockZ);
     }
 
     public class FloatingBookAttributes {

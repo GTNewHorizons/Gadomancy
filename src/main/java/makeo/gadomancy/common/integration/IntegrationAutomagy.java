@@ -9,7 +9,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import makeo.gadomancy.common.CommonProxy;
-import makeo.gadomancy.common.blocks.tiles.TileKnowledgeBook;
 import makeo.gadomancy.common.data.config.ModConfig;
 import makeo.gadomancy.common.registration.RegisteredBlocks;
 import makeo.gadomancy.common.registration.RegisteredItems;
@@ -46,13 +45,6 @@ public class IntegrationAutomagy extends IntegrationMod {
 
         if (ModConfig.enableAdditionalNodeTypes) {
             CommonProxy.unregisterWandHandler("Automagy", ConfigBlocks.blockWarded, -1);
-        }
-
-        // Better bookshelves -> MOAR knowledge
-        Block betterBookshelf = Block.getBlockFromName("Automagy:blockBookshelfEnchanted");
-        if (betterBookshelf != null) {
-            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 0), 2);
-            TileKnowledgeBook.knowledgeIncreaseMap.put(new TileKnowledgeBook.BlockSnapshot(betterBookshelf, 1), 4);
         }
     }
 

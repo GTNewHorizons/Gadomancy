@@ -24,8 +24,7 @@ import thaumcraft.common.config.ConfigItems;
 /**
  * HellFirePvP@Admin Date: 19.04.2016 / 14:52 on Gadomancy BlockKnowledgeBook
  */
-public class BlockKnowledgeBook extends BlockContainer
-        implements IBlockTransparent, TileKnowledgeBook.IKnowledgeProvider {
+public class BlockKnowledgeBook extends BlockContainer implements IBlockTransparent {
 
     private IIcon icon;
 
@@ -139,7 +138,7 @@ public class BlockKnowledgeBook extends BlockContainer
     }
 
     @Override
-    public int getProvidedKnowledge(World world, int blockX, int blockY, int blockZ) {
-        return 2;
+    public float getEnchantPowerBonus(World world, int x, int y, int z) {
+        return 2.0f;
     }
 }
