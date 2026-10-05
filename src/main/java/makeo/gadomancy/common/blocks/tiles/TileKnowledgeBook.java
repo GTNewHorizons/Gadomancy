@@ -49,6 +49,10 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private static final int SEARCH_RANGE_Y = 3;
     private static final double MULTIPLIER = 4;
 
+    private static final long ENVIRONMENT_UPDATE_TIMEOUT = 100;
+    private static final long RESEARCH_SEARCH_TIMEOUT = 20;
+    private static final long ITEM_INFO_TIMEOUT = 16;
+
     private FloatingBookAttributes bookAttributes = new FloatingBookAttributes();
 
     // The itemstack this is connected to.
@@ -56,11 +60,19 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private EntityPermNoClipItem.ItemChangeTask scheduledTask;
 
     // Ticks
-    private int timeSinceLastItemInfo;
+    private long currentWorldTime;
+    private long lastProcessedTick;
+    // If it's first updateEntity call, based on world time
+    private boolean firstTimeThisTick;
+
+    private long lastEnvironmentTick;
+    private long lastResearchSearchTick;
+    private long lastMovementTick;
+    private long lastItemInfoTick;
+    private long lastSyncTick;
+
     private int ticksExisted;
     private int ticksCognitio;
-    private int ticksEnvironmentCheck;
-    private int ticksResearchSearch;
 
     // Sound effect stuff. I didn't like it when it's like changing pages 4 times in a row...
     private boolean turnedPagesLastTick;
@@ -72,19 +84,19 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     @Override
     public void updateEntity() {
+        this.updateWorldTime();
         this.bookAttributes.updateFloatingBook();
 
-        this.ticksExisted++;
-        this.timeSinceLastItemInfo++;
-
         if (!this.worldObj.isRemote) {
-            if ((!this.researching || !this.hasCognitio()) && this.timeSinceLastItemInfo > 32) {
-                this.informItemRemoval();
-            }
+            if (this.firstTimeThisTick) {
+                if (this.currentWorldTime - this.lastItemInfoTick > ITEM_INFO_TIMEOUT) {
+                    this.informItemRemoval();
+                }
 
-            if (this.updateResearchStatus()) {
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                this.markDirty();
+                if (this.updateResearchStatus()) {
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                    this.markDirty();
+                }
             }
 
             if (this.researching) {
@@ -96,9 +108,16 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             }
         }
 
-        if (this.storedResearchNote == null) {
+        if (this.firstTimeThisTick && this.storedResearchNote == null) {
             this.tryVortexUnfinishedResearchNotes();
         }
+    }
+
+    private void updateWorldTime() {
+        this.currentWorldTime = this.worldObj.getTotalWorldTime();
+        this.firstTimeThisTick = this.currentWorldTime != this.lastProcessedTick;
+        this.lastProcessedTick = this.currentWorldTime;
+        this.ticksExisted++;
     }
 
     public boolean hasCognitio() {
@@ -145,11 +164,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void checkSurroundings() {
-        if (this.ticksEnvironmentCheck > 0) {
-            this.ticksEnvironmentCheck--;
-            return;
-        }
-        this.ticksEnvironmentCheck = 200;
+        if (this.currentWorldTime - lastEnvironmentTick < ENVIRONMENT_UPDATE_TIMEOUT) return;
+
+        this.lastEnvironmentTick = this.currentWorldTime;
         this.surroundingKnowledge = 0;
         for (int xx = -SEARCH_RANGE_XZ; xx <= SEARCH_RANGE_XZ; xx++) {
             for (int zz = -SEARCH_RANGE_XZ; zz <= SEARCH_RANGE_XZ; zz++) {
@@ -323,7 +340,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     @Override
     public void informMaster() {
-        this.timeSinceLastItemInfo = 0;
+        this.lastItemInfoTick = this.worldObj.getTotalWorldTime();
     }
 
     @Override
@@ -350,10 +367,8 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     }
 
     private void tryVortexUnfinishedResearchNotes() {
-        if (this.ticksResearchSearch > 0) {
-            this.ticksResearchSearch--;
-            return;
-        }
+        if (this.currentWorldTime - lastResearchSearchTick < RESEARCH_SEARCH_TIMEOUT) return;
+
         float centerY = this.yCoord + 0.4F;
         List entityItems = this.worldObj.selectEntitiesWithinAABB(
                 EntityItem.class,
@@ -395,7 +410,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             }
         }
         if (entity == null) {
-            this.ticksResearchSearch = 50;
+            lastResearchSearchTick = this.currentWorldTime;
             return;
         }
         if (dummy.getDistanceToEntity(entity) < 1 && !this.worldObj.isRemote) {
@@ -421,7 +436,7 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
             item.age = entity.age;
             item.noClip = true;
 
-            this.timeSinceLastItemInfo = 0;
+            this.lastItemInfoTick = this.currentWorldTime;
 
             if (inter.stackSize <= 0) entity.setDead();
             entity.noClip = false;
@@ -436,6 +451,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
 
     // Special to masterTile only!
     private void applyMovementVectors(EntityItem entity) {
+        if (currentWorldTime == this.lastMovementTick) return;
+        this.lastMovementTick = currentWorldTime;
+
         double var3 = (this.xCoord + 0.5D - entity.posX) / 15.0D;
         double var5 = (this.yCoord + 0.5D - entity.posY) / 15.0D;
         double var7 = (this.zCoord + 0.5D - entity.posZ) / 15.0D;
