@@ -370,8 +370,9 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
     private void tryVortexUnfinishedResearchNotes() {
         if (this.currentWorldTime - lastResearchSearchTick < RESEARCH_SEARCH_TIMEOUT) return;
 
-        float centerY = this.yCoord + 0.4F;
-        List entityItems = this.worldObj.selectEntitiesWithinAABB(
+        double centerY = this.yCoord + 0.4;
+
+        List<EntityItem> entityItems = this.worldObj.selectEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(
                         this.xCoord - 0.5,
@@ -380,74 +381,80 @@ public class TileKnowledgeBook extends SynchronizedTileEntity
                         this.xCoord + 0.5,
                         centerY + 0.5,
                         this.zCoord + 0.5).expand(8, 8, 8),
-                new IEntitySelector() {
+                this::isEntityCorrectResearchNote);
 
-                    @Override
-                    public boolean isEntityApplicable(Entity e) {
-                        return !(e instanceof EntityPermanentItem) && !(e instanceof EntitySpecialItem)
-                                && e instanceof EntityItem
-                                && ((EntityItem) e).getEntityItem() != null
-                                && ((EntityItem) e).getEntityItem().getItem() instanceof ItemResearchNotes
-                                && TileKnowledgeBook.this.shouldVortexResearchNote(((EntityItem) e).getEntityItem());
-                    }
-                });
+        double xx = this.xCoord + 0.5;
+        double yy = centerY + 0.5;
+        double zz = this.zCoord + 0.5;
 
-        Entity dummy = new EntityItem(this.worldObj);
-        dummy.posX = this.xCoord + 0.5;
-        dummy.posY = centerY + 0.5;
-        dummy.posZ = this.zCoord + 0.5;
+        EntityItem closestEntity = null;
+        double closestDistance = Double.MAX_VALUE;
 
-        // MC code.
-        EntityItem entity = null;
-        double d0 = Double.MAX_VALUE;
-        for (Object entityItem : entityItems) {
-            EntityItem entityIt = (EntityItem) entityItem;
-            if (entityIt != dummy) {
-                double d1 = dummy.getDistanceSqToEntity(entityIt);
-                if (d1 <= d0) {
-                    entity = entityIt;
-                    d0 = d1;
-                }
+        for (EntityItem entity : entityItems) {
+            double dist = entity.getDistanceSq(xx, yy, zz);
+
+            if (dist <= closestDistance) {
+                closestEntity = entity;
+                closestDistance = dist;
             }
         }
-        if (entity == null) {
+
+        if (closestEntity == null) {
             lastResearchSearchTick = this.currentWorldTime;
             return;
         }
-        if (dummy.getDistanceToEntity(entity) < 1 && !this.worldObj.isRemote) {
-            ItemStack inter = entity.getEntityItem();
+
+        if (closestDistance < 1 && !this.worldObj.isRemote) {
+            ItemStack inter = closestEntity.getEntityItem();
             inter.stackSize--;
             this.storedResearchNote = inter.copy();
             this.storedResearchNote.stackSize = 1;
 
-            EntityPermNoClipItem item = new EntityPermNoClipItem(
-                    entity.worldObj,
-                    this.xCoord + 0.5F,
-                    centerY + 0.3F,
-                    this.zCoord + 0.5F,
-                    this.storedResearchNote,
-                    this.xCoord,
-                    this.yCoord,
-                    this.zCoord);
-            entity.worldObj.spawnEntityInWorld(item);
-            item.motionX = 0;
-            item.motionY = 0;
-            item.motionZ = 0;
-            item.hoverStart = entity.hoverStart;
-            item.age = entity.age;
-            item.noClip = true;
+            EntityPermNoClipItem item = this.createNoClipEntityItem(closestEntity);
 
             this.lastItemInfoTick = this.currentWorldTime;
 
-            if (inter.stackSize <= 0) entity.setDead();
-            entity.noClip = false;
+            if (inter.stackSize <= 0) {
+                closestEntity.setDead();
+            }
+            closestEntity.noClip = false;
             item.delayBeforeCanPickup = 60;
+
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.markDirty();
         } else {
-            entity.noClip = true;
-            this.applyMovementVectors(entity);
+            closestEntity.noClip = true;
+            this.applyMovementVectors(closestEntity);
         }
+    }
+
+    private boolean isEntityCorrectResearchNote(Entity e) {
+        return !(e instanceof EntitySpecialItem) && e instanceof EntityItem
+                && !e.isDead
+                && ((EntityItem) e).getEntityItem() != null
+                && ((EntityItem) e).getEntityItem().getItem() instanceof ItemResearchNotes
+                && this.shouldVortexResearchNote(((EntityItem) e).getEntityItem());
+    }
+
+    private EntityPermNoClipItem createNoClipEntityItem(EntityItem entity) {
+        EntityPermNoClipItem item = new EntityPermNoClipItem(
+                entity.worldObj,
+                this.xCoord + 0.5F,
+                this.yCoord + 0.7F,
+                this.zCoord + 0.5F,
+                this.storedResearchNote,
+                this.xCoord,
+                this.yCoord,
+                this.zCoord);
+        entity.worldObj.spawnEntityInWorld(item);
+        item.motionX = 0;
+        item.motionY = 0;
+        item.motionZ = 0;
+        item.hoverStart = entity.hoverStart;
+        item.age = entity.age;
+        item.noClip = true;
+
+        return item;
     }
 
     // Special to masterTile only!
