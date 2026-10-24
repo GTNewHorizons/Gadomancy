@@ -147,7 +147,6 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Load e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
-            Gadomancy.loadModData();
             TCMazeHandler.init();
         }
     }
@@ -174,8 +173,6 @@ public class EventHandlerWorld {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void on(WorldEvent.Unload e) {
         if (!e.world.isRemote && e.world.provider.dimensionId == 0) {
-            Gadomancy.unloadModData();
-
             TCMazeHandler.closeAllSessionsAndCleanup();
         }
     }

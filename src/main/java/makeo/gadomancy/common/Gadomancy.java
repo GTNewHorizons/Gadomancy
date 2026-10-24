@@ -19,7 +19,6 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import makeo.gadomancy.api.GadomancyApi;
 import makeo.gadomancy.common.api.DefaultApiHandler;
 import makeo.gadomancy.common.data.config.ModConfig;
-import makeo.gadomancy.common.data.config.ModData;
 import thaumcraft.common.Thaumcraft;
 
 /**
@@ -51,23 +50,6 @@ public class Gadomancy {
 
     public static final Logger log = LogManager.getLogger("Gadomancy");
     public static final Marker securityMarker = MarkerManager.getMarker("SuspiciousPackets");
-    private static ModData modData;
-
-    public static ModData getModData() {
-        return Gadomancy.modData;
-    }
-
-    public static void loadModData() {
-        Gadomancy.modData = new ModData("data");
-        Gadomancy.modData.load();
-    }
-
-    public static void unloadModData() {
-        if (Gadomancy.modData != null) {
-            Gadomancy.modData.save();
-            Gadomancy.modData = null;
-        }
-    }
 
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
