@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import com.gtnewhorizons.aspectrecipeindex.api.IAspectRangeList;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -13,7 +15,7 @@ import thaumcraft.api.aspects.AspectList;
  *
  * Created by HellFirePvP @ 18.12.2015 13:58
  */
-public class RandomizedAspectList extends AspectList {
+public class RandomizedAspectList extends AspectList implements IAspectRangeList {
 
     private static final Random RANDOM = new Random();
     private Map<Aspect, Integer> aspectMap = new HashMap<Aspect, Integer>();
@@ -28,6 +30,26 @@ public class RandomizedAspectList extends AspectList {
     public RandomizedAspectList setHalfCap(boolean halfCap) {
         this.halfCap = halfCap;
         return this;
+    }
+
+    @Override
+    public int getMinAmount(Aspect aspect) {
+        Integer base = this.aspectMap.get(aspect);
+        if (base == null) {
+            return -1;
+        }
+        // halfCap rolls land in [c/2, 2*(c/2)-1]; without halfCap a zero roll drops the aspect
+        // entirely, so 0 (may be absent) is the honest floor
+        return this.halfCap ? base / 2 : 0;
+    }
+
+    @Override
+    public int getMaxAmount(Aspect aspect) {
+        Integer base = this.aspectMap.get(aspect);
+        if (base == null) {
+            return -1;
+        }
+        return this.halfCap ? 2 * (base / 2) - 1 : base - 1;
     }
 
     private void checkRandomization() {
