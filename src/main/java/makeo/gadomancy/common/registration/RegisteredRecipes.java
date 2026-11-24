@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import makeo.gadomancy.api.golems.AdditionalGolemType;
 import makeo.gadomancy.common.Gadomancy;
@@ -108,6 +109,22 @@ public class RegisteredRecipes {
     public static IArcaneRecipe recipeEssentiaCompressor;
 
     public static InfusionEnchantmentRecipe recipeRevealer;
+
+    /**
+     * Creates the randomized aspect lists used by the infusion recipes below. If Aspect Recipe Index (or a version
+     * providing its range api) is present, a variant implementing the range interface is used so NEI can show the
+     * possible cost ranges; otherwise the plain list is returned. The ranged class is loaded reflectively because
+     * linking it directly would make Gadomancy fail to start without Aspect Recipe Index.
+     */
+    private static RandomizedAspectList createRandomizedAspectList() {
+        try {
+            return (RandomizedAspectList) Class.forName("makeo.gadomancy.common.utils.RandomizedAspectListRanged")
+                    .getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException | LinkageError e) {
+            FMLLog.info("[Gadomancy] Aspect Recipe Index range api not available, cost range tooltips disabled");
+            return new RandomizedAspectList();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static void init() {
@@ -594,7 +611,7 @@ public class RegisteredRecipes {
                 Gadomancy.MODID.toUpperCase() + ".AURA_CORE",
                 blankCore,
                 6,
-                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 9)
+                createRandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.AURA, 9)
                         .addAspectRandomBase(Aspect.MAGIC, 19).addAspectRandomBase(Aspect.ELDRITCH, 17)
                         .addAspectRandomBase(Aspect.VOID, 34),
                 new ItemStack(ConfigItems.itemResource, 1, 15),
@@ -691,7 +708,7 @@ public class RegisteredRecipes {
                 Gadomancy.MODID.toUpperCase() + ".ESSENTIA_COMPRESSOR",
                 new ItemStack(RegisteredItems.itemElement, 1, ItemElement.EnumElementType.DARKNESS.ordinal()),
                 6,
-                new RandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.VOID, 22)
+                createRandomizedAspectList().setHalfCap(true).addAspectRandomBase(Aspect.VOID, 22)
                         .addAspectRandomBase(Aspect.DARKNESS, 18).addAspectRandomBase(Aspect.ELDRITCH, 20)
                         .addAspectRandomBase(Aspect.AURA, 10),
                 new ItemStack(ConfigItems.itemResource, 1, 17),
