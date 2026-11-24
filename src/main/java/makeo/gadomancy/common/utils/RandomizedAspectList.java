@@ -30,6 +30,26 @@ public class RandomizedAspectList extends AspectList {
         return this;
     }
 
+    // Exposed to Aspect Recipe Index through RandomizedAspectListRanged; kept here so the range logic
+    // lives next to the roll logic it describes.
+    public int getMinAmount(Aspect aspect) {
+        Integer base = this.aspectMap.get(aspect);
+        if (base == null) {
+            return -1;
+        }
+        // halfCap rolls land in [c/2, 2*(c/2)-1]; without halfCap a zero roll drops the aspect
+        // entirely, so 0 (may be absent) is the honest floor
+        return this.halfCap ? base / 2 : 0;
+    }
+
+    public int getMaxAmount(Aspect aspect) {
+        Integer base = this.aspectMap.get(aspect);
+        if (base == null) {
+            return -1;
+        }
+        return this.halfCap ? 2 * (base / 2) - 1 : base - 1;
+    }
+
     private void checkRandomization() {
         if ((System.currentTimeMillis() - this.lastRandomization) > 500) {
             super.aspects.clear();
